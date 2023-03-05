@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
     padding: 0 3vw;
     background-color: #06283D;
     display: flex;
+    box-shadow: 0px 0px 5px 3px #0000006e;
     justify-content: space-between;
     align-items: center;
     color: white;
@@ -60,7 +61,7 @@ export const CheckBoxLabel = styled.label`
   width: 50px;
   height: 30px;
   border-radius: 15px;
-  background: #dad3d3;
+  background: #525252;
   cursor: pointer;
   &::after {
     content: "";
@@ -81,10 +82,11 @@ export const CheckBox = styled.input`
   width: 42px;
   height: 26px;
   &:checked + ${CheckBoxLabel} {
-    background: #5ed100c5;
+    background: #3b8300c5;
     &::after {
       content: "";
       display: block;
+      background-color: #f0f0f0;
       border-radius: 50%;
       width: 23px;
       height: 23px;

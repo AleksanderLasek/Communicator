@@ -45,19 +45,14 @@ const Header = ({pageTheme}) => {
                     </>
                     )}
                 </S.CenterWrapper>
-                {width > 1024 ? (
-                   <S.RightWrapper>
-                    <S.Button>Sign up</S.Button><S.SignInText>Already have an account? <b>Sign in</b></S.SignInText>
-                </S.RightWrapper> 
-                ) : (
-                    <div>
+              
                         <i className="user circle icon"/>
-                    </div>
-                )}
+                {width > 768 && (
                 <S.CheckBoxWrapper >
                     <S.CheckBox id="checkbox" type="checkbox" onClick={handleMode}/>
                     <S.CheckBoxLabel htmlFor="checkbox" />
                 </S.CheckBoxWrapper>
+                )}
             </S.Wrapper>
         </>
     )
