@@ -9,6 +9,7 @@ export const ImageWrapper = styled.div`
 `;
 export const Image = styled.img`
     border-radius: 50%;
+    box-shadow: 0px 0px 5px 3px #0000005a;
     max-width: 15vw;
     min-width: 15vw;
     min-height: 15vw;

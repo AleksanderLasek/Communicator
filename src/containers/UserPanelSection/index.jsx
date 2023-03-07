@@ -12,7 +12,7 @@ const UserPanelSection = () => {
         <input id="profilePic"  onChange={(e) => setFile(URL.createObjectURL(e.target.files[0]))} hidden type="file"/>
         <S.EditPictureWrapper htmlFor="profilePic">Edit profile picture</S.EditPictureWrapper>
       </S.ImageWrapper>
-      <S.NameWrapper>Alan Pędzistolec</S.NameWrapper>
+      <S.NameWrapper>John Doe</S.NameWrapper>
     </S.Wrapper>
   );
 };
