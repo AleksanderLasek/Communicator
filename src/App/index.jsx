@@ -4,6 +4,7 @@ import * as S from "./index.styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Router from "../Router";
+import ChatSection from "../containers/ChatSection";
 
 const App = () => {
   const [swap, setSwap] = useState(true);
@@ -81,7 +82,9 @@ const App = () => {
     <>
       <Header pageTheme={pageTheme} />
       <S.Wrapper pageTheme={swap}>
-        <Router path="/chat">jakis napis</Router>
+        <Router path="/chat">
+          <ChatSection />
+        </Router>
         <Router path={"/friends"}>friends</Router>
         <Router path={"/nots"}>nots</Router>
         {cookie.refreshToken ? (
