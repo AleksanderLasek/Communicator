@@ -82,7 +82,7 @@ const App = () => {
             
             {cookie.refreshToken ? (
                 <>
-                    chuj
+                    
                 </>
             ) : (
                 <>

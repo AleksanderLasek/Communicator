@@ -1,59 +1,59 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    position: fixed;
-    width: 100vw;
-    height: 50px;
-    padding: 0 3vw;
-    background-color: #06283D;
-    display: flex;
-    box-shadow: 0px 0px 5px 3px #0000006e;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    @media screen and (max-width: 768px){
-        bottom: 0;
-    }
-`
+  position: fixed;
+  width: 100vw;
+  height: 50px;
+  padding: 0 3vw;
+  background-color: #06283d;
+  display: flex;
+  box-shadow: 0px 0px 5px 3px #0000006e;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  z-index: 999;
+  @media screen and (max-width: 768px) {
+    bottom: 0;
+  }
+`;
 export const LogoWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const CenterWrapper = styled.div`
-    display: flex;
-    font-weight: bold;
-    width: 45%;
-    justify-content: space-around;
-    align-items: center;
-    font-size: 1.2rem;
-    @media screen and (max-width: 768px){
-        width: 70%;
-    }
-    @media screen and (max-width: 1024px){
-        font-size: 1rem;
-    }
-`
+  display: flex;
+  font-weight: bold;
+  width: 45%;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 1.2rem;
+  @media screen and (max-width: 768px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 1rem;
+  }
+`;
 export const RightWrapper = styled.div`
-    display: flex;
-    width: 20%;
-    font-size: 0.9vw;
-    align-items: center;
-    justify-content: space-around;
-`
+  display: flex;
+  width: 20%;
+  font-size: 0.9vw;
+  align-items: center;
+  justify-content: space-around;
+`;
 
 export const Button = styled.div`
-    border-radius: 5px;
-    padding: 5px 10px;
-    background-color: #0000004c;
-`
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: #0000004c;
+`;
 export const SignInText = styled.div`
-    font-size: 0.9vw;
-`
+  font-size: 0.9vw;
+`;
 export const CheckBoxWrapper = styled.div`
   position: relative;
-
 `;
 export const CheckBoxLabel = styled.label`
   position: absolute;

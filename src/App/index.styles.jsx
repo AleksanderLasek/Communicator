@@ -30,6 +30,7 @@ export const Input = styled.input`
     height: 50px;
     border-radius: 5px;
     margin: 5px;
+    padding: 5px;
     font-size: 1.2rem;
     outline: 0;
     font-family: 'Red Hat Display', sans-serif;
