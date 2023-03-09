@@ -26,16 +26,21 @@ export const Image = styled.img`
 export const EditPictureWrapper = styled.label`
     padding: 15px;
     color: white;
+    z-index: 5;
+    cursor: pointer;
 `
 
 export const NameWrapper = styled.div`
   font-size: 1.4rem;
   font-weight: bold;
   color: white;
+  z-index: 5;
+  cursor: default;
 `;
 export const Text = styled.div`
   font-size: 1.2rem;
   color: white;
+  cursor: pointer;
   position: relative;
   z-index: 5;
 `
@@ -74,9 +79,9 @@ export const InputWrapper = styled.div`
 export const Input = styled.input`
     margin: 7px;
     font-family: 'Red Hat Display';
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     border-radius: 5px;
-    padding: 3px;
+    padding: 8px 4px; 
     outline: 0;
     border: 0;
     width: 60%;

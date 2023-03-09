@@ -6,9 +6,7 @@ const UserPanelSection = () => {
   const [file, setFile] = useState(jezus);
   const [editUser, setEditUser] = useState(false);
   const handleFile = (e) => {
-    if(e.target.files[0].size > 250000){
       setFile(URL.createObjectURL(e.target.files[0]));
-    }
   }
   const handleEditUser = () => {
     setEditUser(current => !current);
