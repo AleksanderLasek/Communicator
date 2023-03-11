@@ -3,7 +3,7 @@ import * as S from "./index.styles";
 import logo from "../../images/logo.png";
 import UserPanelSection from "../../containers/UserPanelSection";
 
-const Header = ({ pageTheme }) => {
+const Header = ({ pageTheme, user }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [mode, setMode] = useState(false);
   const [isUserPanel, setIsUserPanel] = useState(false);
@@ -28,7 +28,7 @@ const Header = ({ pageTheme }) => {
   });
   return (
     <>
-      {isUserPanel && <UserPanelSection />}
+      {isUserPanel && <UserPanelSection user={user}/>}
       <S.Wrapper>
         {width > 768 && (
           <S.LogoWrapper>
