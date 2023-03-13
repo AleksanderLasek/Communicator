@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
     bottom: 0;
   }
 `;
-export const LogoWrapper = styled.div`
+export const LogoWrapper = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,5 +93,12 @@ export const CheckBox = styled.input`
       margin-left: 24px;
       transition: 0.2s;
     }
+  }
+`;
+
+export const AWrapper = styled.a`
+  color: white;
+  &:hover {
+    color: #aaaaaa;
   }
 `;

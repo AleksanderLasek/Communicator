@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import * as S from './index.styles';
+import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import LoginRegistrationSection from "../containers/LoginRegistrationSection";
 import jwtDecode from "jwt-decode";

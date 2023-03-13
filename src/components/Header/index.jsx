@@ -31,31 +31,37 @@ const Header = ({ pageTheme, user }) => {
       {isUserPanel && <UserPanelSection user={user}/>}
       <S.Wrapper>
         {width > 768 && (
-          <S.LogoWrapper>
+          <S.LogoWrapper href="/">
             <img src={logo} style={{ height: "3vw" }} />
           </S.LogoWrapper>
         )}
         <S.CenterWrapper>
           {width > 768 ? (
             <>
-              <div>
+              <S.AWrapper href="/chat">
                 <i className="comment alternate icon" />
                 CHAT
-              </div>
-              <div>
+              </S.AWrapper>
+              <S.AWrapper href="/friends">
                 <i className="address book icon" />
                 FRIENDS
-              </div>
-              <div>
+              </S.AWrapper>
+              <S.AWrapper href="/nots">
                 <i className="bell icon" />
                 NOTIFICATIONS
-              </div>
+              </S.AWrapper>
             </>
           ) : (
             <>
-              <i className="comment alternate icon" />
-              <i className="address book icon" />
-              <i className="bell icon" />
+              <S.AWrapper href="/chat">
+                <i className="comment alternate icon" />
+              </S.AWrapper>
+              <S.AWrapper href="/friends">
+                <i className="address book icon" />
+              </S.AWrapper>
+              <S.AWrapper href="/nots">
+                <i className="bell icon" />
+              </S.AWrapper>
             </>
           )}
         </S.CenterWrapper>
