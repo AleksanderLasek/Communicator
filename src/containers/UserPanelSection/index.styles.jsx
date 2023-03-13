@@ -34,12 +34,14 @@ export const NameWrapper = styled.div`
   font-size: 1.4rem;
   font-weight: bold;
   color: white;
+  margin: 10px;
   z-index: 5;
   cursor: default;
 `;
 export const Text = styled.div`
   font-size: 1.2rem;
   color: white;
+  padding: 5px;
   cursor: pointer;
   position: relative;
   z-index: 5;
@@ -51,6 +53,7 @@ export const Button = styled.div`
   background-color: gray;
   color: white;
   border-radius: 5px;
+  z-index: 5;
   box-shadow: 0px 0px 5px 3px #00000032;
   transform: scale(1);
   transition: all 0.2s ease;
@@ -65,15 +68,15 @@ export const Button = styled.div`
 `
 export const InputWrapper = styled.div`
     position: relative;
-    z-index: 4;
     display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  z-index: 4;
   opacity: ${(props) => props.editUser ? "1" : "0"};
   height: ${(props) => props.editUser ? "140px" : "0" };
   transition: all 0.5s ease;
-  margin-bottom: 30px;
+  margin-bottom: 0px;
   flex-direction: column;
 `
 export const Input = styled.input`
@@ -91,8 +94,8 @@ export const Wrapper = styled.div`
   width: 25vw;
   height: auto;
   box-shadow: 0px 0px 3px 5px #0000002f;
-  padding: 10px;
-  background-color: #03333a;
+  
+  background-color: #052133;
   position: fixed;
   overflow: hidden;
   transition: all 0.5s ease;
