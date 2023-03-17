@@ -56,11 +56,11 @@ const refreshToken = async(req, res) => {
 const Register = async(req, res) => {
     const { name, surname, password, email, avatar } = req.body;
     if(!name || !surname || !password || !email) {
-        return res.status(401).send({msg: 'Invalid data'});
+        return res.status(201).send({msg: 'Invalid data'});
     }
     const ifUserIsInDB = await Users.findOne({email: email});
     if(ifUserIsInDB) {
-        return res.status(402).send({msg: 'This email address is taken!'});
+        return res.status(202).send({msg: 'This email address is taken!'});
     }
     const salt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(password, salt);
@@ -81,15 +81,15 @@ const Register = async(req, res) => {
 const Login = async(req, res) => {
     const {email, password} = req.body;
     if(!password || !email) {
-        return res.status(401).send({msg: 'Invalid data'});
+        return res.status(201).send({msg: 'Invalid data'});
     }
     const user = await Users.findOne({email: email});
     if(!user) {
-        return res.status(402).send({msg: 'User not found'});
+        return res.status(202).send({msg: 'User not found'});
     }
     const checkPassword = await bcrypt.compare(password, user.password);
     if(!checkPassword) {
-        return res.status(403).send({msg: 'Wrong password'});
+        return res.status(203).send({msg: 'Wrong password'});
     }
     const refreshToken = generateRefreshToken(user.name, user.surname, user.email);
     console.log(refreshToken);

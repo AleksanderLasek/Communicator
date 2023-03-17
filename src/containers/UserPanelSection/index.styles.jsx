@@ -29,6 +29,21 @@ export const EditPictureWrapper = styled.label`
     z-index: 5;
     cursor: pointer;
 `
+export const LogoutButton = styled.div`
+  cursor: pointer;
+  background-color:white;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 5;
+  box-shadow: 0px 0px 5px 3px #0000006a;
+  transform: scale(1);
+  transition: 0.2s ease;
+  &:active {
+    transform: scale(1.1);
+    transition: 0.2s ease;
+  }
+`
 
 export const NameWrapper = styled.div`
   font-size: 1.4rem;
@@ -110,6 +125,7 @@ export const Wrapper = styled.div`
   @media screen and (max-width: 768px) {
     background-color: #03333a;
     width: 100vw;
+    padding-bottom: 50px;
     height: 100vh;
     top: 0;
     right: 0;

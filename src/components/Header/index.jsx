@@ -66,7 +66,7 @@ const Header = ({ pageTheme, user }) => {
           )}
         </S.CenterWrapper>
 
-        <i className="user circle icon" onClick={toggleUserPanel} />
+        {user.name && (<i className="user circle icon" onClick={toggleUserPanel} />)}
 
         {width > 768 && (
           <S.CheckBoxWrapper>

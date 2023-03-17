@@ -12,7 +12,7 @@ const UserPanelSection = ({user}) => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [cookie] = useCookies(['refreshToken']);
+  const [cookie, setCookies, deleteCookies] = useCookies(['refreshToken']);
   const handleFile = async (e) => {
       e.preventDefault();
       const convertedImage = await convertBase64(e.target.files[0]);
@@ -33,10 +33,7 @@ const UserPanelSection = ({user}) => {
       ctx.drawImage(img, cropX, cropY, cropSize, cropSize, 0, 0, outputWidth, outputHeight);
       const outputBase64 = canvas.toDataURL();
       setAvatar(outputBase64);
-
-console.log(outputBase64);
-
-  
+      console.log(outputBase64);
   }
   
   const handleEditUser = () => {
@@ -55,7 +52,7 @@ console.log(outputBase64);
   }
   const handleAvatarChange = async (e) => {
     e.preventDefault();
-    const token = cookie.refreshToken;console.log(avatar)
+    const token = cookie.refreshToken;
     try {
       
       const res = await axios.post('http://localhost:5000/users/edit', {refreshToken: token, avatar: avatar});  
@@ -79,6 +76,11 @@ console.log(outputBase64);
       };
     });
   };
+  const Logout = async(e) => {
+    e.preventDefault();
+    deleteCookies('refreshToken');
+    window.location.reload();
+  }
   return (
     <S.Wrapper>
       <S.NameWrapper >{user.name} {user.surname}</S.NameWrapper>
@@ -96,7 +98,7 @@ console.log(outputBase64);
           <S.Input placeholder="Enter new surname" name="surname" onChange={(e) => setSurname(e.target.value)}/>
           <S.Button onClick={handleNameChange}>Submit</S.Button>
         </S.InputWrapper>
-      
+      <S.LogoutButton onClick={Logout}>Logout</S.LogoutButton>
       
     </S.Wrapper>
   );

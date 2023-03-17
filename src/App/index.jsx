@@ -47,7 +47,7 @@ const App = () => {
         {cookie.refreshToken ? (
           <>
             <Router path="/chat">
-              <ChatSection></ChatSection>
+              <ChatSection user={user}></ChatSection>
             </Router>
           </>
         ) : (
