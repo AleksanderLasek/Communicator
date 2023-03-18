@@ -1,34 +1,14 @@
-# Communicator - Backlog
+# Chattly - Wiki
+Our student's project named Chattly is a web application made using React - a JavaScript-based UI development library. Our goal is to make user-friendly online communicator which will allow to chat as well as exchanging images with friends or groups.
 
- 1) Header
-  - Menu 
-    - Chat
-    - Friends
-    - Notifications
-  - Login & registration panel 
-  - User panel
-  - Admin panel
-  - Mode switch (dark/bright)
- 2) 1/2 Backend 
-  - registration
-  - login
-  - refresh token
- 3) Landing page
-  - >= 3 friends quick access page
-  - < 3 welcome page for new user + invite link
- 4) Chat section
-  - design of single chat bar
-  - design of chat window
-  - loading chats from API
-  - sending images/files from device
-  - voice calls
-  - emoji support
-  - images/files explorer
- 5) Notifications
-  - Notifications bar design
-  - Communication between sections
- 6) Friends
-  - Inviting
-  - Adding
- 7) 2/2 Backend
-  - Handling chats
+# Chattly - Backlog
+1) Registration, login and logout feature
+2) User panel feature
+3) Dark mode switch
+4) Chat handling
+5) Adding friends feature
+6) Notifications support
+7) Landing page
+8) Image sending support
+9) Emoji support
+10) Voice calls support
