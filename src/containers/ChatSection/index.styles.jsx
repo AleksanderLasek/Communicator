@@ -59,11 +59,7 @@ export const ChatWindowWrapper = styled.div`
   align-items: flex-start;
   flex-direction: column;
   border-radius: 15px;
-  overflow-y: scroll;
   margin-left: 5vw;
-  &::-webkit-scrollbar {
-      width: 0;
-  }
 `;
 
 export const ChatBarWrapper = styled.div`
@@ -94,6 +90,12 @@ export const ChatNameWrapper = styled.div`
 export const MessageWindowWrapper = styled.div`
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+  &::-webkit-scrollbar {
+      width: 0;
+  }
 `;
 
 export const MessageSentLineWrapper = styled.div`
