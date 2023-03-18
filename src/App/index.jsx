@@ -25,7 +25,6 @@ const App = () => {
     const res = await axios.post("http://localhost:5000/users/token", {
       refreshToken: token,
     });
-    console.log(res);
     const decoded = jwtDecode(res.data.accessToken);
     setUser({
       name: decoded.name,
@@ -33,13 +32,12 @@ const App = () => {
       email: decoded.email,
       avatar: decoded.avatar,
     });
-    console.log(user);
   };
   useEffect(() => {
     if (cookie.refreshToken) {
       refreshToken();
     }
-  });
+  }, []);
   return (
     <>
       <Header pageTheme={pageTheme} user={user} />

@@ -16,8 +16,12 @@ export const ListWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  border-radius: 2%;
+  box-shadow: 0px 0px 5px 3px #00000037;
+  border-radius: 15px;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+      width: 0;
+  }
 `;
 
 export const FriendWrapper = styled.div`
@@ -25,7 +29,6 @@ export const FriendWrapper = styled.div`
   min-height: 8vh;
   width: 100%;
   background-color: #dff6ff;
-  border-radius: inherit;
   overflow: hidden;
   border: 1px solid #c0c0c0;
   display: flex;
@@ -51,12 +54,16 @@ export const ChatWindowWrapper = styled.div`
   background-color: white;
   width: 60vw;
   height: 85vh;
+  box-shadow: 0px 0px 5px 3px #00000037;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  border-radius: 2%;
+  border-radius: 15px;
   overflow-y: scroll;
   margin-left: 5vw;
+  &::-webkit-scrollbar {
+      width: 0;
+  }
 `;
 
 export const ChatBarWrapper = styled.div`
@@ -83,27 +90,67 @@ export const ChatNameWrapper = styled.div`
   margin-left: 1vw;
 `;
 
+
 export const MessageWindowWrapper = styled.div`
-  display: block;
   width: 100%;
   height: 100%;
 `;
 
+export const MessageSentLineWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`
+export const MessageReceivedLineWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+`
+
 export const MessageReceivedWrapper = styled.div`
-  background-color: #06283d;
-  width: 10vh;
-  height: 3vw;
-  margin-left: 1vw;
-  margin-top: 1vh;
-  border-radius: 20%;
+ background-color: #12323f;
+  margin: 5px;
+  color: white;
+  max-width: 50;
+  padding: 5px 15px;
+  border-radius: 15px;
 `;
 
 export const MessageSentWrapper = styled.div`
-  background-color: #000000;
-  width: 10vh;
-  height: 3vw;
-  position: relative;
-  margin-left: 1vw;
-  margin-top: 1vh;
-  border-radius: 20%;
+  background-color: #246883;
+  margin: 5px;
+  color: white;
+  max-width: 50%;
+  padding: 5px 15px;
+  border-radius: 15px;
 `;
+export const MessageSentIcon = styled.i`
+  cursor: pointer;
+  transform: scale(1);
+    transition: 0.2s ease;
+  &:active{
+    transform: scale(1.1);
+    transition: 0.2s ease;
+  }
+`
+
+export const MessageTextBox = styled.div`
+  width: 100%;
+  background-color: #c7c1c1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px;
+`
+export const MessageInput = styled.input`
+  width: 80%;
+  padding: 5px 15px; 
+  font-size: 1.3rem;
+  font-family: 'Red Hat Display';
+  border-radius: 20px;
+  border: 0;
+  outline: 0;
+
+`

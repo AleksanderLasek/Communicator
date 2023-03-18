@@ -24,9 +24,22 @@ const ChatSection = ({user}) => {
           <S.ChatNameWrapper>Andrzej Katamaran</S.ChatNameWrapper>
         </S.ChatBarWrapper>
         <S.MessageWindowWrapper>
-          <S.MessageReceivedWrapper></S.MessageReceivedWrapper>
-          <S.MessageSentWrapper></S.MessageSentWrapper>
+          <S.MessageReceivedLineWrapper>
+            <S.MessageReceivedWrapper>chuj</S.MessageReceivedWrapper>
+          </S.MessageReceivedLineWrapper>
+          <S.MessageSentLineWrapper>
+            <S.MessageSentWrapper>sam zes jest chuj</S.MessageSentWrapper>
+          </S.MessageSentLineWrapper>
+          <S.MessageReceivedLineWrapper>
+            <S.MessageReceivedWrapper>ok</S.MessageReceivedWrapper>
+          </S.MessageReceivedLineWrapper>
         </S.MessageWindowWrapper>
+        <S.MessageTextBox>
+          <S.MessageInput type="text">
+
+          </S.MessageInput>
+          <S.MessageSentIcon className="white large paper plane icon"/>
+        </S.MessageTextBox>
       </S.ChatWindowWrapper>
     </S.Wrapper>
   );
