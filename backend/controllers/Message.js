@@ -22,6 +22,6 @@ export const GetChat = async(req, res) => {
     const ChatName = [sender, receiver];
     ChatName.sort();  
     const ChatCollection = db.collection(`${ChatName[0]}${ChatName[1]}`);
-    const Chat = await ChatCollection.find({}).toArray();
+    const Chat = await ChatCollection.find({}).sort({_id: -1 }).toArray();
     return res.status(200).send({Chat});
 }

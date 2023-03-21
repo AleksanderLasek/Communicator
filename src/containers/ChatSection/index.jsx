@@ -6,13 +6,14 @@ const ChatSection = ({user}) => {
   const [message, setMessage] = useState('');
   const [receiver, setReceiver] = useState('test1');
   const [chat, setChat] = useState([]);
+  const [friends, setFriends] = useState([]);
   const handleChange = (e) => {
     setMessage(e.target.value);
   }
   const SendMessage = async() => {
+    setMessage('')
     try {
-      const res = await axios.post('http://localhost:5000/chat/send', {message: message, sender: user.name, receiver: receiver})
-      setMessage("")
+      await axios.post('http://localhost:5000/chat/send', {message: message, sender: user.name, receiver: receiver})
     }catch(err){
       console.log(err);
     }
@@ -25,20 +26,38 @@ const ChatSection = ({user}) => {
       console.log(err);
     }
   }
+  const AddFriend = async() => {
+    try{
+      await axios.post('http://localhost:5000/friends/add', {name: user.name, friendName: receiver});
+    }catch(err){
+      console.log(err);
+    }
+  }
+  const GetFriends = async() => {
+    try {
+      const res = await axios.post('http://localhost:5000/friends', {name: user.name});
+      console.log(res)
+      setFriends(res.data.Friends);
+    }catch(err){
+      console.log(err);
+    }
+  }
   useEffect(() => {
       GetChat();
+      GetFriends();
+      console.log(friends);
   })
   return (
     <S.Wrapper>
       <S.ListWrapper> 
-        <S.FriendWrapper>
-          <S.ImageWrapper src={user.avatar} alt="jezus" />
-          <S.FriendNameWrapper>Imie Nazwisko</S.FriendNameWrapper>
-        </S.FriendWrapper>
-        <S.FriendWrapper>
-          <S.ImageWrapper src={user.avatar} alt="jezus" />
-          <S.FriendNameWrapper>Andrzej Katamaran</S.FriendNameWrapper>
-        </S.FriendWrapper>
+        {friends.map((friend, index) => {
+            return (
+              <S.FriendWrapper>
+                <S.ImageWrapper src={user.avatar} alt="jezus" />
+                <S.FriendNameWrapper>{friend.friendName}</S.FriendNameWrapper>
+              </S.FriendWrapper>
+            )
+        })}
       </S.ListWrapper>
       <S.ChatWindowWrapper>
         <S.ChatBarWrapper>
@@ -46,7 +65,7 @@ const ChatSection = ({user}) => {
           <S.ChatNameWrapper>Andrzej Katamaran</S.ChatNameWrapper>
         </S.ChatBarWrapper>
         <S.MessageWindowWrapper>
-          {chat.reverse().map((message, index) => {
+          {chat.map((message, index) => {
             if(message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
@@ -63,9 +82,10 @@ const ChatSection = ({user}) => {
           })}
         </S.MessageWindowWrapper>
         <S.MessageTextBox>
-          <S.MessageInput value={message} onChange={handleChange}>
-
-          </S.MessageInput>
+       
+          <S.MessageInput value={message} onChange={handleChange}/>
+      
+         
           <S.MessageSentIcon className="white large paper plane icon" onClick={SendMessage}/>
         </S.MessageTextBox>
       </S.ChatWindowWrapper>
