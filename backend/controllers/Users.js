@@ -2,6 +2,13 @@ import { Users } from "../models/UserModel.js";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 
+export const GetUsers = async(req, res) => {
+    const {refreshToken} = req.body;
+    if(!refreshToken) return res.status(404).send({msg: 'Token error'});
+    const UsersList = await Users.find({}).toArray();
+    return res.status(200).send({UsersList});
+}
+
 const generateRefreshToken = (name, surname, email) => {
     return jwt.sign({name, surname, email}, process.env.JWT_SECRET_KEY, {expiresIn: '864000s'});
 }

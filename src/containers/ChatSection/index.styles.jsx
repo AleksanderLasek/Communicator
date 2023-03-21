@@ -66,8 +66,9 @@ export const ChatBarWrapper = styled.div`
   height: 6vh;
   width: 100%;
   background-color: #dff6ff;
-  border-bottom: 1px solid #c0c0c0;
+  box-shadow: 0px 5px 5px -2px #00000060;
   display: flex;
+  border-radius: 15px 15px 0 0;
   align-items: center;
   justify-content: flex-start;
 `;
@@ -103,13 +104,14 @@ export const MessageSentLineWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-`
+`;
+
 export const MessageReceivedLineWrapper = styled.div`
   position: relative;
   width: 100%;
   display: flex;
   justify-content: flex-start;
-`
+`;
 
 export const MessageReceivedWrapper = styled.div`
  background-color: #12323f;
@@ -142,6 +144,7 @@ export const MessageTextBox = styled.div`
   width: 100%;
   background-color: #c7c1c1;
   display: flex;
+  border-radius: 0 0px 15px 15px;
   justify-content: space-around;
   align-items: center;
   padding: 5px;
