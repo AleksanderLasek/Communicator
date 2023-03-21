@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as S from "./index.styles";
+import { useCookies } from "react-cookie";
 
 const ChatSection = ({user}) => {
   const [message, setMessage] = useState('');
   const [receiver, setReceiver] = useState('test1');
   const [chat, setChat] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [delayed, setDelayed] = useState(true);
   const handleChange = (e) => {
     setMessage(e.target.value);
   }
@@ -21,6 +23,7 @@ const ChatSection = ({user}) => {
   const GetChat = async() => {
     try {
       const res = await axios.post('http://localhost:5000/chat', {sender: user.name, receiver: receiver});
+      
       setChat(res.data.Chat);
     }catch(err){
       console.log(err);
@@ -36,23 +39,23 @@ const ChatSection = ({user}) => {
   const GetFriends = async() => {
     try {
       const res = await axios.post('http://localhost:5000/friends', {name: user.name});
-      console.log(res)
       setFriends(res.data.Friends);
     }catch(err){
       console.log(err);
     }
   }
   useEffect(() => {
-      GetChat();
-      GetFriends();
-      console.log(friends);
+    GetChat();
   })
+  useEffect(() => {
+    GetFriends();
+  }, [user.name]);
   return (
     <S.Wrapper>
       <S.ListWrapper> 
         {friends.map((friend, index) => {
             return (
-              <S.FriendWrapper>
+              <S.FriendWrapper key={index}>
                 <S.ImageWrapper src={user.avatar} alt="jezus" />
                 <S.FriendNameWrapper>{friend.friendName}</S.FriendNameWrapper>
               </S.FriendWrapper>
