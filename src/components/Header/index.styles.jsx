@@ -111,3 +111,12 @@ export const AWrapper = styled.a`
     color: #aaaaaa;
   }
 `;
+
+export const MobileLogo = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  margin-left: 25vw;
+  margin-top: 7vh;
+`;
