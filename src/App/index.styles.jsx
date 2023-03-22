@@ -9,22 +9,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export const LoginWrapper = styled.div`
-  width: 50vw;
-  height: 70%;
-  display: flex;
-  color: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 3px #00000065;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
 
-  background-color: ${(props) => (props.pageTheme ? "#000000b0" : "#b9b9b952")};
-  @media screen and (max-width: 768px) {
-    width: 100vw;
-  }
-`;
 export const Input = styled.input`
   width: 40%;
   height: 50px;
