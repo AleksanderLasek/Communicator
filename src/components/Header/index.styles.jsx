@@ -59,6 +59,7 @@ export const CheckBoxWrapper = styled.div`
   position: relative;
   @media screen and (max-width: 1023px) {
     margin-right: 2vw;
+    margin-left: 2vw;
   }
   @media screen and (max-width: 767px) {
     margin-left: 4vw;
