@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import * as S from './index.styles';
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const FriendsSection = ({user}) => {
     const [users, setUsers] = useState([]);
     const [invitations, setInvitations] = useState([]);
+    const [cookie] = useCookies();
     const GetFriends = async () => {
         try {
             const res = await axios.post('http://localhost:5000/users', {refreshToken: user.name});
@@ -25,9 +27,15 @@ const FriendsSection = ({user}) => {
     const GetInvitations = async() => {
         try {
             const res = await axios.post('http://localhost:5000/invitations', {email: user.email});
-            setInvitations(res.data.InvitationList);
-            console.log(invitations)
-        }catch(err){ 
+            const List = res.data.from;
+            try {
+                const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: List})
+                setInvitations(res.data.UsersList);
+                console.log(invitations)
+            }catch(err){
+              console.log(err)
+            } 
+        }catch(err){  
             console.log(err);
         }
     }
@@ -37,6 +45,13 @@ const FriendsSection = ({user}) => {
     }, [user.name])
     return (
         <S.Wrapper>
+            <S.InvitesWrapper>
+                {invitations.map((invitation, index) => {
+                    return (
+                        <S.Invite key={index}><S.Avatar src={invitation.avatar}/> {invitation.name} {invitation.surname}</S.Invite>
+                    )
+                })}
+            </S.InvitesWrapper>
             <S.UsersWrapper>
                 {users.map((usr, index) => {
                     return (

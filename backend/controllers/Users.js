@@ -3,9 +3,10 @@ import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 
 export const GetUsers = async(req, res) => {
-    const {refreshToken} = req.body;
+    const {refreshToken, filter} = req.body;
+    console.log(filter)
     if(!refreshToken) return res.status(404).send({msg: 'Token error'});
-    const UsersList = await Users.find({}).toArray();
+    const UsersList = await Users.find({email: {$in: filter}}).toArray();
     return res.status(200).send({UsersList});
 }
 
