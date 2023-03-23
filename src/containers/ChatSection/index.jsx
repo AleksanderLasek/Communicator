@@ -57,11 +57,12 @@ const ChatSection = ({ user }) => {
     
     try {
       const res = await axios.post("http://localhost:5000/friends", {
-        name: user.name,
+        email: user.email,
       });
       const List = res.data.Friends;
+      const emailList = List.map((obj) => obj.friendEmail);
       try {
-          const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: List})
+          const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: emailList})
           setFriends(res.data.UsersList)
           ChooseChat(res.data.UsersList[0]);
       }catch(err){
@@ -102,7 +103,7 @@ const ChatSection = ({ user }) => {
       <S.ListWrapper>
         {friends.map((friend, index) => {
           return (
-            <S.FriendWrapper key={index} onClick={() => ChooseChat(friend)}>
+            <S.FriendWrapper key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email && "#03141f"}}>
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
               <S.FriendNameWrapper>{friend.name} {friend.surname}</S.FriendNameWrapper>
             </S.FriendWrapper>

@@ -4,9 +4,15 @@ import jwt from "jsonwebtoken";
 
 export const GetUsers = async(req, res) => {
     const {refreshToken, filter} = req.body;
-    console.log(filter)
+    
     if(!refreshToken) return res.status(404).send({msg: 'Token error'});
-    const UsersList = await Users.find({email: {$in: filter}}).toArray();
+    const filtering = {email: {$in: filter}};
+    
+    let UsersList = await Users.find({}).toArray();
+    if(filter) { 
+        UsersList = await Users.find(filtering).toArray(); 
+    }
+    console.log(filter)
     return res.status(200).send({UsersList});
 }
 

@@ -36,6 +36,7 @@ const LoginRegistrationSection = ({ swap }) => {
           path: "/",
           expires: expire,
         });
+        window.location.reload();
       } else if (res.status === 201) {
         setInputBorders("1px solid red");
       } else {

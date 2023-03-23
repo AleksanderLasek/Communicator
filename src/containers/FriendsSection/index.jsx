@@ -27,13 +27,15 @@ const FriendsSection = ({user}) => {
     const GetInvitations = async() => {
         try {
             const res = await axios.post('http://localhost:5000/invitations', {email: user.email});
-            const List = res.data.from;
-            try {
-                const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: List})
+            const List = res.data.InvitationList;   
+            const emailList = List.map((obj) => obj.from);
+            console.log(List)
+            try { 
+                const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: emailList})
                 setInvitations(res.data.UsersList);
                 console.log(invitations)
             }catch(err){
-              console.log(err)
+              console.log(err) 
             } 
         }catch(err){  
             console.log(err);

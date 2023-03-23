@@ -17,7 +17,7 @@ export const Wrapper = styled.div`
 `;
 
 export const ListWrapper = styled.div`
-  background-color: white;
+  background-color: #FFFFFF;
   width: 25vw;
   height: 85vh;
   display: flex;
@@ -44,8 +44,10 @@ export const ListWrapper = styled.div`
 export const FriendWrapper = styled.div`
   height: 8vh;
   min-height: 8vh;
+  margin-bottom: 1px;
   width: 100%;
-  background-color: #dff6ff;
+  background-color:  #06283D;
+  color: white;
   overflow: hidden;
   box-shadow: 0px 5px 5px -2px #00000060;
   display: flex;
@@ -85,7 +87,7 @@ export const ImageWrapper = styled.img`
 `;
 
 export const ChatWindowWrapper = styled.div`
-  background-color: white;
+  background-color: #FFFFFF;
   width: 60vw;
   height: 85vh;
   box-shadow: 0px 0px 5px 3px #00000037;
@@ -107,7 +109,8 @@ export const ChatWindowWrapper = styled.div`
 export const ChatBarWrapper = styled.div`
   height: 6vh;
   width: 100%;
-  background-color: #dff6ff;
+  background-color: #06283D;
+  color: white;
   box-shadow: 0px 5px 5px -2px #00000060;
   display: flex;
   border-radius: 15px 15px 0 0;
