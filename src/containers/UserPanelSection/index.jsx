@@ -99,7 +99,6 @@ const UserPanelSection = ({user}) => {
           <S.Button onClick={handleNameChange}>Submit</S.Button>
         </S.InputWrapper>
       <S.LogoutButton onClick={Logout}>Logout</S.LogoutButton>
-      
     </S.Wrapper>
   );
 };
