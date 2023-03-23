@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  margin-top: 50px;
   box-shadow: 0px 0px 5px 3px #0000004e;
 
   @media screen and (max-width: 1023px) {
@@ -13,10 +15,27 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const InvitesWrapper = styled.div`
+  display: flex;
+  width: 90vw;
+`
+export const Invite = styled.div`
+  height: 200px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 5px;
+  background-color: #7280be63;
+  border: 1px solid black;
+`
+
+
 export const UsersWrapper = styled.div`
   color: black;
   width: 90vw;
-  height: 80vh;
+  height: 65vh;
   display: flex;
   overflow-y: scroll;
   flex-wrap: wrap;

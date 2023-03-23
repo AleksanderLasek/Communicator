@@ -1,18 +1,18 @@
 import { db } from "../database/Mongodb.js";
 
 export const AddFriend = async(req, res) => {
-    const {name, friendEmail} = req.body;
-    if(!name || !friendEmail) return res.status(401).send({msg: 'Error'});
-    const FriendCollection = db.collection(name);
+    const {email, friendEmail} = req.body;
+    if(!email || !friendEmail) return res.status(401).send({msg: 'Error'});
+    const FriendCollection = db.collection(email);
     FriendCollection.insertOne({
         friendEmail: friendEmail
     })
 }
 
 export const ShowFriends = async(req, res) => {
-    const {name} = req.body;
-    if(!name) return res.status(401).send({msg: 'Error'});
-    const FriendCollection = db.collection(name);
+    const {email} = req.body;
+    if(!email) return res.status(401).send({msg: 'Error'});
+    const FriendCollection = db.collection(email);
     
     const Friends = await FriendCollection.find({}).toArray();
     
