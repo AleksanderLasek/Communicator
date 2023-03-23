@@ -125,6 +125,10 @@ export const ChatImageWrapper = styled.img`
   width: 4vh;
   border-radius: 50%;
   margin-left: 1vw;
+
+  @media screen and (max-width: 767px) {
+    margin-right: 10px;
+  }
 `;
 
 export const ChatNameWrapper = styled.div`
@@ -196,7 +200,7 @@ export const MessageTextBox = styled.div`
   justify-content: space-around;
   align-items: center;
   padding: 5px;
-  @media screen and (max-width: 767px){
+  @media screen and (max-width: 767px) {
     border-radius: 0;
   }
 `;

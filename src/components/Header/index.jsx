@@ -28,7 +28,7 @@ const Header = ({ pageTheme, user }) => {
   });
   return (
     <>
-      {width < 767 && (
+      {!user.name && width < 767 && (
         <S.MobileLogo href="/">
           <img src={logo} style={{ height: "10vw" }} alt="logo" />
         </S.MobileLogo>
