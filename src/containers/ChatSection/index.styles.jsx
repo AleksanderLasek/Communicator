@@ -37,6 +37,7 @@ export const ListWrapper = styled.div`
     height: 94vh;
     height: calc(100vh - 50px);
     width: 85px;
+    border-radius: 0;
   }
 `;
 
@@ -94,10 +95,12 @@ export const ChatWindowWrapper = styled.div`
   border-radius: 15px;
   margin-left: 5vw;
   @media screen and (max-width: 767px) {
-    margin-left: 1px;
+    margin-left: 0;
+    box-shadow: 0px 0px 5px 3px #00000097;
     height: 94vh;
     height: calc(100vh - 50px);
     width: calc(100vw - 85px);
+    border-radius: 0;
   }
 `;
 
@@ -113,6 +116,7 @@ export const ChatBarWrapper = styled.div`
 
   @media screen and (max-width: 767px) {
     height: 9vh;
+    border-radius: 0;
   }
 `;
 
@@ -159,9 +163,10 @@ export const MessageReceivedWrapper = styled.div`
   background-color: #12323f;
   margin: 5px;
   color: white;
-  max-width: 50;
+  max-width: 50%;
   padding: 5px 15px;
   border-radius: 15px;
+  overflow-wrap: break-word;
 `;
 
 export const MessageSentWrapper = styled.div`
@@ -171,6 +176,7 @@ export const MessageSentWrapper = styled.div`
   max-width: 50%;
   padding: 5px 15px;
   border-radius: 15px;
+  overflow-wrap: break-word;
 `;
 export const MessageSentIcon = styled.i`
   cursor: pointer;
@@ -190,6 +196,9 @@ export const MessageTextBox = styled.div`
   justify-content: space-around;
   align-items: center;
   padding: 5px;
+  @media screen and (max-width: 767px){
+    border-radius: 0;
+  }
 `;
 export const MessageInput = styled.input`
   width: 80%;
