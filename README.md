@@ -1,6 +1,3 @@
-# Chattly - Wiki
-Our student's project named Chattly is a web application made using React - a JavaScript-based UI development library. Our goal is to make user-friendly online communicator which will allow to chat as well as exchanging images with friends or groups.
-
 # Chattly - Backlog
 1) Registration, login and logout feature
 2) User panel feature
