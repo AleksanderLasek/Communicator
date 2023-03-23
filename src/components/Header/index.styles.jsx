@@ -12,10 +12,15 @@ export const Wrapper = styled.div`
   align-items: center;
   color: white;
   z-index: 999;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     bottom: 0;
+    padding: 0;
+  }
+  @media screen and (max-width: 767px) {
+    flex-direction: row-reverse;
   }
 `;
+
 export const LogoWrapper = styled.a`
   display: flex;
   justify-content: center;
@@ -29,10 +34,8 @@ export const CenterWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   font-size: 1.2rem;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1023px) {
     width: 70%;
-  }
-  @media screen and (max-width: 1024px) {
     font-size: 1rem;
   }
 `;
@@ -54,6 +57,13 @@ export const SignInText = styled.div`
 `;
 export const CheckBoxWrapper = styled.div`
   position: relative;
+  @media screen and (max-width: 1023px) {
+    margin-right: 2vw;
+    margin-left: 2vw;
+  }
+  @media screen and (max-width: 767px) {
+    margin-left: 4vw;
+  }
 `;
 export const CheckBoxLabel = styled.label`
   position: absolute;
@@ -101,4 +111,13 @@ export const AWrapper = styled.a`
   &:hover {
     color: #aaaaaa;
   }
+`;
+
+export const MobileLogo = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  margin-left: 25vw;
+  margin-top: 7vh;
 `;

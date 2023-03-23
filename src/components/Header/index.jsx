@@ -28,15 +28,21 @@ const Header = ({ pageTheme, user }) => {
   });
   return (
     <>
-      {isUserPanel && <UserPanelSection user={user}/>}
+      {width < 767 && (
+        <S.MobileLogo href="/">
+          <img src={logo} style={{ height: "10vw" }} alt="logo" />
+        </S.MobileLogo>
+      )}
+      {isUserPanel && <UserPanelSection user={user} />}
       <S.Wrapper>
-        {width > 768 && (
+        {width > 767 && (
           <S.LogoWrapper href="/">
-            <img src={logo} style={{ height: "3vw" }} />
+            <img src={logo} style={{ height: "3vw" }} alt="logo" />
           </S.LogoWrapper>
         )}
+
         <S.CenterWrapper>
-          {width > 768 ? (
+          {width > 767 ? (
             <>
               <S.AWrapper href="/chat">
                 <i className="comment alternate icon" />
@@ -66,14 +72,14 @@ const Header = ({ pageTheme, user }) => {
           )}
         </S.CenterWrapper>
 
-        {user.name && (<i className="user circle icon" onClick={toggleUserPanel} />)}
-
-        {width > 768 && (
-          <S.CheckBoxWrapper>
-            <S.CheckBox id="checkbox" type="checkbox" onClick={handleMode} />
-            <S.CheckBoxLabel htmlFor="checkbox" />
-          </S.CheckBoxWrapper>
+        {user.name && (
+          <i className="user circle icon" onClick={toggleUserPanel} />
         )}
+
+        <S.CheckBoxWrapper>
+          <S.CheckBox id="checkbox" type="checkbox" onClick={handleMode} />
+          <S.CheckBoxLabel htmlFor="checkbox" />
+        </S.CheckBoxWrapper>
       </S.Wrapper>
     </>
   );
