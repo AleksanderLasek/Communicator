@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   background-color: #06283d;
   display: flex;
   box-shadow: 0px 0px 5px 3px #0000006e;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   color: white;
   z-index: 999;

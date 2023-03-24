@@ -35,10 +35,17 @@ const Header = ({ pageTheme, user }) => {
       )}
       {isUserPanel && <UserPanelSection user={user} />}
       <S.Wrapper>
-        {width > 767 && (
+    
+        {width > 767 ? (
           <S.LogoWrapper href="/">
             <img src={logo} style={{ height: "3vw" }} alt="logo" />
           </S.LogoWrapper>
+        ) : (
+          <> 
+          {user.name && (
+            <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
+          )}
+          </>
         )}
 
         <S.CenterWrapper>
@@ -72,14 +79,20 @@ const Header = ({ pageTheme, user }) => {
           )}
         </S.CenterWrapper>
 
+        
+        {width > 768 ? (
+        <>
         {user.name && (
-          <i className="user circle icon" onClick={toggleUserPanel} />
+          <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
         )}
-
         <S.CheckBoxWrapper>
           <S.CheckBox id="checkbox" type="checkbox" onClick={handleMode} />
           <S.CheckBoxLabel htmlFor="checkbox" />
         </S.CheckBoxWrapper>
+        </>
+        ) : (
+          <div><i className="yellow moon icon"/></div>
+        )}
       </S.Wrapper>
     </>
   );
