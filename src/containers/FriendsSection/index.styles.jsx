@@ -9,6 +9,8 @@ export const Wrapper = styled.div`
   margin-top: 70px;
 
   @media screen and (max-width: 1023px) {
+    margin-top: 0;
+    margin-bottom: 70px;
   }
 
   @media screen and (max-width: 767px) {
@@ -47,17 +49,23 @@ export const Label = styled.div`
 
 export const InvitesWrapper = styled.div`
   display: flex;
-  //max-height: 40vh;
+  max-height: 40vh;
   flex-wrap: wrap;
-  //overflow-y: scroll;
   max-width: 90vw;
   box-shadow: 7px 0px 14px 1px rgba(0, 0, 0, 0.14);
   background-color: #216377;
   border-radius: 10px;
-`;
 
-export const Icon = styled.i`
-  cursor: pointer;
+  @media screen and (max-width: 1023px) {
+    justify-content: space-evenly;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+    max-width: 100vw;
+  }
 `;
 
 export const Invite = styled.div`
@@ -74,6 +82,24 @@ export const Invite = styled.div`
   background-color: white;
   box-shadow: 0px 0px 5px 3px #0000004b;
   border-radius: 10px;
+
+  @media screen and (max-width: 1023px) {
+    font-size: 1.1rem;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
+  }
+
+  @media screen and (max-width: 767px) {
+    font-size: 0.9rem;
+    margin: 6px;
+    width: 30vw;
+  }
+`;
+
+export const Icon = styled.i`
+  cursor: pointer;
 `;
 
 export const Name = styled.div`
@@ -87,22 +113,19 @@ export const UsersWrapper = styled.div`
   max-width: 90vw;
   display: flex;
   flex-wrap: wrap;
-  //max-height: 40vh;
-  //overflow-y: scroll;
   box-shadow: 7px 0px 14px 1px rgba(0, 0, 0, 0.14);
   background-color: #216377;
   border-radius: 10px;
 
   @media screen and (max-width: 1023px) {
-    border: 0;
-    background-color: transparent;
-    box-shadow: none;
-    height: 100vh;
-    padding-bottom: 50px;
+    justify-content: space-evenly;
   }
 
   @media screen and (max-width: 767px) {
     width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+    max-width: 100vw;
   }
 `;
 
@@ -122,16 +145,17 @@ export const User = styled.div`
   border-radius: 10px;
 
   @media screen and (max-width: 1023px) {
-    background-color: rgb(223, 246, 255);
-    flex-direction: row;
-    justify-content: space-between;
     font-size: 1.1rem;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+    margin-right: 1vw;
   }
 
   @media screen and (max-width: 767px) {
     font-size: 0.9rem;
-    width: 100%;
     margin: 6px;
+    width: 30vw;
   }
 `;
 export const Avatar = styled.img`

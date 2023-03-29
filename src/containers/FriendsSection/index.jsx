@@ -137,12 +137,6 @@ const FriendsSection = ({ user }) => {
                 <S.Invite></S.Invite>
                 <S.Invite></S.Invite>
                 <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
               </>
             );
           })}
@@ -163,7 +157,6 @@ const FriendsSection = ({ user }) => {
                     Add user
                   </S.AddUserButton>
                 </S.User>
-                <S.User></S.User>
               </>
             );
           })}
