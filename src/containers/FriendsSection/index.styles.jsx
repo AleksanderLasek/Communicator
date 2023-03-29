@@ -19,6 +19,9 @@ export const InvitesWrapper = styled.div`
   display: flex;
   width: 90vw;
 `
+export const Icon = styled.i`
+  cursor: pointer;
+`
 export const Invite = styled.div`
   height: 200px;
   width: 200px;
@@ -26,9 +29,9 @@ export const Invite = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  margin: 0 5px;
+  margin: 5px;
   background-color: #7280be63;
-  border: 1px solid black;
+  box-shadow: 0px 0px 5px 3px #0000004b;
 `
 
 
@@ -88,9 +91,7 @@ export const Avatar = styled.img`
   border-radius: 50%;
   width: 100px;
   height: 100px;
-  @media screen and (max-width: 1023px) {
-    box-shadow: 0px 0px 2px 2px #0000004e;
-  }
+  box-shadow: 0px 0px 5px 3px #0000002b;
 `;
 export const AddUserButton = styled.div`
   padding: 5px 15px;
@@ -112,3 +113,9 @@ export const AddUserButton = styled.div`
     font-size: 0.9rem;
   }
 `;
+
+export const DecideWrapper = styled.div`
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+`

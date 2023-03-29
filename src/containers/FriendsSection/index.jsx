@@ -29,7 +29,7 @@ const FriendsSection = ({user}) => {
             const res = await axios.post('http://localhost:5000/invitations', {email: user.email});
             const List = res.data.InvitationList;   
             const emailList = List.map((obj) => obj.from);
-            console.log(List)
+        
             try { 
                 const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: emailList})
                 setInvitations(res.data.UsersList);
@@ -38,6 +38,21 @@ const FriendsSection = ({user}) => {
               console.log(err) 
             } 
         }catch(err){  
+            console.log(err);
+        }
+    }
+    const DeclineInvite = async(inviterEmail) => {
+        try { 
+            console.log(inviterEmail);
+            const res = await axios.post('http://localhost:5000/invitations/decline', {email: user.email, inviterEmail: inviterEmail});
+        }catch(err){
+            console.log(err);
+        }
+    }
+    const AcceptInvite = async(inviterEmail) => {
+        try {
+            const res = await axios.post('http://localhost:5000/invitations/accept', {email: user.email, inviterEmail: inviterEmail});
+        }catch(err){
             console.log(err);
         }
     }
@@ -50,7 +65,11 @@ const FriendsSection = ({user}) => {
             <S.InvitesWrapper>
                 {invitations.map((invitation, index) => {
                     return (
-                        <S.Invite key={index}><S.Avatar src={invitation.avatar}/> {invitation.name} {invitation.surname}</S.Invite>
+                        <S.Invite key={index}>
+                            <S.Avatar src={invitation.avatar}/> 
+                            <div>{invitation.name} {invitation.surname}</div>
+                            <S.DecideWrapper><S.Icon className="large green check icon" onClick={() => AcceptInvite(invitation.email)}/><S.Icon className="large red x icon" onClick={() => DeclineInvite(invitation.email)}/></S.DecideWrapper>
+                        </S.Invite>
                     )
                 })}
             </S.InvitesWrapper>
