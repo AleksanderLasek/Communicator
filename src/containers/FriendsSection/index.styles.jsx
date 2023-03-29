@@ -206,7 +206,7 @@ export const SearchBar = styled.div`
   width: 100%;
   height: 30px;
   border-radius: 10px;
-  padding: 10px;
+  padding: 20px;
   margin-bottom: 5px;
   box-shadow: 0px 0px 5px 3px #0000004e;
   background-color: #216377;
@@ -221,16 +221,17 @@ export const SearchBarInput = styled.input`
   background-color: transparent;
   border: 0;
   outline: 0;
-
   font-weight: bold;
   letter-spacing: 0.5px;
-  text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
   color: white;
+  background-color: #c7c7c76f;
+  border-radius: 10px;
+  padding: 5px;
 
   &::placeholder {
-    text-align: center;
+    font-family: "Red Hat Display";
     font-size: 1.25rem;
     font-weight: bold;
     color: white;

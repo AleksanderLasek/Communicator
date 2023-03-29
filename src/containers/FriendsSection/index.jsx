@@ -123,6 +123,7 @@ const FriendsSection = ({ user }) => {
             <S.SearchBarInput
               type="text"
               placeholder="Search"
+              
             ></S.SearchBarInput>
           </S.SearchBar>
           <S.UsersWrapper>
