@@ -111,32 +111,6 @@ const FriendsSection = ({ user }) => {
                     />
                   </S.DecideWrapper>
                 </S.Invite>
-                <S.Invite>
-                  <S.Avatar src={invitation.avatar} />
-                  <S.Name>
-                    {"Aleksander"} {"Lasek-Dupsztajn"}
-                  </S.Name>
-
-                  <S.DecideWrapper>
-                    <S.Icon
-                      className="large green check icon"
-                      onClick={() => AcceptInvite(invitation.email)}
-                    />
-                    <S.Icon
-                      className="large red x icon"
-                      onClick={() => DeclineInvite(invitation.email)}
-                    />
-                  </S.DecideWrapper>
-                </S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
-                <S.Invite></S.Invite>
               </>
             );
           })}
@@ -144,23 +118,31 @@ const FriendsSection = ({ user }) => {
       )}
       <S.Label onClick={toggleUsers}>Users&nbsp;&nbsp;v</S.Label>
       {isUsers && (
-        <S.UsersWrapper>
-          {users.map((usr, index) => {
-            return (
-              <>
-                <S.User key={index}>
-                  <S.Avatar src={usr.avatar} />
-                  <S.Name>
-                    {usr.name} {usr.surname}
-                  </S.Name>
-                  <S.AddUserButton onClick={() => InviteFriend(usr)}>
-                    Add user
-                  </S.AddUserButton>
-                </S.User>
-              </>
-            );
-          })}
-        </S.UsersWrapper>
+        <>
+          <S.SearchBar>
+            <S.SearchBarInput
+              type="text"
+              placeholder="Search"
+            ></S.SearchBarInput>
+          </S.SearchBar>
+          <S.UsersWrapper>
+            {users.map((usr, index) => {
+              return (
+                <>
+                  <S.User key={index}>
+                    <S.Avatar src={usr.avatar} />
+                    <S.Name>
+                      {usr.name} {usr.surname}
+                    </S.Name>
+                    <S.AddUserButton onClick={() => InviteFriend(usr)}>
+                      Add user
+                    </S.AddUserButton>
+                  </S.User>
+                </>
+              );
+            })}
+          </S.UsersWrapper>
+        </>
       )}
     </S.Wrapper>
   );
