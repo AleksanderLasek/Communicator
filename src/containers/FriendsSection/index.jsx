@@ -52,6 +52,7 @@ const FriendsSection = ({user}) => {
     const AcceptInvite = async(inviterEmail) => {
         try {
             const res = await axios.post('http://localhost:5000/invitations/accept', {email: user.email, inviterEmail: inviterEmail});
+            console.log(res)
         }catch(err){
             console.log(err);
         }

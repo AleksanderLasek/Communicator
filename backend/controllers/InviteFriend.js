@@ -1,4 +1,15 @@
 import { db } from "../database/Mongodb.js";
+import axios from "axios";
+
+const sendRequest = async (url, data) => {
+    try {
+      const response = await axios.post(url, data);
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 export const InviteFriend = async(req, res) => {
     const { email, invitedEmail } = req.body;
@@ -24,9 +35,18 @@ export const DeclineInvite = async(req, res) => {
     if(!email || !inviterEmail) return res.status(404).send({msg: 'Error'});
     const Invitations = db.collection(`${email}Invitations`);
     await Invitations.deleteOne({from: inviterEmail});
+    return res.status(200).send({msg: 'Invitation declined!'});
 }
 
 export const AcceptInvite = async(req, res) => {
     const { email, inviterEmail } = req.body;
-    if(!email || !inviterEmail) return res.status(404).send({msg: 'Error'});
+    console.log("chuj")
+        if(!email || !inviterEmail) return res.status(404).send({msg: 'Error'});
+    await sendRequest('http://localhost:5000/friends/add', { email: inviterEmail, friendEmail: email });
+        await sendRequest('http://localhost:5000/friends/add', { email: email, friendEmail: inviterEmail });
+        
+        await sendRequest('http://localhost:5000/invitations/decline', { email: email, inviterEmail: inviterEmail });
+        console.log("chuj")
+        return res.status(200).send({ msg: 'Invite accepted' });
+  
 }
