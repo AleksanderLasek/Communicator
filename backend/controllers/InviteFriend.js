@@ -40,13 +40,10 @@ export const DeclineInvite = async(req, res) => {
 
 export const AcceptInvite = async(req, res) => {
     const { email, inviterEmail } = req.body;
-    console.log("chuj")
-        if(!email || !inviterEmail) return res.status(404).send({msg: 'Error'});
+    if(!email || !inviterEmail) return res.status(404).send({msg: 'Error'});
     await sendRequest('http://localhost:5000/friends/add', { email: inviterEmail, friendEmail: email });
-        await sendRequest('http://localhost:5000/friends/add', { email: email, friendEmail: inviterEmail });
-        
-        await sendRequest('http://localhost:5000/invitations/decline', { email: email, inviterEmail: inviterEmail });
-        console.log("chuj")
-        return res.status(200).send({ msg: 'Invite accepted' });
+    await sendRequest('http://localhost:5000/friends/add', { email: email, friendEmail: inviterEmail });
+    await sendRequest('http://localhost:5000/invitations/decline', { email: email, inviterEmail: inviterEmail });
+    return res.status(200).send({ msg: 'Invite accepted' });
   
 }

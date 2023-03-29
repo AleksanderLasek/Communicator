@@ -6,6 +6,9 @@ import { useCookies } from "react-cookie";
 const FriendsSection = ({ user }) => {
   const [users, setUsers] = useState([]);
   const [invitations, setInvitations] = useState([]);
+  const [isInvites, setIsInvites] = useState(false);
+  const [isUsers, setIsUsers] = useState(false);
+  const [isFriends, setIsFriends] = useState(false);
   const [cookie] = useCookies();
   const GetFriends = async () => {
     try {
@@ -76,17 +79,16 @@ const FriendsSection = ({ user }) => {
     GetInvitations();
   }, [user.name]);
 
-  const [isInvites, setIsInvites] = useState(false);
-  const [isUsers, SetIsUsers] = useState(false);
-
   const toggleInvites = () => {
     setIsInvites((current) => !current);
   };
 
   const toggleUsers = () => {
-    SetIsUsers((current) => !current);
+    setIsUsers((current) => !current);
   };
-
+  const toggleFriends = () => {
+    setIsFriends((current => !current));
+  }
   return (
     <S.Wrapper>
       <S.Label onClick={toggleInvites}>Invites&nbsp;&nbsp;v</S.Label>
@@ -115,6 +117,25 @@ const FriendsSection = ({ user }) => {
             );
           })}
         </S.InvitesWrapper>
+      )}
+      <S.Label onClick={toggleFriends}>Friends</S.Label>
+      {isFriends && (
+        <S.FriendsWrapper>
+          {users.map((usr, index) => {
+            return (
+              <S.User>
+                <S.Avatar src={usr.avatar} />
+                <S.Name>
+                  {usr.name} {usr.surname}
+                </S.Name>
+                <S.DecideWrapper>
+                  <S.Icon className="trash alternate icon"/>
+                  <S.Icon className="red ban icon"/>
+                </S.DecideWrapper>
+              </S.User>
+            )
+          })}
+        </S.FriendsWrapper>
       )}
       <S.Label onClick={toggleUsers}>Users&nbsp;&nbsp;v</S.Label>
       {isUsers && (

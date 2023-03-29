@@ -1,6 +1,8 @@
 import { Users } from "../models/UserModel.js";
+import { db } from "../database/Mongodb.js";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
 export const GetUsers = async(req, res) => {
     const {refreshToken, filter} = req.body;
@@ -107,4 +109,14 @@ export const EditUser = async(req, res) => {
         }); 
         return res.status(200).send({msg: 'Avatar updated successfully'});
     }
+}
+
+export const BlockUser = async(req, res) => {
+    const { email, blockedEmail } = req.body;
+    if(!email || !blockedEmail) return res.status(404).send({msg: 'Error'});
+    const blockedUsers = db.collection(email);
+    blockedUsers.insertOne({
+        email: blockedEmail
+    })
+    await axios.post('http://localhost:5000/friends/delete', {email: email, friendEmail: blockedEmail});
 }

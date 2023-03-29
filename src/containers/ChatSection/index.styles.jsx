@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   color: black;
   display: flex;
   width: 100vw;
+
   position: relative;
   @media screen and (max-width: 1023px) {
     margin-top: -8vh;
@@ -157,6 +158,7 @@ export const MessageSentLineWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+ 
 `;
 
 export const MessageReceivedLineWrapper = styled.div`
@@ -174,6 +176,7 @@ export const MessageReceivedWrapper = styled.div`
   padding: 5px 15px;
   border-radius: 15px;
   overflow-wrap: break-word;
+  user-select: text;
 `;
 
 export const MessageSentWrapper = styled.div`
@@ -184,6 +187,7 @@ export const MessageSentWrapper = styled.div`
   padding: 5px 15px;
   border-radius: 15px;
   overflow-wrap: break-word;
+  user-select: text;
 `;
 export const MessageSentIcon = styled.i`
   cursor: pointer;
