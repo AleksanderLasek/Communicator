@@ -15,12 +15,13 @@ export const Wrapper = styled.div`
 
   @media screen and (max-width: 767px) {
   }
+  
 `;
 
 export const Label = styled.div`
   font-size: 1.2rem;
   margin: 0;
-  padding: 0;
+  padding: 3px;
   font-weight: bold;
   color: white;
   letter-spacing: 1.5px;
@@ -28,7 +29,6 @@ export const Label = styled.div`
   margin-bottom: 10px;
 
   cursor: pointer;
-  user-select: none;
 
   display: flex;
   justify-content: center;
@@ -125,7 +125,7 @@ export const UsersWrapper = styled.div`
     width: 100%;
     box-shadow: none;
     background-color: transparent;
-    max-width: 100vw;
+    max-width: 98vw;
   }
 `;
 
@@ -191,7 +191,7 @@ export const DecideWrapper = styled.div`
   width: 60%;
   display: flex;
   justify-content: space-around;
-  box-shadow: 0px 0px 5px 3px #0000004e;
+
   border-radius: 10px;
   transition: all 0.2s ease;
   transform: scale(1);
@@ -238,3 +238,22 @@ export const SearchBarInput = styled.input`
     letter-spacing: 0.5px;
   }
 `;
+
+export const FriendsWrapper = styled.div`
+  box-shadow: 0px 0px 5px 3px #00000049;
+  width: 90vw;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  @media screen and (max-width: 1023px) {
+    justify-content: space-evenly;
+  }
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    box-shadow: none;
+    background-color: transparent;
+    max-width: 98vw;
+  }
+`
