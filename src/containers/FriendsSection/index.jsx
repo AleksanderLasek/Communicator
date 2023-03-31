@@ -5,20 +5,40 @@ import { useCookies } from "react-cookie";
 
 const FriendsSection = ({ user }) => {
   const [users, setUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [isInvites, setIsInvites] = useState(false);
   const [isUsers, setIsUsers] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
   const [cookie] = useCookies();
-  const GetFriends = async () => {
+  const GetUsers = async() => {
     try {
-      const res = await axios.post("http://localhost:5000/users", {
-        refreshToken: user.name,
-      });
+      const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken});
       setUsers(res.data.UsersList);
-      console.log(users);
-    } catch (err) {
+    }catch(err){
       console.log(err);
+    }
+  }
+  
+  const GetFriends = async () => {
+    try{
+      const res = await axios.post('http://localhost:5000/friends', {email: user.email});
+      const List = res.data.Friends;
+      const emailList = List.map((obj) => obj.friendEmail);
+      console.log(res);
+      try {
+        const res = await axios.post("http://localhost:5000/users", {
+          refreshToken: user.name,
+          filter: emailList,
+        });
+        console.log(res)
+        setFriends(res.data.UsersList);
+    
+      } catch (err) {
+        console.log(err);
+      }
+    }catch(err){
+      console.log(err)
     }
   };
   const InviteFriend = async (usr) => {
@@ -31,6 +51,14 @@ const FriendsSection = ({ user }) => {
       console.log(err);
     }
   };
+  const DeleteFriend = async(usr) => {
+    try {
+      const res = await axios.post('http://localhost:5000/friends/delete', {email: user.email,  friendEmail: usr.email});
+      
+    }catch(err){
+      console.log(err);
+    }
+  }
   const GetInvitations = async () => {
     try {
       const res = await axios.post("http://localhost:5000/invitations", {
@@ -75,6 +103,7 @@ const FriendsSection = ({ user }) => {
     }
   };
   useEffect(() => {
+    GetUsers();
     GetFriends();
     GetInvitations();
   }, [user.name]);
@@ -121,15 +150,15 @@ const FriendsSection = ({ user }) => {
       <S.Label onClick={toggleFriends}>Friends</S.Label>
       {isFriends && (
         <S.FriendsWrapper>
-          {users.map((usr, index) => {
+          {friends.map((usr, index) => {
             return (
-              <S.User>
+              <S.User key={index}>
                 <S.Avatar src={usr.avatar} />
                 <S.Name>
                   {usr.name} {usr.surname}
                 </S.Name>
                 <S.DecideWrapper>
-                  <S.Icon className="trash alternate icon"/>
+                  <S.Icon className="trash alternate icon" onClick={() => DeleteFriend(usr)}/>
                   <S.Icon className="red ban icon"/>
                 </S.DecideWrapper>
               </S.User>

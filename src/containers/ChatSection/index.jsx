@@ -23,7 +23,7 @@ const ChatSection = ({ user }) => {
     try {
       await axios.post("http://localhost:5000/chat/send", {
         message: message,
-        sender: user.name,
+        sender: user.email,
         receiver: receiver.email,
       });
     } catch (err) {
@@ -34,7 +34,7 @@ const ChatSection = ({ user }) => {
     
     try {
       const res = await axios.post("http://localhost:5000/chat", {
-        sender: user.name,
+        sender: user.email,
         receiver: receiver.email,
       });
 
@@ -46,7 +46,7 @@ const ChatSection = ({ user }) => {
   const AddFriend = async () => {
     try {
       await axios.post("http://localhost:5000/friends/add", {
-        name: user.name,
+        name: user.email,
         friendEmail: receiver.email,
       });
     } catch (err) {
