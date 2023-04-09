@@ -13,7 +13,7 @@ const FriendsSection = ({ user }) => {
   const [cookie] = useCookies();
   const GetUsers = async() => {
     try {
-      const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken});
+      const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, email: user.email});
       setUsers(res.data.UsersList);
     }catch(err){
       console.log(err);
@@ -55,6 +55,13 @@ const FriendsSection = ({ user }) => {
     try {
       const res = await axios.post('http://localhost:5000/friends/delete', {email: user.email,  friendEmail: usr.email});
       
+    }catch(err){
+      console.log(err);
+    }
+  }
+  const BlockUser = async(usr) => {
+    try {
+      const res = await axios.post('http://localhost:5000/users/block', {email: user.email, blockedEmail: usr.email});
     }catch(err){
       console.log(err);
     }
@@ -120,7 +127,7 @@ const FriendsSection = ({ user }) => {
   }
   return (
     <S.Wrapper>
-      <S.Label onClick={toggleInvites}>Invites&nbsp;&nbsp;v</S.Label>
+      <S.Label onClick={toggleInvites}>Invites</S.Label>
       {isInvites && (
         <S.InvitesWrapper>
           {invitations.map((invitation, index) => {
@@ -159,14 +166,14 @@ const FriendsSection = ({ user }) => {
                 </S.Name>
                 <S.DecideWrapper>
                   <S.Icon className="trash alternate icon" onClick={() => DeleteFriend(usr)}/>
-                  <S.Icon className="red ban icon"/>
+                  <S.Icon className="red ban icon" onClick={() => BlockUser(usr)}/>
                 </S.DecideWrapper>
               </S.User>
             )
           })}
         </S.FriendsWrapper>
       )}
-      <S.Label onClick={toggleUsers}>Users&nbsp;&nbsp;v</S.Label>
+      <S.Label onClick={toggleUsers}>Users</S.Label>
       {isUsers && (
         <>
           <S.SearchBar>

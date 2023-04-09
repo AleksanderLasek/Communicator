@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import axios from "axios";
 
 export const GetUsers = async(req, res) => {
-    const {refreshToken, filter} = req.body;
+    const {refreshToken, filter, email} = req.body;
     
     if(!refreshToken) return res.status(404).send({msg: 'Token error'});
     const filtering = {email: {$in: filter}};
@@ -14,7 +14,13 @@ export const GetUsers = async(req, res) => {
     if(filter) { 
         UsersList = await Users.find(filtering).toArray(); 
     }
-    console.log(filter)
+    const BlockedCollection = db.collection(`${email}Blocked`);
+    let BlockedList = await BlockedCollection.find({}).toArray();
+    BlockedList = BlockedList.map((obj) => obj.email);
+    let TestList = await Users.find({}).toArray();
+    UsersList = UsersList.filter((element) => !BlockedList.includes(element.email))
+    console.log(BlockedList)
+    console.log(TestList)
     return res.status(200).send({UsersList});
 }
 
@@ -114,7 +120,7 @@ export const EditUser = async(req, res) => {
 export const BlockUser = async(req, res) => {
     const { email, blockedEmail } = req.body;
     if(!email || !blockedEmail) return res.status(404).send({msg: 'Error'});
-    const blockedUsers = db.collection(email);
+    const blockedUsers = db.collection(`${email}Blocked`);
     blockedUsers.insertOne({
         email: blockedEmail
     })
