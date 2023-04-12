@@ -7,6 +7,8 @@ const FriendsSection = ({ user }) => {
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [invitations, setInvitations] = useState([]);
+  const [blocked, setBlocked] = useState([]);
+  const [isBlockedUsers, setIsBlockedUsers] = useState(false);
   const [isInvites, setIsInvites] = useState(false);
   const [isUsers, setIsUsers] = useState(false);
   const [isFriends, setIsFriends] = useState(false);
@@ -54,7 +56,7 @@ const FriendsSection = ({ user }) => {
   const DeleteFriend = async(usr) => {
     try {
       const res = await axios.post('http://localhost:5000/friends/delete', {email: user.email,  friendEmail: usr.email});
-      
+      GetFriends();
     }catch(err){
       console.log(err);
     }
@@ -62,6 +64,17 @@ const FriendsSection = ({ user }) => {
   const BlockUser = async(usr) => {
     try {
       const res = await axios.post('http://localhost:5000/users/block', {email: user.email, blockedEmail: usr.email});
+      GetFriends();
+      GetBlockedUsers();
+      GetUsers();
+    }catch(err){
+      console.log(err);
+    }
+  }
+  const UnblockUser = async(usr) => {
+    try {
+      const res = await axios.post('http://localhost:5000/users/unblock', {email: user.email, blockedEmail: usr.email});
+      GetBlockedUsers();
     }catch(err){
       console.log(err);
     }
@@ -88,6 +101,24 @@ const FriendsSection = ({ user }) => {
       console.log(err);
     }
   };
+  const GetBlockedUsers = async() => {
+    try {
+      const res = await axios.post('http://localhost:5000/users/getblocked', {email: user.email});
+      const List = res.data.blockedList;
+      const emailList = List.map((obj) => obj.email);
+      try {
+        const res = await axios.post("http://localhost:5000/users", {
+          refreshToken: cookie.refreshToken,
+          filter: emailList,
+        });
+        setBlocked(res.data.UsersList);
+      } catch (err) {
+        console.log(err);
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }
   const DeclineInvite = async (inviterEmail) => {
     try {
       console.log(inviterEmail);
@@ -95,6 +126,7 @@ const FriendsSection = ({ user }) => {
         "http://localhost:5000/invitations/decline",
         { email: user.email, inviterEmail: inviterEmail }
       );
+      GetInvitations();
     } catch (err) {
       console.log(err);
     }
@@ -105,6 +137,8 @@ const FriendsSection = ({ user }) => {
         email: user.email,
         inviterEmail: inviterEmail,
       });
+      GetInvitations();
+      GetFriends();
     } catch (err) {
       console.log(err);
     }
@@ -113,6 +147,7 @@ const FriendsSection = ({ user }) => {
     GetUsers();
     GetFriends();
     GetInvitations();
+    GetBlockedUsers();
   }, [user.name]);
 
   const toggleInvites = () => {
@@ -124,6 +159,9 @@ const FriendsSection = ({ user }) => {
   };
   const toggleFriends = () => {
     setIsFriends((current => !current));
+  }
+  const toggleBlocked = () => {
+    setIsBlockedUsers(current => !current);
   }
   return (
     <S.Wrapper>
@@ -194,6 +232,28 @@ const FriendsSection = ({ user }) => {
                     </S.Name>
                     <S.AddUserButton onClick={() => InviteFriend(usr)}>
                       Add user
+                    </S.AddUserButton>
+                  </S.User>
+                </>
+              );
+            })}
+          </S.UsersWrapper>
+        </>
+      )}
+      <S.Label onClick={toggleBlocked}>Blocked</S.Label>
+      {isBlockedUsers && (
+        <>
+          <S.UsersWrapper>
+            {blocked.map((usr, index) => {
+              return (
+                <>
+                  <S.User key={index}>
+                    <S.Avatar src={usr.avatar} />
+                    <S.Name>
+                      {usr.name} {usr.surname}
+                    </S.Name>
+                    <S.AddUserButton onClick={() => UnblockUser(usr)}>
+                      Unblock
                     </S.AddUserButton>
                   </S.User>
                 </>

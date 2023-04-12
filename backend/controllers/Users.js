@@ -15,12 +15,13 @@ export const GetUsers = async(req, res) => {
         UsersList = await Users.find(filtering).toArray(); 
     }
     const BlockedCollection = db.collection(`${email}Blocked`);
+    const BlockedFromCollection = db.collection(`${email}BlockedFrom`);
     let BlockedList = await BlockedCollection.find({}).toArray();
     BlockedList = BlockedList.map((obj) => obj.email);
-    let TestList = await Users.find({}).toArray();
+    let BlockedFromList = await BlockedFromCollection.find({}).toArray();
+    BlockedFromList = BlockedFromList.map((obj) => obj.email);
+    UsersList = UsersList.filter((element) => !BlockedFromList.includes(element.email))
     UsersList = UsersList.filter((element) => !BlockedList.includes(element.email))
-    console.log(BlockedList)
-    console.log(TestList)
     return res.status(200).send({UsersList});
 }
 
@@ -124,5 +125,32 @@ export const BlockUser = async(req, res) => {
     blockedUsers.insertOne({
         email: blockedEmail
     })
+    const blockedFrom = db.collection(`${blockedEmail}BlockedFrom`);
+    blockedFrom.insertOne({
+        email: email,
+    })
     await axios.post('http://localhost:5000/friends/delete', {email: email, friendEmail: blockedEmail});
+    return res.status(200).send({msg: 'User blocked'});
+}
+
+export const UnblockUser = async(req, res) => {
+    const { email, blockedEmail } = req.body;
+    if(!email || !blockedEmail) return res.status(404).send({msg: 'Error'});
+    const blockedUsers = db.collection(`${email}Blocked`);
+    blockedUsers.deleteOne({
+        email: blockedEmail
+    })
+    const blockedFrom = db.collection(`${blockedEmail}BlockedFrom`);
+    blockedFrom.deleteOne({
+        email: email,
+    })
+    return res.status(200).send({msg: 'User unblocked'});
+}
+
+export const GetBlocked = async(req, res) => {
+    const { email } = req.body;
+    if(!email) return res.status(404).send({msg: 'Error'});
+    const blockedUsers = db.collection(`${email}Blocked`);
+    const blockedList = await blockedUsers.find({}).toArray();
+    return res.status(200).send({blockedList});
 }
