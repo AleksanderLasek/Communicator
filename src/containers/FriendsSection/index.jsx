@@ -27,13 +27,11 @@ const FriendsSection = ({ user }) => {
       const res = await axios.post('http://localhost:5000/friends', {email: user.email});
       const List = res.data.Friends;
       const emailList = List.map((obj) => obj.friendEmail);
-      console.log(res);
       try {
         const res = await axios.post("http://localhost:5000/users", {
           refreshToken: user.name,
           filter: emailList,
         });
-        console.log(res)
         setFriends(res.data.UsersList);
     
       } catch (err) {
@@ -93,7 +91,6 @@ const FriendsSection = ({ user }) => {
           filter: emailList,
         });
         setInvitations(res.data.UsersList);
-        console.log(invitations);
       } catch (err) {
         console.log(err);
       }
@@ -148,6 +145,7 @@ const FriendsSection = ({ user }) => {
     GetFriends();
     GetInvitations();
     GetBlockedUsers();
+    console.log(friends.length)
   }, [user.name]);
 
   const toggleInvites = () => {
@@ -165,51 +163,57 @@ const FriendsSection = ({ user }) => {
   }
   return (
     <S.Wrapper>
-      <S.Label onClick={toggleInvites}>Invites</S.Label>
-      {isInvites && (
-        <S.InvitesWrapper>
-          {invitations.map((invitation, index) => {
-            return (
-              <>
-                <S.Invite key={index}>
-                  <S.Avatar src={invitation.avatar} />
-                  <S.Name>
-                    {invitation.name} {invitation.surname}
-                  </S.Name>
-                  <S.DecideWrapper>
-                    <S.Icon
-                      className="large green check icon"
-                      onClick={() => AcceptInvite(invitation.email)}
-                    />
-                    <S.Icon
-                      className="large red x icon"
-                      onClick={() => DeclineInvite(invitation.email)}
-                    />
-                  </S.DecideWrapper>
-                </S.Invite>
-              </>
-            );
-          })}
-        </S.InvitesWrapper>
+      {invitations.length > 0 && (
+        <>
+          <S.Label onClick={toggleInvites}>Invites</S.Label>
+          {isInvites && (
+            <S.InvitesWrapper>
+              {invitations.map((invitation, index) => {
+                return (
+                    <S.Invite key={index}>
+                      <S.Avatar src={invitation.avatar} />
+                      <S.Name>
+                        {invitation.name} {invitation.surname}
+                      </S.Name>
+                      <S.DecideWrapper>
+                        <S.Icon
+                          className="large green check icon"
+                          onClick={() => AcceptInvite(invitation.email)}
+                        />
+                        <S.Icon
+                          className="large red x icon"
+                          onClick={() => DeclineInvite(invitation.email)}
+                        />
+                      </S.DecideWrapper>
+                    </S.Invite>
+                );
+              })}
+            </S.InvitesWrapper>
+          )}
+        </>
       )}
-      <S.Label onClick={toggleFriends}>Friends</S.Label>
-      {isFriends && (
-        <S.FriendsWrapper>
-          {friends.map((usr, index) => {
-            return (
-              <S.User key={index}>
-                <S.Avatar src={usr.avatar} />
-                <S.Name>
-                  {usr.name} {usr.surname}
-                </S.Name>
-                <S.DecideWrapper>
-                  <S.Icon className="trash alternate icon" onClick={() => DeleteFriend(usr)}/>
-                  <S.Icon className="red ban icon" onClick={() => BlockUser(usr)}/>
-                </S.DecideWrapper>
-              </S.User>
-            )
-          })}
-        </S.FriendsWrapper>
+      {friends.length > 0 && (
+        <>
+          <S.Label onClick={toggleFriends}>Friends</S.Label>
+          {isFriends && (
+            <S.FriendsWrapper>
+              {friends.map((usr, index) => {
+                return (
+                  <S.User key={index}>
+                    <S.Avatar src={usr.avatar} />
+                    <S.Name>
+                      {usr.name} {usr.surname}
+                    </S.Name>
+                    <S.DecideWrapper>
+                      <S.Icon className="trash alternate icon" onClick={() => DeleteFriend(usr)}/>
+                      <S.Icon className="red ban icon" onClick={() => BlockUser(usr)}/>
+                    </S.DecideWrapper>
+                  </S.User>
+                )
+              })}
+            </S.FriendsWrapper> 
+        )}
+       </>
       )}
       <S.Label onClick={toggleUsers}>Users</S.Label>
       {isUsers && (
@@ -224,7 +228,6 @@ const FriendsSection = ({ user }) => {
           <S.UsersWrapper>
             {users.map((usr, index) => {
               return (
-                <>
                   <S.User key={index}>
                     <S.Avatar src={usr.avatar} />
                     <S.Name>
@@ -234,32 +237,33 @@ const FriendsSection = ({ user }) => {
                       Add user
                     </S.AddUserButton>
                   </S.User>
-                </>
               );
             })}
           </S.UsersWrapper>
         </>
       )}
-      <S.Label onClick={toggleBlocked}>Blocked</S.Label>
-      {isBlockedUsers && (
+      {blocked.length > 0 && (
         <>
-          <S.UsersWrapper>
-            {blocked.map((usr, index) => {
-              return (
-                <>
-                  <S.User key={index}>
-                    <S.Avatar src={usr.avatar} />
-                    <S.Name>
-                      {usr.name} {usr.surname}
-                    </S.Name>
-                    <S.AddUserButton onClick={() => UnblockUser(usr)}>
-                      Unblock
-                    </S.AddUserButton>
-                  </S.User>
-                </>
-              );
-            })}
-          </S.UsersWrapper>
+          <S.Label onClick={toggleBlocked}>Blocked</S.Label>
+          {isBlockedUsers && (
+            <>
+              <S.UsersWrapper>
+                {blocked.map((usr, index) => {
+                  return (
+                      <S.User key={index}>
+                        <S.Avatar src={usr.avatar} />
+                        <S.Name>
+                          {usr.name} {usr.surname}
+                        </S.Name>
+                        <S.AddUserButton onClick={() => UnblockUser(usr)}>
+                          Unblock
+                        </S.AddUserButton>
+                      </S.User>
+                  );
+                })}
+              </S.UsersWrapper>
+            </>
+          )}
         </>
       )}
     </S.Wrapper>

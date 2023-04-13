@@ -18,10 +18,12 @@ export const GetUsers = async(req, res) => {
     const BlockedFromCollection = db.collection(`${email}BlockedFrom`);
     let BlockedList = await BlockedCollection.find({}).toArray();
     BlockedList = BlockedList.map((obj) => obj.email);
+    BlockedList.push(email);
     let BlockedFromList = await BlockedFromCollection.find({}).toArray();
     BlockedFromList = BlockedFromList.map((obj) => obj.email);
     UsersList = UsersList.filter((element) => !BlockedFromList.includes(element.email))
     UsersList = UsersList.filter((element) => !BlockedList.includes(element.email))
+    
     return res.status(200).send({UsersList});
 }
 
