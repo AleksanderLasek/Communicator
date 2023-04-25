@@ -120,13 +120,13 @@ const ChatSection = ({ user, swap }) => {
             if (message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
-                  <S.MessageSentWrapper>{message.message}</S.MessageSentWrapper>
+                  <S.MessageSentWrapper pageTheme={swap}>{message.message}</S.MessageSentWrapper>
                 </S.MessageSentLineWrapper>
               );
             } else {
               return (
                 <S.MessageReceivedLineWrapper key={index}>
-                  <S.MessageReceivedWrapper>
+                  <S.MessageReceivedWrapper pageTheme={swap}>
                     {message.message}
                   </S.MessageReceivedWrapper>
                 </S.MessageReceivedLineWrapper>
@@ -135,9 +135,10 @@ const ChatSection = ({ user, swap }) => {
           })}
         </S.MessageWindowWrapper>
         <S.MessageTextBox>
-          <S.MessageInput value={message} onChange={handleChange} onKeyPress={sendKey}/>
+          <S.MessageInput pageTheme={swap} value={message} onChange={handleChange} onKeyPress={sendKey}/>
 
           <S.MessageSentIcon
+            pageTheme={swap}
             className="white large paper plane icon"
             onClick={SendMessage}
           />

@@ -33,7 +33,7 @@ const Header = ({ pageTheme, user }) => {
           <img src={logo} style={{ height: "10vw" }} alt="logo" />
         </S.MobileLogo>
       )}
-      {isUserPanel && <UserPanelSection user={user} />}
+      {isUserPanel && <UserPanelSection user={user} pageTheme={pageTheme} />}
       <S.Wrapper>
     
         {width > 767 ? (

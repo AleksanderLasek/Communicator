@@ -169,7 +169,7 @@ export const MessageReceivedLineWrapper = styled.div`
 `;
 
 export const MessageReceivedWrapper = styled.div`
-  background-color: #12323f;
+  background-color: ${(props) => (props.pageTheme ? "#30a5ff79" : "#769FCD")};;
   margin: 5px;
   color: white;
   max-width: 50%;
@@ -180,7 +180,7 @@ export const MessageReceivedWrapper = styled.div`
 `;
 
 export const MessageSentWrapper = styled.div`
-  background-color: #246883;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
   margin: 5px;
   color: white;
   max-width: 50%;
@@ -193,6 +193,8 @@ export const MessageSentIcon = styled.i`
   cursor: pointer;
   transform: scale(1);
   transition: 0.2s ease;
+  color: ${(props) => (props.pageTheme ? "#fff" : "#000")};;
+  
   &:active {
     transform: scale(1.1);
     transition: 0.2s ease;
@@ -201,7 +203,7 @@ export const MessageSentIcon = styled.i`
 
 export const MessageTextBox = styled.div`
   width: 100%;
-  background-color: #c7c1c1;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
   display: flex;
   border-radius: 0 0px 15px 15px;
   justify-content: space-around;
@@ -219,4 +221,6 @@ export const MessageInput = styled.input`
   border-radius: 20px;
   border: 0;
   outline: 0;
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};;
+  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};;
 `;

@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 import AvatarEditor from "react-avatar-editor";
 import { createCanvas, loadImage } from "canvas";
 
-const UserPanelSection = ({user}) => {
+const UserPanelSection = ({user, swap}) => {
   const [file, setFile] = useState(user.avatar);
   const [editUser, setEditUser] = useState(false);
   const [name, setName] = useState('');
@@ -82,7 +82,7 @@ const UserPanelSection = ({user}) => {
     window.location.reload();
   }
   return (
-    <S.Wrapper>
+    <S.Wrapper pageTheme={swap}>
       <S.NameWrapper >{user.name} {user.surname}</S.NameWrapper>
       <S.ImageWrapper>
         <S.Image src={file} alt="avatar"/>

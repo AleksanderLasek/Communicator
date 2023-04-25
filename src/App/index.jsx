@@ -41,7 +41,7 @@ const App = () => {
   }, []);
   return (
     <>
-      <Header pageTheme={pageTheme} user={user} />
+      <Header pageTheme={pageTheme} swap={swap} user={user} />
       <S.Wrapper pageTheme={swap}>
         {cookie.refreshToken ? (
           <>
