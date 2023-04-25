@@ -80,19 +80,14 @@ const Header = ({ pageTheme, user }) => {
         </S.CenterWrapper>
 
         
-        {width > 768 ? (
-        <>
+ 
         {user.name && (
           <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
         )}
-        <S.CheckBoxWrapper>
-          <S.CheckBox id="checkbox" type="checkbox" onClick={handleMode} />
-          <S.CheckBoxLabel htmlFor="checkbox" />
-        </S.CheckBoxWrapper>
-        </>
-        ) : (
-          <div><i className="yellow moon icon"/></div>
-        )}
+       
+          
+        <div><S.Icon className={mode ? "yellow sun icon" : "moon icon"} onClick={handleMode}/></div>
+   
       </S.Wrapper>
     </>
   );

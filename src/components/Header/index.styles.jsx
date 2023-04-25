@@ -121,3 +121,13 @@ export const MobileLogo = styled.a`
   margin-left: 25vw;
   margin-top: 7vh;
 `;
+
+export const Icon = styled.i`
+  transition: all 0.3 ease;
+  cursor: pointer;
+  transform: scale(1);
+  &:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+  }
+`
