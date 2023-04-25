@@ -81,12 +81,16 @@ const Header = ({ pageTheme, user }) => {
 
         
  
-        {user.name && (
-          <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
+        {width > 768 && (
+          <>
+            {user.name && (
+            <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
+            )}
+          </>
         )}
        
           
-        <div><S.Icon className={mode ? "yellow sun icon" : "moon icon"} onClick={handleMode}/></div>
+        <div><S.Icon mode={mode} className={mode ? "sun icon" : "moon icon"} onClick={handleMode}/></div>
    
       </S.Wrapper>
     </>

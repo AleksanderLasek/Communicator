@@ -8,6 +8,7 @@ import axios from "axios";
 import Router from "../Router";
 import ChatSection from "../containers/ChatSection";
 import FriendsSection from "../containers/FriendsSection";
+import NotificationsSection from "../containers/NotificationsSection";
 
 const App = () => {
   const [swap, setSwap] = useState(true);
@@ -50,6 +51,9 @@ const App = () => {
             </Router>
             <Router path="/friends">
               <FriendsSection user={user}/>
+            </Router>
+            <Router path="/nots">
+              <NotificationsSection user={user}/>
             </Router>
           </>
         ) : (

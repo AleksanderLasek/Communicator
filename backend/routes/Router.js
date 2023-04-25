@@ -3,6 +3,7 @@ import { Register, Login, refreshToken, EditUser, GetUsers, BlockUser, GetBlocke
 import { SendMessage, GetChat } from '../controllers/Message.js';
 import { AddFriend, DeleteFriend, ShowFriends } from "../controllers/Friends.js";
 import { AcceptInvite, DeclineInvite, InviteFriend, ShowInvitations } from "../controllers/InviteFriend.js";
+import { AddNotification, ShowNotifications } from "../controllers/Nots.js";
 
 export const router = express();
 
@@ -23,3 +24,5 @@ router.post('/invitations', ShowInvitations);
 router.post('/invitations/add', InviteFriend);
 router.post('/invitations/decline', DeclineInvite);
 router.post('/invitations/accept', AcceptInvite);
+router.post('/nots/add', AddNotification);
+router.post('/nots/show', ShowNotifications);

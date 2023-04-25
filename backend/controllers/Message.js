@@ -1,3 +1,4 @@
+import axios from "axios";
 import { db } from "../database/Mongodb.js";
 
 
@@ -14,6 +15,8 @@ export const SendMessage = async(req, res) => {
         message: message,
         sender: sender,
     })
+    await axios.post('http://localhost:5000/nots/add', {receiver: receiver, sender: sender, type: 3});
+    return res.status(200);
 }
 
 export const GetChat = async(req, res) => {

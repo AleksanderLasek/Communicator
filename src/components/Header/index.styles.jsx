@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -121,13 +121,28 @@ export const MobileLogo = styled.a`
   margin-left: 25vw;
   margin-top: 7vh;
 `;
+const yellow = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 
 export const Icon = styled.i`
-  transition: all 0.3 ease;
+  color: ${({ mode }) => (mode ? '#FFC107' : '#757575')};
   cursor: pointer;
-  transform: scale(1);
+  transition: color 0.3s ease-in-out;
+
   &:hover {
-    transform: scale(1.05);
-    transition: all 0.3s ease;
+    color: ${({ mode }) => (mode ? '#FFA000' : '#616161')};
   }
-`
+
+  &:active {
+    animation: ${({ mode }) => (mode ? yellow : null)} 0.3s ease-in-out;
+  }
+`;

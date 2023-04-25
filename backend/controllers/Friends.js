@@ -1,4 +1,5 @@
 import { db } from "../database/Mongodb.js";
+import axios from 'axios';
 
 export const AddFriend = async(req, res) => {
     const {email, friendEmail} = req.body;
