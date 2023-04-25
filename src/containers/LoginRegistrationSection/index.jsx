@@ -83,6 +83,7 @@ const LoginRegistrationSection = ({ swap }) => {
           <S.WelcomeMessage>Welcome!</S.WelcomeMessage>
           <S.InputsWrapper>
             <S.Input
+              pageTheme={swap}
               placeholder="Email"
               name="email"
               onChange={handleUser}
@@ -90,6 +91,7 @@ const LoginRegistrationSection = ({ swap }) => {
               onKeyPress={handleEnter}
             />
             <S.Input
+              pageTheme={swap}
               placeholder="Password"
               type="password"
               name="password"
@@ -111,28 +113,32 @@ const LoginRegistrationSection = ({ swap }) => {
           <S.LoginWrapper pageTheme={swap}>
             <S.WelcomeMessage>Welcome!</S.WelcomeMessage>
             <S.InputsWrapper>
-              <S.Input
+                <S.Input
+                pageTheme={swap}
                 placeholder="Name"
                 name="name"
                 onChange={handleUser}
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-              <S.Input
+                <S.Input
+                pageTheme={swap}
                 placeholder="Surname"
                 name="surname"
                 onChange={handleUser}
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-              <S.Input
+                <S.Input
+                pageTheme={swap}
                 placeholder="Email"
                 name="email"
                 onChange={handleUser}
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-              <S.Input
+                <S.Input
+                pageTheme={swap}
                 placeholder="Password"
                 type="password"
                 name="password"
@@ -140,13 +146,13 @@ const LoginRegistrationSection = ({ swap }) => {
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-              <S.Button onClick={handleSignUp}>Sign up</S.Button>
+              <S.Button pageTheme={swap} onClick={handleSignUp}>Sign up</S.Button>
               {error}
             </S.InputsWrapper>
             <S.WelcomeMessage>
               Already have an account?
               <br />
-              <S.ChangeButton onClick={handleChoice}>Sign in</S.ChangeButton>
+              <S.ChangeButton pageTheme={swap} onClick={handleChoice}>Sign in</S.ChangeButton>
             </S.WelcomeMessage>
           </S.LoginWrapper>
         </>

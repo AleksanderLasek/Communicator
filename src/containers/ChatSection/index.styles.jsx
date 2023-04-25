@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
 `;
 
 export const ListWrapper = styled.div`
-  background-color: #FFFFFF;
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
   width: 25vw;
   height: 85vh;
   display: flex;
@@ -47,7 +47,7 @@ export const FriendWrapper = styled.div`
   min-height: 8vh;
   margin-bottom: 1px;
   width: 100%;
-  background-color:  #06283D;
+  background-color:  ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
   color: white;
   overflow: hidden;
   box-shadow: 0px 5px 5px -2px #00000060;
@@ -88,7 +88,7 @@ export const ImageWrapper = styled.img`
 `;
 
 export const ChatWindowWrapper = styled.div`
-  background-color: #FFFFFF;
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
   width: 60vw;
   height: 85vh;
   box-shadow: 0px 0px 5px 3px #00000037;
@@ -110,7 +110,7 @@ export const ChatWindowWrapper = styled.div`
 export const ChatBarWrapper = styled.div`
   height: 6vh;
   width: 100%;
-  background-color: #06283D;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
   color: white;
   box-shadow: 0px 5px 5px -2px #00000060;
   display: flex;

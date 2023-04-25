@@ -46,10 +46,10 @@ const App = () => {
         {cookie.refreshToken ? (
           <>
             <Router path="/chat">
-              <ChatSection user={user}></ChatSection>
+              <ChatSection user={user} swap={swap} ></ChatSection>
             </Router>
             <Router path="/friends">
-              <FriendsSection user={user}/>
+              <FriendsSection user={user} swap={swap}/>
             </Router>
           </>
         ) : (

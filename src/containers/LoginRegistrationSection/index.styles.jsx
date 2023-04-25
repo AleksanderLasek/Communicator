@@ -1,34 +1,24 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  background-color: ${(props) => (props.pageTheme ? "#256D85" : "#071216")};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 export const LoginWrapper = styled.div`
   width: 50vw;
-  height: 60%;
+  height: 40vh;
   display: flex;
-  color: white;
+  color: ${(props) => (props.pageTheme ? "#000000" : "#fff")};
   border-radius: 10px;
   box-shadow: 0px 0px 5px 3px #00000065;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-
-  background-color: ${(props) => (props.pageTheme ? "#000000b0" : "#b9b9b952")};
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
 
   @media screen and (max-width: 1023px) {
     width: 70vw;
-    height: 50%;
+    height: 40vh;
   }
   @media screen and (max-width: 767px) {
     width: 90vw;
-    height: 60%;
+    height: 40vh;
   }
 `;
 
@@ -43,6 +33,8 @@ export const Input = styled.input`
   font-family: "Red Hat Display", sans-serif;
   border: 0;
   box-shadow: 0px 0px 5px 3px #0000004b;
+  background-color: #E8F0FE;
+
 
   @media screen and (max-width: 1023px) {
     width: 50%;
@@ -51,15 +43,16 @@ export const Input = styled.input`
     width: 60%;
   }
 `;
+
 export const Button = styled.div`
   padding: 8px 20px;
   margin-top: 15px;
   font-weight: bold;
   border: 0;
-  color: black;
+  color: ${(props) => (props.pageTheme ? "#fff" : "#000")};
   cursor: pointer;
   border-radius: 3px;
-  background-color: #89899c9b;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
   transform: scale(1);
   transition: 0.1s ease;
   &:hover {
@@ -81,7 +74,6 @@ export const ChangeButton = styled.div`
 export const WelcomeMessage = styled.div`
   font-size: 1.5rem;
   text-align: center;
-  color: white;
 `;
 
 export const InputsWrapper = styled.div`

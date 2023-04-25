@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
 
-  background-color: ${(props) => (props.pageTheme ? "#256D85" : "#071216")};
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#000000")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,7 +33,7 @@ export const Button = styled.div`
   color: black;
   cursor: pointer;
   border-radius: 3px;
-  background-color: #89899c9b;
+  background-color: #D6E6F2;
   transform: scale(1);
   transition: 0.1s ease;
   &:hover {

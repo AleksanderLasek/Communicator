@@ -3,7 +3,7 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 
-const ChatSection = ({ user }) => {
+const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [receiver, setReceiver] = useState({
@@ -100,17 +100,17 @@ const ChatSection = ({ user }) => {
   }
   return (
     <S.Wrapper>
-      <S.ListWrapper>
+      <S.ListWrapper pageTheme={swap}>
         {friends.map((friend, index) => {
           return (
-            <S.FriendWrapper key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email && "#03141f"}}>
+            <S.FriendWrapper pageTheme={swap} key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email && "#03141f"}}>
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
               <S.FriendNameWrapper>{friend.name} {friend.surname}</S.FriendNameWrapper>
             </S.FriendWrapper>
           );
         })}
       </S.ListWrapper>
-      <S.ChatWindowWrapper>
+      <S.ChatWindowWrapper pageTheme={swap}>
         <S.ChatBarWrapper>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
           <S.ChatNameWrapper>{receiver.name} {receiver.surname}</S.ChatNameWrapper>
