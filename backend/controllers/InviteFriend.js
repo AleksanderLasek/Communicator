@@ -48,6 +48,11 @@ export const AcceptInvite = async(req, res) => {
     await axios.post('http://localhost:5000/invitations/decline', { email: email, inviterEmail: inviterEmail });
     await axios.post('http://localhost:5000/nots/add', {receiver: inviterEmail, sender: email, type: 2});
     await axios.post('http://localhost:5000/nots/add', {receiver: email, sender: inviterEmail, type: 2});
+    const emailNots = db.collection(`${email}Nots`);
+    await emailNots.deleteOne({
+      sender: inviterEmail,
+      type: 1
+    })
     return res.status(200).send({ msg: 'Invite accepted' });
   
 }

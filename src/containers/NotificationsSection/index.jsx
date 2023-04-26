@@ -34,6 +34,21 @@ const NotificationsSection = ({user}) => {
             return `${name} just sent you a message!`;
         }
     }
+    const formatDate = (oldDate) => {
+        const date = new Date(oldDate);
+        date.setTime(date.getTime() - 86400000);
+        const formattedTime = date.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" });
+        const today = new Date();
+        const todayDate = today.getDate();
+        const todayMonth = today.getMonth();
+        const todayYear = today.getFullYear();
+        if (date.getDate() === todayDate && date.getMonth() === todayMonth && date.getFullYear() === todayYear) {
+            return formattedTime;
+        } 
+        const formattedDate = date.toLocaleDateString("pl-PL", { day: "2-digit", month: "2-digit", year: "numeric" });
+        const formattedDateTime = `${formattedTime} ${formattedDate}`;
+        return formattedDateTime;
+    }
     useEffect(() => {    
         ShowNotifications();
     }, [user.email]) 
@@ -44,6 +59,7 @@ const NotificationsSection = ({user}) => {
                     <S.Notification>
                         <S.Avatar src={not.senderAvatar}/>
                         <S.Text>{getMessage(not.type, not.senderName)}</S.Text>
+                        <div>{formatDate(not.expireAt)}</div>
                     </S.Notification>
                 )
             })}

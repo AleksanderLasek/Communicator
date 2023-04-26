@@ -111,6 +111,10 @@ export const AWrapper = styled.a`
   &:hover {
     color: #aaaaaa;
   }
+
+  display: flex;
+  align-items: center;
+  
 `;
 
 export const MobileLogo = styled.a`
@@ -146,3 +150,19 @@ export const Icon = styled.i`
     animation: ${({ mode }) => (mode ? yellow : null)} 0.3s ease-in-out;
   }
 `;
+
+export const NotsNumberNot = styled.div`
+  background-color: red;
+  width: 25px;
+  box-shadow: 0px 0px 5px 3px #00000063;
+  align-items: center;
+  height: 25px;
+  color: #c5c1c1;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  margin-left: -3px;
+  z-index: 1;
+  margin-top: -10px;
+  border-radius: 50%;
+`

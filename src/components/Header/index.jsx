@@ -2,20 +2,28 @@ import React, { useEffect, useState } from "react";
 import * as S from "./index.styles";
 import logo from "../../images/logo.png";
 import UserPanelSection from "../../containers/UserPanelSection";
+import axios from "axios";
 
 const Header = ({ pageTheme, user }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [mode, setMode] = useState(false);
   const [isUserPanel, setIsUserPanel] = useState(false);
-
+  const [notsNumber, setNotsNumber] = useState(0);
   const toggleUserPanel = () => {
     setIsUserPanel((current) => !current);
   };
-
+  const getNotsNumber = async() => {
+    const res = await axios.post('http://localhost:5000/nots/show', {email: user .email});
+    setNotsNumber(res.data.Nots.length);
+  }
   const handleMode = () => {
     setMode((current) => !current);
     pageTheme(mode);
+    
   };
+  useEffect(() => {
+    getNotsNumber();
+  }, [user.email])
   useEffect(() => {
     const setCurrentWidth = () => {
       setWidth(window.innerWidth);
@@ -61,7 +69,12 @@ const Header = ({ pageTheme, user }) => {
               </S.AWrapper>
               <S.AWrapper href="/nots">
                 <i className="bell icon" />
-                NOTIFICATIONS
+                <div style={{zIndex: "2"}}>NOTIFICATIONS </div>
+                {notsNumber > 0 && (
+                  <S.NotsNumberNot>
+                    {notsNumber}
+                  </S.NotsNumberNot>
+                )}
               </S.AWrapper>
             </>
           ) : (
