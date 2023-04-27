@@ -9,7 +9,7 @@ const NotificationsSection = ({ user, swap }) => {
   const ShowNotifications = async () => {
     try {
       const res = await axios.post("http://localhost:5000/nots/show", {
-        email: user.email,
+        email: user.email, check: 1,
       });
       setNots(res.data.Nots);
     } catch (err) {
