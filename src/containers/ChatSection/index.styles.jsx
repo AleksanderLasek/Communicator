@@ -18,13 +18,13 @@ export const Wrapper = styled.div`
 `;
 
 export const ListWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#c1c1c1" : "#202020")};
   width: 25vw;
   height: 85vh;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  box-shadow: 0px 0px 5px 3px #00000037;
+  //box-shadow: 0px 0px 5px 3px #00000037;
   border-radius: 15px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -88,10 +88,10 @@ export const ImageWrapper = styled.img`
 `;
 
 export const ChatWindowWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#c1c1c1" : "#202020")};
   width: 60vw;
   height: 85vh;
-  box-shadow: 0px 0px 5px 3px #00000037;
+  //box-shadow: 0px 0px 5px 3px #00000037;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -232,6 +232,12 @@ export const MessageInput = styled.input`
   border-radius: 20px;
   border: 0;
   outline: 0;
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#fff" : "#202020")};
   color: ${(props) => (props.pageTheme ? "#000" : "#fff")};
+`;
+
+export const EmojiContainer = styled.div`
+  position: absolute;
+  bottom: 41px;
+  left: 30vw;
 `;

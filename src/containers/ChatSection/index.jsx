@@ -130,7 +130,7 @@ const ChatSection = ({ user, swap }) => {
             </S.FriendWrapper>
           );
         })}
-      </S.ListWrapper>
+      </S.ListWrapper >
       <S.ChatWindowWrapper pageTheme={swap}>
         <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
@@ -158,13 +158,18 @@ const ChatSection = ({ user, swap }) => {
               );
             }
           })}
-          {isEmojiPanel && <EmojiPicker onEmojiClick={handleEmojiSelect} />}
         </S.MessageWindowWrapper>
         <S.MessageTextBox>
+          {isEmojiPanel && (
+            <S.EmojiContainer>
+              <EmojiPicker onEmojiClick={handleEmojiSelect} />
+            </S.EmojiContainer>
+          )}
           <S.EmojiIcon
             pageTheme={swap}
             className="user circle icon"
-            onClick={toggleEmojiPanel} />
+            onClick={toggleEmojiPanel}
+          />
 
           <S.MessageInput
             pageTheme={swap}

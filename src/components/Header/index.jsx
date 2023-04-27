@@ -12,18 +12,19 @@ const Header = ({ pageTheme, user }) => {
   const toggleUserPanel = () => {
     setIsUserPanel((current) => !current);
   };
-  const getNotsNumber = async() => {
-    const res = await axios.post('http://localhost:5000/nots/show', {email: user .email});
+  const getNotsNumber = async () => {
+    const res = await axios.post("http://localhost:5000/nots/show", {
+      email: user.email,
+    });
     setNotsNumber(res.data.Nots.length);
-  }
+  };
   const handleMode = () => {
     setMode((current) => !current);
     pageTheme(mode);
-    
   };
   useEffect(() => {
     getNotsNumber();
-  }, [user.email])
+  }, [user.email]);
   useEffect(() => {
     const setCurrentWidth = () => {
       setWidth(window.innerWidth);
@@ -41,18 +42,19 @@ const Header = ({ pageTheme, user }) => {
           <img src={logo} style={{ height: "10vw" }} alt="logo" />
         </S.MobileLogo>
       )}
-      {isUserPanel && <UserPanelSection user={user} pageTheme={pageTheme} />}
-      <S.Wrapper>
-    
+      {isUserPanel && <UserPanelSection user={user} pageTheme={mode} />}
+      <S.Wrapper pageTheme={mode}>
         {width > 767 ? (
           <S.LogoWrapper href="/">
             <img src={logo} style={{ height: "3vw" }} alt="logo" />
           </S.LogoWrapper>
         ) : (
-          <> 
-          {user.name && (
-            <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
-          )}
+          <>
+            {user.name && (
+              <div>
+                <i className="user circle icon" onClick={toggleUserPanel} />
+              </div>
+            )}
           </>
         )}
 
@@ -69,11 +71,9 @@ const Header = ({ pageTheme, user }) => {
               </S.AWrapper>
               <S.AWrapper href="/nots">
                 <i className="bell icon" />
-                <div style={{zIndex: "2"}}>NOTIFICATIONS </div>
+                <div style={{ zIndex: "2" }}>NOTIFICATIONS </div>
                 {notsNumber > 0 && (
-                  <S.NotsNumberNot>
-                    {notsNumber}
-                  </S.NotsNumberNot>
+                  <S.NotsNumberNot>{notsNumber}</S.NotsNumberNot>
                 )}
               </S.AWrapper>
             </>
@@ -92,19 +92,23 @@ const Header = ({ pageTheme, user }) => {
           )}
         </S.CenterWrapper>
 
-        
- 
         {width > 768 && (
           <>
             {user.name && (
-            <div><i className="user circle icon" onClick={toggleUserPanel} /></div>
+              <div>
+                <i className="user circle icon" onClick={toggleUserPanel} />
+              </div>
             )}
           </>
         )}
-       
-          
-        <div><S.Icon mode={mode} className={mode ? "sun icon" : "moon icon"} onClick={handleMode}/></div>
-   
+
+        <div>
+          <S.Icon
+            mode={mode}
+            className={mode ? "sun icon" : "moon icon"}
+            onClick={handleMode}
+          />
+        </div>
       </S.Wrapper>
     </>
   );
