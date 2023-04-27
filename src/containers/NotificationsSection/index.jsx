@@ -59,8 +59,9 @@ const NotificationsSection = ({user}) => {
                     <S.Notification>
                         <S.Avatar src={not.senderAvatar}/>
                         <S.Text>{getMessage(not.type, not.senderName)}</S.Text>
-                        <div>{formatDate(not.expireAt)}</div>
+                        <S.DateText>{formatDate(not.expireAt)}</S.DateText>
                     </S.Notification>
+                    
                 )
             })}
         </S.Wrapper>

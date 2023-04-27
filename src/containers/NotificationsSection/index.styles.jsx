@@ -5,28 +5,51 @@ export const Wrapper = styled.div`
     height: 100vh;
     padding: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     flex-direction: column;
+
+    @media screen and (max-width: 1023px) {
+        justify-content: end;
+    }
+
+    @media screen and (max-width: 767px) {
+        
+    }
 `
 export const Notification = styled.div`
-    width: 70vw;
+    max-width: 70vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 60px;
+    min-height: 70px;
     color: white;
     border-radius: 7px;
     box-shadow: 0px 0px 5px 3px #0000003e;
-    background-color: #151a61;
+    background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
     margin: 5px;
+
+    @media screen and (max-width: 1023px) {
+
+    }
+
+    @media screen and (max-width: 767px) {
+        min-width: 98vw;
+    }
 `
 export const Avatar = styled.img`
     border-radius: 50%;
     height: 50px;
+    margin-left: 20px;
 `
 export const Text = styled.div`
-    width: 50vw;
+    max-width: 50vw;
     display: flex;
     justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+`
+
+export const DateText = styled.div`
+    margin-right: 20px;
 `

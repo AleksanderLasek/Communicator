@@ -126,7 +126,7 @@ export const Wrapper = styled.div`
   height: auto;
   box-shadow: 0px 0px 3px 5px #0000002f;
 
-  background-color: ${(props) => (props.pageTheme ? "#571294" : "#14507d")};
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   position: fixed;
   overflow: hidden;
   transition: all 0.5s ease;
@@ -148,7 +148,7 @@ export const Wrapper = styled.div`
 
   @media screen and (max-width: 767px) {
     border-radius: 0;
-    background-color: #03333a;
+    background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
     width: 100vw;
     padding-bottom: 50px;
     height: 100vh;
