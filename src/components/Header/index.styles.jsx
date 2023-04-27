@@ -5,13 +5,14 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 50px;
   padding: 0 3vw;
-  background-color: #06283d;
+  background-color: ${(props) => (props.pageTheme ? "#aa28cb" : "#30a5ff79")};
   display: flex;
   box-shadow: 0px 0px 5px 3px #0000006e;
   justify-content: space-around;
   align-items: center;
   color: white;
   z-index: 999;
+  
   @media screen and (max-width: 1023px) {
     bottom: 0;
     padding: 0;

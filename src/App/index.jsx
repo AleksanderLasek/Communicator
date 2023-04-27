@@ -42,15 +42,15 @@ const App = () => {
   }, []);
   return (
     <>
-      <Header pageTheme={pageTheme} user={user} />
+      <Header pageTheme={pageTheme} swap={swap} user={user} />
       <S.Wrapper pageTheme={swap}>
         {cookie.refreshToken ? (
           <>
             <Router path="/chat">
-              <ChatSection user={user}></ChatSection>
+              <ChatSection user={user} swap={swap} ></ChatSection>
             </Router>
             <Router path="/friends">
-              <FriendsSection user={user}/>
+              <FriendsSection user={user} swap={swap}/>
             </Router>
             <Router path="/nots">
               <NotificationsSection user={user}/>

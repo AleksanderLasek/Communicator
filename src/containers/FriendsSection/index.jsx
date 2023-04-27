@@ -3,7 +3,7 @@ import * as S from "./index.styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const FriendsSection = ({ user }) => {
+const FriendsSection = ({ user, swap }) => {
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [invitations, setInvitations] = useState([]);
@@ -165,7 +165,7 @@ const FriendsSection = ({ user }) => {
     <S.Wrapper>
       {invitations.length > 0 && (
         <>
-          <S.Label onClick={toggleInvites}>Invites</S.Label>
+          <S.Label swap={swap} onClick={toggleInvites}>Invites</S.Label>
           {isInvites && (
             <S.InvitesWrapper>
               {invitations.map((invitation, index) => {

@@ -3,7 +3,7 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 
-const ChatSection = ({ user }) => {
+const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [receiver, setReceiver] = useState({
@@ -100,33 +100,33 @@ const ChatSection = ({ user }) => {
   }
   return (
     <S.Wrapper>
-      <S.ListWrapper>
+      <S.ListWrapper pageTheme={swap}>
         {friends.map((friend, index) => {
           return (
-            <S.FriendWrapper key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email && "#03141f"}}>
+            <S.FriendWrapper pageTheme={swap} key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email}}>
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
-              <S.FriendNameWrapper>{friend.name} {friend.surname}</S.FriendNameWrapper>
+              <S.FriendNameWrapper pageTheme={swap}>{friend.name} {friend.surname}</S.FriendNameWrapper>
             </S.FriendWrapper>
           );
         })}
       </S.ListWrapper>
-      <S.ChatWindowWrapper>
-        <S.ChatBarWrapper>
+      <S.ChatWindowWrapper pageTheme={swap}>
+        <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
           <S.ChatNameWrapper>{receiver.name} {receiver.surname}</S.ChatNameWrapper>
         </S.ChatBarWrapper>
-        <S.MessageWindowWrapper>
+        <S.MessageWindowWrapper pageTheme={swap}>
           {chat.map((message, index) => {
             if (message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
-                  <S.MessageSentWrapper>{message.message}</S.MessageSentWrapper>
+                  <S.MessageSentWrapper pageTheme={swap}>{message.message}</S.MessageSentWrapper>
                 </S.MessageSentLineWrapper>
               );
             } else {
               return (
                 <S.MessageReceivedLineWrapper key={index}>
-                  <S.MessageReceivedWrapper>
+                  <S.MessageReceivedWrapper pageTheme={swap}>
                     {message.message}
                   </S.MessageReceivedWrapper>
                 </S.MessageReceivedLineWrapper>
@@ -135,9 +135,10 @@ const ChatSection = ({ user }) => {
           })}
         </S.MessageWindowWrapper>
         <S.MessageTextBox>
-          <S.MessageInput value={message} onChange={handleChange} onKeyPress={sendKey}/>
+          <S.MessageInput pageTheme={swap} value={message} onChange={handleChange} onKeyPress={sendKey}/>
 
           <S.MessageSentIcon
+            pageTheme={swap}
             className="white large paper plane icon"
             onClick={SendMessage}
           />
