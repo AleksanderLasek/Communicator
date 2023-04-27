@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
+import EmojiPicker from "emoji-picker-react";
 
 const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [receiver, setReceiver] = useState({
-      name: "",
-      surname: "",
-      email: "",
-      avatar: "",
+    name: "",
+    surname: "",
+    email: "",
+    avatar: "",
   });
   const [chat, setChat] = useState([]);
-  
+
   const [cookie] = useCookies();
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -31,7 +32,6 @@ const ChatSection = ({ user, swap }) => {
     }
   };
   const GetChat = async () => {
-    
     try {
       const res = await axios.post("http://localhost:5000/chat", {
         sender: user.email,
@@ -54,7 +54,6 @@ const ChatSection = ({ user, swap }) => {
     }
   };
   const GetFriends = async () => {
-    
     try {
       const res = await axios.post("http://localhost:5000/friends", {
         email: user.email,
@@ -62,17 +61,18 @@ const ChatSection = ({ user, swap }) => {
       const List = res.data.Friends;
       const emailList = List.map((obj) => obj.friendEmail);
       try {
-          const res = await axios.post('http://localhost:5000/users', {refreshToken: cookie.refreshToken, filter: emailList})
-          setFriends(res.data.UsersList)
-          ChooseChat(res.data.UsersList[0]);
-      }catch(err){
-        console.log(err)
+        const res = await axios.post("http://localhost:5000/users", {
+          refreshToken: cookie.refreshToken,
+          filter: emailList,
+        });
+        setFriends(res.data.UsersList);
+        ChooseChat(res.data.UsersList[0]);
+      } catch (err) {
+        console.log(err);
       }
-      
     } catch (err) {
       console.log(err);
     }
-    
   };
   useEffect(() => {
     const interval = setInterval(() => {
@@ -80,7 +80,7 @@ const ChatSection = ({ user, swap }) => {
     }, 200);
     return () => {
       clearInterval(interval);
-    }
+    };
   });
   useEffect(() => {
     GetFriends();
@@ -91,21 +91,42 @@ const ChatSection = ({ user, swap }) => {
       surname: friend.surname,
       avatar: friend.avatar,
       email: friend.email,
-    })
-  }
+    });
+  };
   const sendKey = (e) => {
-    if(e.key === 'Enter'){
+    if (e.key === "Enter") {
       SendMessage();
     }
-  }
+  };
+
+  //emoji
+
+  const [isEmojiPanel, setIsEmojiPanel] = useState(false);
+  const toggleEmojiPanel = () => {
+    setIsEmojiPanel((current) => !current);
+  };
+
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+
+  const handleEmojiSelect = (emoji) => {
+    setMessage(message + emoji.emoji);
+  };
+
   return (
     <S.Wrapper>
       <S.ListWrapper pageTheme={swap}>
         {friends.map((friend, index) => {
           return (
-            <S.FriendWrapper pageTheme={swap} key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email}}>
+            <S.FriendWrapper
+              pageTheme={swap}
+              key={index}
+              onClick={() => ChooseChat(friend)}
+              style={{ backgroundColor: friend.email === receiver.email }}
+            >
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
-              <S.FriendNameWrapper pageTheme={swap}>{friend.name} {friend.surname}</S.FriendNameWrapper>
+              <S.FriendNameWrapper pageTheme={swap}>
+                {friend.name} {friend.surname}
+              </S.FriendNameWrapper>
             </S.FriendWrapper>
           );
         })}
@@ -113,14 +134,18 @@ const ChatSection = ({ user, swap }) => {
       <S.ChatWindowWrapper pageTheme={swap}>
         <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
-          <S.ChatNameWrapper>{receiver.name} {receiver.surname}</S.ChatNameWrapper>
+          <S.ChatNameWrapper>
+            {receiver.name} {receiver.surname}
+          </S.ChatNameWrapper>
         </S.ChatBarWrapper>
         <S.MessageWindowWrapper pageTheme={swap}>
           {chat.map((message, index) => {
             if (message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
-                  <S.MessageSentWrapper pageTheme={swap}>{message.message}</S.MessageSentWrapper>
+                  <S.MessageSentWrapper pageTheme={swap}>
+                    {message.message}
+                  </S.MessageSentWrapper>
                 </S.MessageSentLineWrapper>
               );
             } else {
@@ -133,9 +158,20 @@ const ChatSection = ({ user, swap }) => {
               );
             }
           })}
+          {isEmojiPanel && <EmojiPicker onEmojiClick={handleEmojiSelect} />}
         </S.MessageWindowWrapper>
         <S.MessageTextBox>
-          <S.MessageInput pageTheme={swap} value={message} onChange={handleChange} onKeyPress={sendKey}/>
+          <S.EmojiIcon
+            pageTheme={swap}
+            className="user circle icon"
+            onClick={toggleEmojiPanel} />
+
+          <S.MessageInput
+            pageTheme={swap}
+            value={chosenEmoji ? chosenEmoji.emoji : message}
+            onChange={handleChange}
+            onKeyPress={sendKey}
+          />
 
           <S.MessageSentIcon
             pageTheme={swap}
