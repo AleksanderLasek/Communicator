@@ -3,6 +3,7 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
+import { Theme } from "emoji-picker-react";
 
 const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
@@ -130,7 +131,7 @@ const ChatSection = ({ user, swap }) => {
             </S.FriendWrapper>
           );
         })}
-      </S.ListWrapper >
+      </S.ListWrapper>
       <S.ChatWindowWrapper pageTheme={swap}>
         <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
@@ -162,12 +163,15 @@ const ChatSection = ({ user, swap }) => {
         <S.MessageTextBox>
           {isEmojiPanel && (
             <S.EmojiContainer>
-              <EmojiPicker onEmojiClick={handleEmojiSelect} />
+              <EmojiPicker
+                theme={swap ? "light" : "dark"}
+                onEmojiClick={handleEmojiSelect}
+              />
             </S.EmojiContainer>
           )}
           <S.EmojiIcon
             pageTheme={swap}
-            className="user circle icon"
+            className="large smile outline icon"
             onClick={toggleEmojiPanel}
           />
 

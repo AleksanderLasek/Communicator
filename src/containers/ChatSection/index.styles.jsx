@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import EmojiPicker from "emoji-picker-react";
 
 export const Wrapper = styled.div`
   margin-top: 50px;
@@ -18,7 +19,7 @@ export const Wrapper = styled.div`
 `;
 
 export const ListWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#c1c1c1" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#e1e1e1" : "#202020")};
   width: 25vw;
   height: 85vh;
   display: flex;
@@ -84,11 +85,13 @@ export const ImageWrapper = styled.img`
 
   @media screen and (max-width: 767px) {
     margin: 0;
+    height: 12vw;
+    width: 12vw;
   }
 `;
 
 export const ChatWindowWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#c1c1c1" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#e1e1e1" : "#202020")};
   width: 60vw;
   height: 85vh;
   //box-shadow: 0px 0px 5px 3px #00000037;
@@ -202,10 +205,14 @@ export const MessageSentIcon = styled.i`
 `;
 
 export const EmojiIcon = styled.i`
+  padding-left: 5px;
+  padding-bottom: 13px;
+
   cursor: pointer;
   transform: scale(1);
   transition: 0.2s ease;
   color: ${(props) => (props.pageTheme ? "#fff" : "#000")};
+
   &:active {
     transform: scale(1.1);
     transition: 0.2s ease;
@@ -225,7 +232,7 @@ export const MessageTextBox = styled.div`
   }
 `;
 export const MessageInput = styled.input`
-  width: 90%;
+  width: 85%;
   padding: 5px 15px;
   font-size: 1.3rem;
   font-family: "Red Hat Display";
@@ -240,4 +247,13 @@ export const EmojiContainer = styled.div`
   position: absolute;
   bottom: 41px;
   left: 30vw;
+  --epr-bg-color: #000000;
+
+  @media screen and (max-width: 1023px) {
+    left: 35vw;
+  }
+
+  @media screen and (max-width: 767px) {
+    left: auto;
+  }
 `;
