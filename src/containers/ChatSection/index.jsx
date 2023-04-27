@@ -3,7 +3,6 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
-import { Theme } from "emoji-picker-react";
 
 const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
@@ -166,16 +165,20 @@ const ChatSection = ({ user, swap }) => {
               <EmojiPicker
                 theme={swap ? "light" : "dark"}
                 onEmojiClick={handleEmojiSelect}
+                searchDisabled
+                emojiStyle="google"
               />
             </S.EmojiContainer>
           )}
           {isEmojiPanel && window.innerWidth <= 767 && (
             <S.EmojiContainer>
               <EmojiPicker
+                emojiStyle="apple"
                 height={450}
                 width={350}
                 theme={swap ? "light" : "dark"}
                 onEmojiClick={handleEmojiSelect}
+                searchDisabled
               />
             </S.EmojiContainer>
           )}
