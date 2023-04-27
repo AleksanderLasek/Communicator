@@ -6,25 +6,36 @@ import axios from "axios";
 
 const Header = ({ pageTheme, user }) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [mode, setMode] = useState(false);
+  const [mode, setMode] = useState(() => localStorage.getItem("mode") === "true");
   const [isUserPanel, setIsUserPanel] = useState(false);
   const [notsNumber, setNotsNumber] = useState(0);
+
   const toggleUserPanel = () => {
     setIsUserPanel((current) => !current);
   };
-  const getNotsNumber = async () => {
-    const res = await axios.post("http://localhost:5000/nots/show", {
-      email: user.email,
-    });
-    setNotsNumber(res.data.Nots.length);
-  };
+
+  const getNotsNumber = async() => {
+    const res = await axios.post('http://localhost:5000/nots/show', {email: user .email, check: 0});
+    let counter = 0;
+    for (let i = 0; i < res.data.Nots.length; i++) {
+      if (res.data.Nots[i].seen === 0) {
+        counter++;
+      }
+    }
+    setNotsNumber(counter);
+  }
+
   const handleMode = () => {
-    setMode((current) => !current);
-    pageTheme(mode);
+    const newMode = !mode;
+    setMode(newMode);
+    localStorage.setItem("mode", newMode);
+    pageTheme(newMode);
   };
+
   useEffect(() => {
     getNotsNumber();
-  }, [user.email]);
+  }, [user.email])
+
   useEffect(() => {
     const setCurrentWidth = () => {
       setWidth(window.innerWidth);
@@ -34,7 +45,14 @@ const Header = ({ pageTheme, user }) => {
     return () => {
       window.removeEventListener("resize", setCurrentWidth);
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    const storedMode = localStorage.getItem("mode");
+    if (storedMode !== null) {
+      setMode(storedMode === "true");
+    }
+  }, []);
   return (
     <>
       {!user.name && width < 767 && (

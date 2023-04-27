@@ -11,7 +11,7 @@ import FriendsSection from "../containers/FriendsSection";
 import NotificationsSection from "../containers/NotificationsSection";
 
 const App = () => {
-  const [swap, setSwap] = useState(true);
+  const [swap, setSwap] = useState(() => localStorage.getItem("mode") === "true");
   const [cookie] = useCookies(["refreshToken"]);
   const [user, setUser] = useState({
     name: "",
