@@ -4,11 +4,10 @@ export const Wrapper = styled.div`
   width: 100vw;
   min-height: 100vh;
 
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#000000")};
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#1a1a1a")};
   display: flex;
   justify-content: center;
   align-items: center;
-  
 `;
 
 export const Input = styled.input`
@@ -33,7 +32,7 @@ export const Button = styled.div`
   color: black;
   cursor: pointer;
   border-radius: 3px;
-  background-color: #D6E6F2;
+  background-color: #d6e6f2;
   transform: scale(1);
   transition: 0.1s ease;
   &:hover {

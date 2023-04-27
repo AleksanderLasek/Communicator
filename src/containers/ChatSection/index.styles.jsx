@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import EmojiPicker from "emoji-picker-react";
 
 export const Wrapper = styled.div`
   margin-top: 50px;
@@ -18,13 +19,13 @@ export const Wrapper = styled.div`
 `;
 
 export const ListWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#e1e1e1" : "#202020")};
   width: 25vw;
   height: 85vh;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  box-shadow: 0px 0px 5px 3px #00000037;
+  //box-shadow: 0px 0px 5px 3px #00000037;
   border-radius: 15px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -47,7 +48,7 @@ export const FriendWrapper = styled.div`
   min-height: 8vh;
   margin-bottom: 1px;
   width: 100%;
-  background-color:  ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   color: white;
   overflow: hidden;
   box-shadow: 0px 5px 5px -2px #00000060;
@@ -84,14 +85,16 @@ export const ImageWrapper = styled.img`
 
   @media screen and (max-width: 767px) {
     margin: 0;
+    height: 12vw;
+    width: 12vw;
   }
 `;
 
 export const ChatWindowWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};
+  background-color: ${(props) => (props.pageTheme ? "#e1e1e1" : "#202020")};
   width: 60vw;
   height: 85vh;
-  box-shadow: 0px 0px 5px 3px #00000037;
+  //box-shadow: 0px 0px 5px 3px #00000037;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -158,7 +161,6 @@ export const MessageSentLineWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
- 
 `;
 
 export const MessageReceivedLineWrapper = styled.div`
@@ -169,7 +171,7 @@ export const MessageReceivedLineWrapper = styled.div`
 `;
 
 export const MessageReceivedWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};;
+  background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};
   margin: 5px;
   color: white;
   max-width: 50%;
@@ -189,12 +191,28 @@ export const MessageSentWrapper = styled.div`
   overflow-wrap: break-word;
   user-select: text;
 `;
+
 export const MessageSentIcon = styled.i`
   cursor: pointer;
   transform: scale(1);
   transition: 0.2s ease;
-  color: ${(props) => (props.pageTheme ? "#fff" : "#000")};;
-  
+  color: ${(props) => (props.pageTheme ? "#fff" : "#000")};
+
+  &:active {
+    transform: scale(1.1);
+    transition: 0.2s ease;
+  }
+`;
+
+export const EmojiIcon = styled.i`
+  padding-left: 5px;
+  padding-bottom: 13px;
+
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.2s ease;
+  color: ${(props) => (props.pageTheme ? "#fff" : "#000")};
+
   &:active {
     transform: scale(1.1);
     transition: 0.2s ease;
@@ -214,13 +232,30 @@ export const MessageTextBox = styled.div`
   }
 `;
 export const MessageInput = styled.input`
-  width: 80%;
+  width: 85%;
   padding: 5px 15px;
   font-size: 1.3rem;
   font-family: "Red Hat Display";
   border-radius: 20px;
   border: 0;
   outline: 0;
-  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#202020")};;
-  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};;
+  background-color: ${(props) => (props.pageTheme ? "#fff" : "#202020")};
+  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};
+`;
+
+export const EmojiContainer = styled.div`
+  position: absolute;
+  bottom: 41px;
+  left: 30vw;
+  --epr-bg-color: #000000;
+
+  @media screen and (max-width: 1023px) {
+    left: 35vw;
+  }
+
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    left: auto;
+    right: 0;
+  }
 `;

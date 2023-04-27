@@ -126,7 +126,7 @@ export const Wrapper = styled.div`
   height: auto;
   box-shadow: 0px 0px 3px 5px #0000002f;
 
-  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
+  background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};
   position: fixed;
   overflow: hidden;
   transition: all 0.5s ease;

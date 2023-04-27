@@ -5,14 +5,14 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 50px;
   padding: 0 3vw;
-  background-color: ${(props) => (props.pageTheme ? "#aa28cb" : "#30a5ff79")};
+  background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};
   display: flex;
   box-shadow: 0px 0px 5px 3px #0000006e;
   justify-content: space-around;
   align-items: center;
   color: white;
   z-index: 999;
-  
+
   @media screen and (max-width: 1023px) {
     bottom: 0;
     padding: 0;
@@ -115,7 +115,6 @@ export const AWrapper = styled.a`
 
   display: flex;
   align-items: center;
-  
 `;
 
 export const MobileLogo = styled.a`
@@ -139,12 +138,12 @@ const yellow = keyframes`
 `;
 
 export const Icon = styled.i`
-  color: ${({ mode }) => (mode ? '#FFC107' : '#757575')};
+  color: ${({ mode }) => (mode ? "#FFC107" : "#757575")};
   cursor: pointer;
   transition: color 0.3s ease-in-out;
 
   &:hover {
-    color: ${({ mode }) => (mode ? '#FFA000' : '#616161')};
+    color: ${({ mode }) => (mode ? "#FFA000" : "#616161")};
   }
 
   &:active {
@@ -166,4 +165,4 @@ export const NotsNumberNot = styled.div`
   z-index: 1;
   margin-top: -10px;
   border-radius: 50%;
-`
+`;

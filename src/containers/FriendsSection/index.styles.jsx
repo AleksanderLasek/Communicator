@@ -15,7 +15,6 @@ export const Wrapper = styled.div`
 
   @media screen and (max-width: 767px) {
   }
-  
 `;
 
 export const Label = styled.div`
@@ -28,7 +27,6 @@ export const Label = styled.div`
   letter-spacing: 1.5px;
   margin-top: 20px;
   margin-bottom: 10px;
-
   cursor: pointer;
 
   display: flex;
@@ -80,7 +78,7 @@ export const Invite = styled.div`
   margin-bottom: 0.5vh;
   margin-left: 0.5vw;
   margin-right: 0.5vw;
-  background-color: white;
+  background-color: ${(props) => (props.pageTheme ? "#e0e0e0" : "#c1c1c1")};
   box-shadow: 0px 0px 5px 3px #0000004b;
   border-radius: 10px;
 
@@ -141,7 +139,7 @@ export const User = styled.div`
   margin-bottom: 0.5vh;
   margin-left: 0.5vw;
   margin-right: 0.5vw;
-  background-color: white;
+  background-color: ${(props) => (props.pageTheme ? "#e0e0e0" : "#c1c1c1")};
   box-shadow: 0px 0px 5px 3px #0000004b;
   border-radius: 10px;
 
@@ -259,4 +257,4 @@ export const FriendsWrapper = styled.div`
     background-color: transparent;
     max-width: 98vw;
   }
-`
+`;
