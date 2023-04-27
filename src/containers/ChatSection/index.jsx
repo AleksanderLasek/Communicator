@@ -161,9 +161,19 @@ const ChatSection = ({ user, swap }) => {
           })}
         </S.MessageWindowWrapper>
         <S.MessageTextBox>
-          {isEmojiPanel && (
+          {isEmojiPanel && window.innerWidth > 767 && (
             <S.EmojiContainer>
               <EmojiPicker
+                theme={swap ? "light" : "dark"}
+                onEmojiClick={handleEmojiSelect}
+              />
+            </S.EmojiContainer>
+          )}
+          {isEmojiPanel && window.innerWidth <= 767 && (
+            <S.EmojiContainer>
+              <EmojiPicker
+                height={450}
+                width={350}
                 theme={swap ? "light" : "dark"}
                 onEmojiClick={handleEmojiSelect}
               />

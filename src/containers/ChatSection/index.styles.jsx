@@ -254,6 +254,8 @@ export const EmojiContainer = styled.div`
   }
 
   @media screen and (max-width: 767px) {
+    position: fixed;
     left: auto;
+    right: 0;
   }
 `;
