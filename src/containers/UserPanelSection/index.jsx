@@ -82,7 +82,7 @@ const UserPanelSection = ({user, swap}) => {
     window.location.reload();
   }
   return (
-    <S.Wrapper pageTheme={swap}>
+    <S.Wrapper swap={swap}>
       <S.NameWrapper >{user.name} {user.surname}</S.NameWrapper>
       <S.ImageWrapper>
         <S.Image src={file} alt="avatar"/>

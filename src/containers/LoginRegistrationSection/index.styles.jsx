@@ -52,7 +52,7 @@ export const Button = styled.div`
   color: ${(props) => (props.pageTheme ? "#fff" : "#000")};
   cursor: pointer;
   border-radius: 3px;
-  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   transform: scale(1);
   transition: 0.1s ease;
   &:hover {

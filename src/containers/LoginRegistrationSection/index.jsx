@@ -99,7 +99,7 @@ const LoginRegistrationSection = ({ swap }) => {
               style={{ border: inputBorder }}
               onKeyPress={handleEnter}
             />
-            <S.Button onClick={handleSignIn}>Sign in</S.Button>
+            <S.Button pageTheme={swap} onClick={handleSignIn}>Sign in</S.Button>
             {error}
           </S.InputsWrapper>
           <S.WelcomeMessage>

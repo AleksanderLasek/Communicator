@@ -103,19 +103,19 @@ const ChatSection = ({ user, swap }) => {
       <S.ListWrapper pageTheme={swap}>
         {friends.map((friend, index) => {
           return (
-            <S.FriendWrapper pageTheme={swap} key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email && "#03141f"}}>
+            <S.FriendWrapper pageTheme={swap} key={index} onClick={() => ChooseChat(friend)} style={{backgroundColor: friend.email === receiver.email}}>
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
-              <S.FriendNameWrapper>{friend.name} {friend.surname}</S.FriendNameWrapper>
+              <S.FriendNameWrapper pageTheme={swap}>{friend.name} {friend.surname}</S.FriendNameWrapper>
             </S.FriendWrapper>
           );
         })}
       </S.ListWrapper>
       <S.ChatWindowWrapper pageTheme={swap}>
-        <S.ChatBarWrapper>
+        <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
           <S.ChatNameWrapper>{receiver.name} {receiver.surname}</S.ChatNameWrapper>
         </S.ChatBarWrapper>
-        <S.MessageWindowWrapper>
+        <S.MessageWindowWrapper pageTheme={swap}>
           {chat.map((message, index) => {
             if (message.sender === user.name) {
               return (

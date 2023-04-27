@@ -47,7 +47,7 @@ export const FriendWrapper = styled.div`
   min-height: 8vh;
   margin-bottom: 1px;
   width: 100%;
-  background-color:  ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
+  background-color:  ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   color: white;
   overflow: hidden;
   box-shadow: 0px 5px 5px -2px #00000060;
@@ -110,7 +110,7 @@ export const ChatWindowWrapper = styled.div`
 export const ChatBarWrapper = styled.div`
   height: 6vh;
   width: 100%;
-  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
+  background-color: ${(props) => (props.pageTheme ? "#769fcd" : "#14507d")};
   color: white;
   box-shadow: 0px 5px 5px -2px #00000060;
   display: flex;
@@ -169,7 +169,7 @@ export const MessageReceivedLineWrapper = styled.div`
 `;
 
 export const MessageReceivedWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#30a5ff79" : "#769FCD")};;
+  background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};;
   margin: 5px;
   color: white;
   max-width: 50%;
@@ -180,7 +180,7 @@ export const MessageReceivedWrapper = styled.div`
 `;
 
 export const MessageSentWrapper = styled.div`
-  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   margin: 5px;
   color: white;
   max-width: 50%;
@@ -203,7 +203,7 @@ export const MessageSentIcon = styled.i`
 
 export const MessageTextBox = styled.div`
   width: 100%;
-  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   display: flex;
   border-radius: 0 0px 15px 15px;
   justify-content: space-around;

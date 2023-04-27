@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   width: 100vw;
   height: 50px;
   padding: 0 3vw;
-  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#30a5ff79")};
+  background-color: ${(props) => (props.pageTheme ? "#aa28cb" : "#30a5ff79")};
   display: flex;
   box-shadow: 0px 0px 5px 3px #0000006e;
   justify-content: space-around;

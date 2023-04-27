@@ -23,7 +23,8 @@ export const Label = styled.div`
   margin: 0;
   padding: 3px;
   font-weight: bold;
-  color: white;
+  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   letter-spacing: 1.5px;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -53,7 +54,7 @@ export const InvitesWrapper = styled.div`
   flex-wrap: wrap;
   max-width: 90vw;
   box-shadow: 7px 0px 14px 1px rgba(0, 0, 0, 0.14);
-  background-color: #216377;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   border-radius: 10px;
 
   @media screen and (max-width: 1023px) {
@@ -114,7 +115,7 @@ export const UsersWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   box-shadow: 7px 0px 14px 1px rgba(0, 0, 0, 0.14);
-  background-color: #216377;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   border-radius: 10px;
 
   @media screen and (max-width: 1023px) {
@@ -209,7 +210,7 @@ export const SearchBar = styled.div`
   padding: 20px;
   margin-bottom: 5px;
   box-shadow: 0px 0px 5px 3px #0000004e;
-  background-color: #216377;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   border: 1px solid rgba(0, 0, 0, 0.173);
   display: flex;
   justify-content: center;
@@ -241,11 +242,13 @@ export const SearchBarInput = styled.input`
 
 export const FriendsWrapper = styled.div`
   box-shadow: 0px 0px 5px 3px #00000049;
-  width: 90vw;
+  max-width: 90vw;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   border-radius: 10px;
   padding: 5px;
   display: flex;
   flex-wrap: wrap;
+
   @media screen and (max-width: 1023px) {
     justify-content: space-evenly;
   }
