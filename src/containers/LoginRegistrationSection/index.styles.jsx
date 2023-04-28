@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const LoginWrapper = styled.div`
   width: 50vw;
-  height: 40vh;
+  height: auto;
+  padding: 20px;
   display: flex;
   color: ${(props) => (props.pageTheme ? "#000000" : "#fff")};
   border-radius: 10px;

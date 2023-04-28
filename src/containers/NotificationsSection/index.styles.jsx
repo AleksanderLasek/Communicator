@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  margin-top: 0.3vh;
+  margin-top: 50px;
   width: 100vw;
   height: 99.7vh;
-  padding: 50px;
+  padding: 20px;
   display: flex;
   justify-content: start;
   align-items: center;
   flex-direction: column;
+  overflow-y: scroll;
 
   @media screen and (max-width: 1023px) {
     justify-content: end;

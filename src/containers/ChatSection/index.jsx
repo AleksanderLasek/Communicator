@@ -3,10 +3,11 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
-
+import { convertBase64 } from "../../components/converterBase";
 const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
+  const [image, setImage] = useState('');
   const [receiver, setReceiver] = useState({
     name: "",
     surname: "",
@@ -18,7 +19,16 @@ const ChatSection = ({ user, swap }) => {
   const [cookie] = useCookies();
   const handleChange = (e) => {
     setMessage(e.target.value);
+
   };
+  const handleDrag = async(e) => {
+    e.preventDefault();
+
+      console.log(e)
+
+    const file = await convertBase64(e.target.files[0]);
+    setImage(file)
+  }
   const SendMessage = async () => {
     setMessage("");
     try {
@@ -182,6 +192,7 @@ const ChatSection = ({ user, swap }) => {
               />
             </S.EmojiContainer>
           )}
+          <img src={image}/>
           <S.EmojiIcon
             pageTheme={swap}
             className="large smile outline icon"
@@ -190,9 +201,12 @@ const ChatSection = ({ user, swap }) => {
 
           <S.MessageInput
             pageTheme={swap}
+            type="file"
             value={chosenEmoji ? chosenEmoji.emoji : message}
             onChange={handleChange}
             onKeyPress={sendKey}
+            onDrop={handleDrag}
+            
           />
 
           <S.MessageSentIcon

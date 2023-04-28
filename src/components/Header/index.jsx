@@ -75,7 +75,7 @@ const Header = ({ pageTheme, user }) => {
             )}
           </>
         )}
-
+        
         <S.CenterWrapper>
           {width > 767 ? (
             <>

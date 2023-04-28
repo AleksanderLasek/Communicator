@@ -5,6 +5,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import AvatarEditor from "react-avatar-editor";
 import { createCanvas, loadImage } from "canvas";
+import { convertBase64 } from "../../components/converterBase";
 
 const UserPanelSection = ({ user, pageTheme }) => {
   const [file, setFile] = useState(user.avatar);
@@ -78,20 +79,7 @@ const UserPanelSection = ({ user, pageTheme }) => {
       console.log(err);
     }
   };
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+  
   const Logout = async (e) => {
     e.preventDefault();
     deleteCookies("refreshToken");

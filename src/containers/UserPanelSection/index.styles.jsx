@@ -126,7 +126,7 @@ export const Wrapper = styled.div`
   height: auto;
   box-shadow: 0px 0px 3px 5px #0000002f;
 
-  background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};
+  background-color: ${(props) => (!props.pageTheme ? "#14507d" : "#769FCD")};
   position: fixed;
   overflow: hidden;
   transition: all 0.5s ease;
@@ -138,6 +138,7 @@ export const Wrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   border-radius: 0 0 10px 10px;
+  
 
   @media screen and (max-width: 1023px) {
     top: unset;
