@@ -3,7 +3,7 @@ import * as S from "./index.styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const NotificationsSection = ({ user, swap }) => {
+const NotificationsSection = ({ user, swap, changeLoaded }) => {
   const [nots, setNots] = useState([]);
   const [cookie] = useCookies();
   const ShowNotifications = async () => {
@@ -12,6 +12,7 @@ const NotificationsSection = ({ user, swap }) => {
         email: user.email, check: 1,
       });
       setNots(res.data.Nots);
+      changeLoaded(true);
     } catch (err) {
       console.log(err);
     }

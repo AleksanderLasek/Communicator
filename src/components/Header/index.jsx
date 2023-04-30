@@ -3,12 +3,14 @@ import * as S from "./index.styles";
 import logo from "../../images/logo.png";
 import UserPanelSection from "../../containers/UserPanelSection";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const Header = ({ pageTheme, user }) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [mode, setMode] = useState(() => localStorage.getItem("mode") === "true");
   const [isUserPanel, setIsUserPanel] = useState(false);
   const [notsNumber, setNotsNumber] = useState(0);
+  const [cookie] = useCookies();
 
   const toggleUserPanel = () => {
     setIsUserPanel((current) => !current);
@@ -112,7 +114,7 @@ const Header = ({ pageTheme, user }) => {
 
         {width > 768 && (
           <>
-            {user.name && (
+            {cookie.refreshToken && (
               <div>
                 <i className="user circle icon" onClick={toggleUserPanel} />
               </div>

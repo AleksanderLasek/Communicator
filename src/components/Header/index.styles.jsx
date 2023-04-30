@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   color: white;
-  z-index: 999;
+  z-index: 99;
 
   @media screen and (max-width: 1023px) {
     bottom: 0;

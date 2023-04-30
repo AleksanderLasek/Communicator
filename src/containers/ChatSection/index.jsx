@@ -6,7 +6,7 @@ import EmojiPicker from "emoji-picker-react";
 import { convertBase64 } from "../../components/converterBase";
 import { createCanvas, loadImage } from "canvas";
 import { scaleImage } from "../../components/scaleImage";
-const ChatSection = ({ user, swap }) => {
+const ChatSection = ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [image, setImage] = useState({
@@ -57,14 +57,18 @@ const ChatSection = ({ user, swap }) => {
         height
       );
       const outputBase64 = canvas.toDataURL();
-      const miniature = await scaleImage(convertedImage, 100, 100);
+      const miniature = await scaleImage(convertedImage, 200, 200);
       let splitFileName = file.name.split('.');
       let fileName = splitFileName[0].slice(0, 15);
       if(fileName.length === 15){
         fileName = fileName + '...';
       }
       fileName = fileName + '.' + splitFileName[1];
-      setImage({fileName: fileName, src: outputBase64, miniature: miniature})
+      setImage({
+        fileName: fileName, 
+        src: outputBase64, 
+        miniature: miniature
+      })
     };
     img.src = convertedImage;
   }
@@ -107,6 +111,7 @@ const ChatSection = ({ user, swap }) => {
       });
 
       setChat(res.data.Chat);
+      changeLoaded(true);
     } catch (err) {
       console.log(err);
     }

@@ -9,8 +9,10 @@ import Router from "../Router";
 import ChatSection from "../containers/ChatSection";
 import FriendsSection from "../containers/FriendsSection";
 import NotificationsSection from "../containers/NotificationsSection";
+import LoadingPage from "../containers/LoadingPage";
 
 const App = () => {
+  const [loaded, setLoaded] = useState(false);
   const [swap, setSwap] = useState(() => localStorage.getItem("mode") === "true");
   const [cookie] = useCookies(["refreshToken"]);
   const [user, setUser] = useState({
@@ -40,21 +42,24 @@ const App = () => {
       refreshToken();
     }
   }, []);
+  const changeLoaded = (data) => {
+    setLoaded(data);
+  }
   return (
     <>
-    
+      {!loaded && <LoadingPage/>}
       <Header pageTheme={pageTheme} swap={swap} user={user} />
       <S.Wrapper pageTheme={swap}>
         {cookie.refreshToken ? (
           <>
             <Router path="/chat">
-              <ChatSection user={user} swap={swap}></ChatSection>
+              <ChatSection user={user} swap={swap} changeLoaded={changeLoaded}></ChatSection>
             </Router>
             <Router path="/friends">
-              <FriendsSection user={user} swap={swap} />
+              <FriendsSection user={user} swap={swap} changeLoaded={changeLoaded}/>
             </Router>
             <Router path="/nots">
-              <NotificationsSection user={user} swap={swap} />
+              <NotificationsSection user={user} swap={swap} changeLoaded={changeLoaded}/>
             </Router>
           </>
         ) : (

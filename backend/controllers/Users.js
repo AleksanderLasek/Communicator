@@ -14,7 +14,6 @@ export const GetUsers = async(req, res) => {
     if(filter) { 
         UsersList = await Users.find(filtering).toArray(); 
     }
-    console.log(filter)
     const BlockedCollection = db.collection(`${email}Blocked`);
     const BlockedFromCollection = db.collection(`${email}BlockedFrom`);
     let BlockedList = await BlockedCollection.find({}).toArray();

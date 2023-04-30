@@ -11,12 +11,13 @@ export const SendMessage = async(req, res) => {
     const ChatName = [sender, receiver];
     ChatName.sort();  
     const ChatCollection = db.collection(`${ChatName[0]}${ChatName[1]}`);
-    await ChatCollection.insertOne({
+    const ress = await ChatCollection.insertOne({
         message: message,
         sender: sender,
         image: image,
         miniature: miniature,
     })
+    console.log(ress);
     await axios.post('http://localhost:5000/nots/add', {receiver: receiver, sender: sender, type: 3});
     return res.status(200);
 }

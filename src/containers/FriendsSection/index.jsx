@@ -3,7 +3,7 @@ import * as S from "./index.styles";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 
-const FriendsSection = ({ user, swap }) => {
+const FriendsSection = ({ user, swap, changeLoaded }) => {
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [invitations, setInvitations] = useState([]);
@@ -38,6 +38,7 @@ const FriendsSection = ({ user, swap }) => {
           filter: emailList,
         });
         setFriends(res.data.UsersList);
+        changeLoaded(true);
       } catch (err) {
         console.log(err);
       }
@@ -104,6 +105,7 @@ const FriendsSection = ({ user, swap }) => {
           filter: emailList,
         });
         setInvitations(res.data.UsersList);
+        changeLoaded(true);
       } catch (err) {
         console.log(err);
       }
@@ -124,6 +126,7 @@ const FriendsSection = ({ user, swap }) => {
           filter: emailList,
         });
         setBlocked(res.data.UsersList);
+        changeLoaded(true);
       } catch (err) {
         console.log(err);
       }
