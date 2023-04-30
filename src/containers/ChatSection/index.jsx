@@ -4,10 +4,16 @@ import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
 import { convertBase64 } from "../../components/converterBase";
+import { createCanvas, loadImage } from "canvas";
+import { scaleImage } from "../../components/scaleImage";
 const ChatSection = ({ user, swap }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState({
+    src: '',
+    miniature: '',
+    fileName: ''
+  });
   const [receiver, setReceiver] = useState({
     name: "",
     surname: "",
@@ -23,19 +29,71 @@ const ChatSection = ({ user, swap }) => {
   };
   const handleDrag = async(e) => {
     e.preventDefault();
+    const file = e.dataTransfer.files[0];
+  
+    const convertedImage = await convertBase64(file);
+    const img = new Image();
+    img.onload = async () => {
+      const maxWidth =  768;
+      const maxHeight = 1366;
+      const canvas = createCanvas(maxWidth, maxHeight);
+      const ctx = canvas.getContext("2d");
+      let width = img.width;
+      let height = img.height;
+      if (width > maxWidth) {
+        height *= maxWidth / width;
+        width = maxWidth;
+      }
+  
+      if (height > maxHeight) {
+        width *= maxHeight / height;
+        height = maxHeight;
+      }
+      ctx.drawImage(
+        img, 
+        0,
+        0, 
+        width,
+        height
+      );
+      const outputBase64 = canvas.toDataURL();
+      const miniature = await scaleImage(convertedImage, 100, 100);
+      let splitFileName = file.name.split('.');
+      let fileName = splitFileName[0].slice(0, 15);
+      if(fileName.length === 15){
+        fileName = fileName + '...';
+      }
+      fileName = fileName + '.' + splitFileName[1];
+      setImage({fileName: fileName, src: outputBase64, miniature: miniature})
+    };
+    img.src = convertedImage;
+  }
+  useEffect(() => {
+    const apiKey = '1yWvQtmB2arIKAF27SmR9D1jOrdKPAIxx7u6GVkQPDPk'; // API klucz
 
-      console.log(e)
-
-    const file = await convertBase64(e.target.files[0]);
-    setImage(file)
+    fetch(`https://www.googleapis.com/drive/v2/files/${apiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(":)")
+        console.log(data.files);
+      })   
+      .catch(error => {  
+        console.error(error);
+      });
+  }, [user.email]);
+  const handleDragOver = (e) => {
+    e.preventDefault();
   }
   const SendMessage = async () => {
     setMessage("");
+    setImage({src: '', fileName: ''})
     try {
       await axios.post("http://localhost:5000/chat/send", {
         message: message,
         sender: user.email,
         receiver: receiver.email,
+        image: image.src,
+        miniature: image.miniature
       });
     } catch (err) {
       console.log(err);
@@ -141,7 +199,7 @@ const ChatSection = ({ user, swap }) => {
           );
         })}
       </S.ListWrapper>
-      <S.ChatWindowWrapper pageTheme={swap}>
+      <S.ChatWindowWrapper pageTheme={swap} onDrop={handleDrag} onDragOver={handleDragOver}>
         <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
           <S.ChatNameWrapper>
@@ -155,6 +213,9 @@ const ChatSection = ({ user, swap }) => {
                 <S.MessageSentLineWrapper key={index}>
                   <S.MessageSentWrapper pageTheme={swap}>
                     {message.message}
+                    {message.miniature && (
+                      <S.ImageMessage src={message.miniature}/>
+                    )}
                   </S.MessageSentWrapper>
                 </S.MessageSentLineWrapper>
               );
@@ -163,12 +224,23 @@ const ChatSection = ({ user, swap }) => {
                 <S.MessageReceivedLineWrapper key={index}>
                   <S.MessageReceivedWrapper pageTheme={swap}>
                     {message.message}
+                    {message.miniature && (
+                      <S.ImageMessage src={message.miniature}/>
+                    )}
                   </S.MessageReceivedWrapper>
                 </S.MessageReceivedLineWrapper>
               );
             }
           })}
         </S.MessageWindowWrapper>
+        {image.src !== '' && (
+          <S.FilesWrapper>
+            <S.FileElement>
+              <S.DeleteFileIcon className="small x icon"/>
+              {image.fileName}
+            </S.FileElement>
+          </S.FilesWrapper>
+        )}
         <S.MessageTextBox>
           {isEmojiPanel && window.innerWidth > 767 && (
             <S.EmojiContainer>
@@ -192,16 +264,15 @@ const ChatSection = ({ user, swap }) => {
               />
             </S.EmojiContainer>
           )}
-          <img src={image}/>
+          
           <S.EmojiIcon
             pageTheme={swap}
             className="large smile outline icon"
             onClick={toggleEmojiPanel}
           />
-
           <S.MessageInput
             pageTheme={swap}
-            type="file"
+            
             value={chosenEmoji ? chosenEmoji.emoji : message}
             onChange={handleChange}
             onKeyPress={sendKey}

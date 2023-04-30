@@ -3,7 +3,7 @@ import { db } from "../database/Mongodb.js";
 
 
 export const SendMessage = async(req, res) => {
-    const {message, sender, receiver} = req.body;
+    const {message, sender, receiver, image, miniature} = req.body;
     if(message.length > 255) {
         return res.status(401).send({msg: 'Message too long'});
     }
@@ -14,6 +14,8 @@ export const SendMessage = async(req, res) => {
     await ChatCollection.insertOne({
         message: message,
         sender: sender,
+        image: image,
+        miniature: miniature,
     })
     await axios.post('http://localhost:5000/nots/add', {receiver: receiver, sender: sender, type: 3});
     return res.status(200);

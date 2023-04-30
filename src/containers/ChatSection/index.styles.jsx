@@ -259,3 +259,30 @@ export const EmojiContainer = styled.div`
     right: 0;
   }
 `;
+
+export const FilesWrapper = styled.div`
+  width: 100%;
+  height: 35px;
+  background-color: #414141;
+  display: flex;
+  padding: 5px 5px;
+`
+export const FileElement = styled.div`
+  padding: 0px 10px;
+  position: relative;
+  border-radius: 5px;
+  color: #b8b8b8;
+  display: flex;
+  background-color: #161616;
+  box-shadow: 0px 0px 5px 3px #00000071;
+`
+
+export const DeleteFileIcon = styled.i`
+  position: absolute;
+  right: -4px;
+  top: 0px;
+`
+export const ImageMessage = styled.img`
+  
+  width: 100%;
+`
