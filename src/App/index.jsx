@@ -47,24 +47,36 @@ const App = () => {
   }
   return (
     <>
-      {!loaded && <LoadingPage/>}
+      {!loaded && <LoadingPage />}
       <Header pageTheme={pageTheme} swap={swap} user={user} />
       <S.Wrapper pageTheme={swap}>
         {cookie.refreshToken ? (
           <>
             <Router path="/chat">
-              <ChatSection user={user} swap={swap} changeLoaded={changeLoaded}></ChatSection>
+              <ChatSection
+                user={user}
+                swap={swap}
+                changeLoaded={changeLoaded}
+              ></ChatSection>
             </Router>
             <Router path="/friends">
-              <FriendsSection user={user} swap={swap} changeLoaded={changeLoaded}/>
+              <FriendsSection
+                user={user}
+                swap={swap}
+                changeLoaded={changeLoaded}
+              />
             </Router>
             <Router path="/nots">
-              <NotificationsSection user={user} swap={swap} changeLoaded={changeLoaded}/>
+              <NotificationsSection
+                user={user}
+                swap={swap}
+                changeLoaded={changeLoaded}
+              />
             </Router>
           </>
         ) : (
           <>
-            <LoginRegistrationSection swap={swap} />
+            <LoginRegistrationSection changeLoaded={changeLoaded} swap={swap} />
           </>
         )}
       </S.Wrapper>

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 
-const LoginRegistrationSection = ({ swap }) => {
+const LoginRegistrationSection = ({ swap, changeLoaded }) => {
   const [choice, setChoice] = useState(false);
   const [cookie, setCookie] = useCookies(["refreshToken"]);
   const [inputBorder, setInputBorders] = useState("");
@@ -23,6 +23,11 @@ const LoginRegistrationSection = ({ swap }) => {
     setChoice((current) => !current);
     setInputBorders("");
   };
+
+  useEffect(() => {
+    changeLoaded(true);
+  });
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
@@ -99,7 +104,9 @@ const LoginRegistrationSection = ({ swap }) => {
               style={{ border: inputBorder }}
               onKeyPress={handleEnter}
             />
-            <S.Button pageTheme={swap} onClick={handleSignIn}>Sign in</S.Button>
+            <S.Button pageTheme={swap} onClick={handleSignIn}>
+              Sign in
+            </S.Button>
             {error}
           </S.InputsWrapper>
           <S.WelcomeMessage>
@@ -113,7 +120,7 @@ const LoginRegistrationSection = ({ swap }) => {
           <S.LoginWrapper pageTheme={swap}>
             <S.WelcomeMessage>Welcome!</S.WelcomeMessage>
             <S.InputsWrapper>
-                <S.Input
+              <S.Input
                 pageTheme={swap}
                 placeholder="Name"
                 name="name"
@@ -121,7 +128,7 @@ const LoginRegistrationSection = ({ swap }) => {
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-                <S.Input
+              <S.Input
                 pageTheme={swap}
                 placeholder="Surname"
                 name="surname"
@@ -129,7 +136,7 @@ const LoginRegistrationSection = ({ swap }) => {
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-                <S.Input
+              <S.Input
                 pageTheme={swap}
                 placeholder="Email"
                 name="email"
@@ -137,7 +144,7 @@ const LoginRegistrationSection = ({ swap }) => {
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-                <S.Input
+              <S.Input
                 pageTheme={swap}
                 placeholder="Password"
                 type="password"
@@ -146,13 +153,17 @@ const LoginRegistrationSection = ({ swap }) => {
                 style={{ border: inputBorder }}
                 onKeyPress={handleEnterOnSignUp}
               />
-              <S.Button pageTheme={swap} onClick={handleSignUp}>Sign up</S.Button>
+              <S.Button pageTheme={swap} onClick={handleSignUp}>
+                Sign up
+              </S.Button>
               {error}
             </S.InputsWrapper>
             <S.WelcomeMessage>
               Already have an account?
               <br />
-              <S.ChangeButton pageTheme={swap} onClick={handleChoice}>Sign in</S.ChangeButton>
+              <S.ChangeButton pageTheme={swap} onClick={handleChoice}>
+                Sign in
+              </S.ChangeButton>
             </S.WelcomeMessage>
           </S.LoginWrapper>
         </>
