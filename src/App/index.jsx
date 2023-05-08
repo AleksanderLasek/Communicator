@@ -10,10 +10,13 @@ import ChatSection from "../containers/ChatSection";
 import FriendsSection from "../containers/FriendsSection";
 import NotificationsSection from "../containers/NotificationsSection";
 import LoadingPage from "../containers/LoadingPage";
+import LandingPage from "../containers/LandingPage";
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
-  const [swap, setSwap] = useState(() => localStorage.getItem("mode") === "true");
+  const [swap, setSwap] = useState(
+    () => localStorage.getItem("mode") === "true"
+  );
   const [cookie] = useCookies(["refreshToken"]);
   const [user, setUser] = useState({
     name: "",
@@ -44,7 +47,7 @@ const App = () => {
   }, []);
   const changeLoaded = (data) => {
     setLoaded(data);
-  }
+  };
   return (
     <>
       {!loaded && <LoadingPage />}
@@ -52,6 +55,9 @@ const App = () => {
       <S.Wrapper pageTheme={swap}>
         {cookie.refreshToken ? (
           <>
+            <Router path="/">
+              <LandingPage swap={swap}></LandingPage>
+            </Router>
             <Router path="/chat">
               <ChatSection
                 user={user}
