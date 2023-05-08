@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./index.styles";
 
-const LandingPage = () => {
+const LandingPage = ({changeLoaded}) => {
+  useEffect(() => {
+    changeLoaded(true);
+  }, [])
   return (
     <S.Wrapper>
       <S.Vita>

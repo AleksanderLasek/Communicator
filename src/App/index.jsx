@@ -55,7 +55,9 @@ const App = () => {
       <S.Wrapper pageTheme={swap}>
         {cookie.refreshToken ? (
           <>
-            <LandingPage></LandingPage>
+            <Router path="/">
+              <LandingPage changeLoaded={changeLoaded}></LandingPage>
+            </Router>
             <Router path="/chat">
               <ChatSection
                 user={user}
