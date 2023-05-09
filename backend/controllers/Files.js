@@ -13,7 +13,6 @@ const drive = google.drive({ version: 'v3', auth: client });
 
 export const uploadFile = async (req, res) => {
   const { file } = req;
-  console.log(req.file)
   try {
     const response = await drive.files.create({
       requestBody: {
@@ -25,7 +24,6 @@ export const uploadFile = async (req, res) => {
         body: fs.createReadStream(file.path),
       },
     });
-    console.log(`File uploaded: ${response.data.name} (${response.data.id})`);
     return res.status(200).send(response.data.id);
    
   } catch (error) {
@@ -35,10 +33,9 @@ export const uploadFile = async (req, res) => {
 
 export const GetFile = async (req, res) => {
   const { file_id } = req.body;
-
   drive.files.get(
     {
-      fileId: '1txQs4KDpTWtBHuCKhrTK9SyVKGFFKcwu',
+      fileId: file_id,
       alt: 'media',
     },
     { responseType: 'arraybuffer' },
@@ -46,14 +43,6 @@ export const GetFile = async (req, res) => {
       if (err) return console.error('The API returned an error:', err.message);
 
       const fileData = Buffer.from(response.data, 'binary');
-      const mimeType = response.headers['content-type'];
-      const fileName = response.headers['content-disposition'].match(/filename="(.+)"/);
-
-      res.set({
-        'Content-Type': mimeType,
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Length': response.headers['content-length'],
-      });
       return res.status(200).send(fileData);
     }
   );

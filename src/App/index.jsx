@@ -56,7 +56,7 @@ const App = () => {
         {cookie.refreshToken ? (
           <>
             <Router path="/">
-              <LandingPage changeLoaded={changeLoaded} swap={swap}></LandingPage>
+              <LandingPage changeLoaded={changeLoaded} swap={swap} user={user}></LandingPage>
             </Router>
             <Router path="/chat">
               <ChatSection

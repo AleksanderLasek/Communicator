@@ -1,0 +1,14 @@
+168.254.0.128/26
+255.255.255.192
+//26 1siec -> 2^6 adresów -> 64 adresów
+//27 2sieci -> 2^5 adresów -> 32 adresów W KAŻDEJ SIECI
+//28 4sieci -> 2^4 adresów -> 16 adresów W KAŻDEJ SIECI
+//29 8sieci -> 2^3 adresów -> 8 adresy W KAŻDEJ SIECI
+//30 16sieci -> 2^2 adresów -> 4 adresy W KAŻDEJ SIECI
+
+1sza siec -> 168.254.0.128 / 28  DO 168.254.0.143
+2ga siec -> 168.254.0.144 / 29  DO 168.254.0.151
+3cia siec -> 168.254.0.152 / 29  DO 168.254.0.159
+4ta siec -> 168.254.0.160 / 29  DO 168.254.0.167
+5ta siec -> 168.254.0.168 / 30  DO 168.254.0.171
+6ta siec -> 168.254.0.172 / 30  DO 168.254.0.175

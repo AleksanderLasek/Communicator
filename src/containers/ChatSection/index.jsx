@@ -7,10 +7,8 @@ import EmojiPicker from "emoji-picker-react";
 const ChatSection =  ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
-  const [files, setFiles] = useState({
-    fileName: '',
-    fileId: '',
-  });
+  const [files, setFiles] = useState('');
+  const [droppedFile, setDroppedFile] = useState();
   const [receiver, setReceiver] = useState({
     name: "",
     surname: "", 
@@ -29,13 +27,10 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     try { 
       const res = await axios.post('http://localhost:5000/files/get', {file_id: file_id}, {responseType: 'blob'});
       console.log(res)
-      const mimeType = "image/jpeg";
-      const extension = mimeType.split("/")[1];   
-      const name = fileName.split(".")[0];
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${name}.${extension}`);
+      link.setAttribute('download', `${fileName}`);
       document.body.appendChild(link);
       link.click();
     }catch(err){  
@@ -49,35 +44,41 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
 
   const handleDragV2 = async(e) => {
     e.preventDefault();
-    const getF = e.dataTransfer.files[0];
+    setDroppedFile(e.dataTransfer.files[0]);
+    setFiles(e.dataTransfer.files[0].name)
+    
+  } 
+  
+  const SendMessage = async () => {
     const file = new FormData();
-    file.append("file", e.dataTransfer.files[0]);
+    file.append("file", droppedFile);
+    setMessage("");
+    setFiles('')
+    let file_id;
     try {
       const res = await axios.post('http://localhost:5000/files/upload', file, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      setFiles({fileName: getF.name});
+      file_id = res.data;
     }catch(err){  
       console.log(err);
     }
-  } 
-  
-  const SendMessage = async () => {
-    setMessage("");
-    setFiles({fileName: ''})
+    console.log(files.fileId);
     try {
       await axios.post("http://localhost:5000/chat/send", {
         message: message,
         sender: user.email,
         receiver: receiver.email,
-        fileId: files.fileId,
-        fileName: files.fileName
+        fileId: file_id,
+        fileName: files
       });
+      GetChat();
     } catch (err) {
       console.log(err);
     }
+    
   };
   const GetChat = async () => {
     try {
@@ -197,7 +198,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
               
                     {message.fileName && 
                       <>
-                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)}>{message.fileName}</S.FileMessage>
+                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)}><i className="file outline icon"/>{message.fileName}</S.FileMessage>
                       </>
                     }
                   </S.MessageSentWrapper>
@@ -210,7 +211,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
                     {message.message}
                     {message.fileName && 
                       <>
-                      <S.FileMessage onClick={getdata(message.fileId, message.fileName)}>{message.fileName}</S.FileMessage>
+                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)}><i className="file outline icon"/>{message.fileName}</S.FileMessage>
                       </>
                     }
                    
@@ -220,11 +221,11 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
             }
           })}
         </S.MessageWindowWrapper>
-        {files.fileName !== '' && (
+        {files !== '' && (
           <S.FilesWrapper>
             <S.FileElement>
               <S.DeleteFileIcon className="small x icon"/>
-              {files.fileName}
+              {files}
             </S.FileElement>
           </S.FilesWrapper>
         )}

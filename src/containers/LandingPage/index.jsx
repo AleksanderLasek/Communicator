@@ -1,36 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./index.styles";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 
-
-const LandingPage = ({changeLoaded, swap}) => {
+const LandingPage = ({changeLoaded, swap, user}) => {
+  const [friends, setFriends] = useState([]);
+  const [cookie] = useCookies();
   useEffect(() => {
     changeLoaded(true);
-  }, [])
-
+    GetFriends();
+  }, [user.email])
+  const GetFriends = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/friends", {
+        email: user.email,
+      });
+      const List = res.data.Friends;
+      const emailList = List.map((obj) => obj.friendEmail);
+      try {
+        const res = await axios.post("http://localhost:5000/users", {
+          refreshToken: cookie.refreshToken,
+          filter: emailList,
+        });
+        setFriends(res.data.UsersList);
+      } catch (err) {
+        console.log(err);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <S.Wrapper>
       <S.Label pageTheme={swap}>Recent chats</S.Label>
       <S.Vita>
-        <S.User>
-          <S.Avatar src="./../../images/default-avatar.png" alt="avatar" />
-          <S.Name pageTheme={swap}>Pajac Jaszczur</S.Name>
-        </S.User>
-        <S.User>
-          <S.Avatar src="./../../images/default-avatar.png" alt="avatar" />
-          <S.Name pageTheme={swap}>Błazen Kangur</S.Name>
-        </S.User>
-        <S.User>
-          <S.Avatar src="./../../images/default-avatar.png" alt="avatar" />
-          <S.Name pageTheme={swap}>Ojciec Mateusz</S.Name>
-        </S.User>
-        <S.User>
-          <S.Avatar src="./../../images/default-avatar.png" alt="avatar" />
-          <S.Name pageTheme={swap}>Spongebob Squarepants</S.Name>
-        </S.User>
-        <S.User>
-          <S.Avatar src="./../../images/default-avatar.png" alt="avatar" />
-          <S.Name pageTheme={swap}>Kasztan King Kong</S.Name>
-        </S.User>
+        {friends.map((friend, index) => {
+            return (
+              <S.User key={index}>
+                <S.Avatar src={friend.avatar} alt="avatar" />
+                <S.Name pageTheme={swap}>{friend.name} {friend.surname}</S.Name>
+              </S.User>
+            )
+        })}
+     
       </S.Vita>
     </S.Wrapper>
   );
