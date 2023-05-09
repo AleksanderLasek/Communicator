@@ -33,17 +33,28 @@ export const uploadFile = async (req, res) => {
   }
 };
 
-export const GetFile = async(req, res) => {
+export const GetFile = async (req, res) => {
   const { file_id } = req.body;
 
-  drive.files.get({
+  drive.files.get(
+    {
       fileId: '1txQs4KDpTWtBHuCKhrTK9SyVKGFFKcwu',
-      alt: 'media'
-  }, { responseType: 'arraybuffer' }, (err, response) => {
+      alt: 'media',
+    },
+    { responseType: 'arraybuffer' },
+    (err, response) => {
       if (err) return console.error('The API returned an error:', err.message);
-      
-  const image = Buffer.from(response.data, 'binary');
-    return res.status(200).send({image});  
-  });
-  
-}
+
+      const fileData = Buffer.from(response.data, 'binary');
+      const mimeType = response.headers['content-type'];
+      const fileName = response.headers['content-disposition'].match(/filename="(.+)"/);
+
+      res.set({
+        'Content-Type': mimeType,
+        'Content-Disposition': `attachment; filename="${fileName}"`,
+        'Content-Length': response.headers['content-length'],
+      });
+      return res.status(200).send(fileData);
+    }
+  );
+};

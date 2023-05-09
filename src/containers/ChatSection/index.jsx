@@ -3,92 +3,46 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
-import { convertBase64 } from "../../components/converterBase";
-import { createCanvas, loadImage } from "canvas";
-import { scaleImage } from "../../components/scaleImage";
 
 const ChatSection =  ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
-  const [image, setImage] = useState({
-    src: '',
-    miniature: '',
-    fileName: ''
+  const [files, setFiles] = useState({
+    fileName: '',
+    fileId: '',
   });
   const [receiver, setReceiver] = useState({
     name: "",
-    surname: "",
+    surname: "", 
     email: "",
     avatar: "",
   });
   const [chat, setChat] = useState([]);
-
+ 
   const [cookie] = useCookies();
   const handleChange = (e) => {
     setMessage(e.target.value); 
 
   }; 
  
-  const getdata = async(file_id) => { 
+  const getdata = async(file_id, fileName) => { 
     try { 
-      const res = await axios.post('http://localhost:5000/files/get', {file_id: file_id});
-      const base64String = btoa(String.fromCharCode(...new Uint8Array(res.data.image.data)));
-      const img = `data:image/jpeg;base64,${base64String}`;
-      return img;
-    
+      const res = await axios.post('http://localhost:5000/files/get', {file_id: file_id}, {responseType: 'blob'});
+      console.log(res)
+      const mimeType = "image/jpeg";
+      const extension = mimeType.split("/")[1];   
+      const name = fileName.split(".")[0];
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${name}.${extension}`);
+      document.body.appendChild(link);
+      link.click();
     }catch(err){  
       console.log(err);  
     } 
   }   
-  useEffect(() => {
-    getdata();  
-    }, [])
 
-  const handleDrag = async(e) => { 
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-  
-    const convertedImage = await convertBase64(file);
-    const img = new Image();
-    img.onload = async () => {
-      const maxWidth =  768;
-      const maxHeight = 1366;
-      const canvas = createCanvas(maxWidth, maxHeight);
-      const ctx = canvas.getContext("2d");
-      let width = img.width;
-      let height = img.height;
-      if (width > maxWidth) {
-        height *= maxWidth / width;
-        width = maxWidth;
-      }
-  
-      if (height > maxHeight) {
-        width *= maxHeight / height;
-        height = maxHeight;
-      }
-      ctx.drawImage(
-        img, 
-        0,
-        0, 
-        width,
-        height
-      );
-      const outputBase64 = canvas.toDataURL();
-      const miniature = await scaleImage(convertedImage, 200, 200);
-      let splitFileName = file.name.split('.');
-      let fileName = splitFileName[0].slice(0, 15);
-      if(fileName.length === 15){
-        fileName = fileName + '...';
-      }
-      fileName = fileName + '.' + splitFileName[1];
-      setImage({
-        fileName: fileName, 
-        src: outputBase64, 
-        miniature: miniature
-      })
-    };
-    img.src = convertedImage;
-  }
   const handleDragOver = (e) => {
     e.preventDefault();
   }
@@ -104,22 +58,22 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
           'Content-Type': 'multipart/form-data'
         }
       });
-      setImage({fileName: res.data})
-    }catch(err){
+      setFiles({fileName: getF.name});
+    }catch(err){  
       console.log(err);
     }
-  }
+  } 
   
   const SendMessage = async () => {
     setMessage("");
-    setImage({src: '', fileName: ''})
+    setFiles({fileName: ''})
     try {
       await axios.post("http://localhost:5000/chat/send", {
         message: message,
         sender: user.email,
         receiver: receiver.email,
-        image: image.fileName,
-        miniature: image.miniature
+        fileId: files.fileId,
+        fileName: files.fileName
       });
     } catch (err) {
       console.log(err);
@@ -215,12 +169,12 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
             <S.FriendWrapper
               pageTheme={swap}
               key={index}
-              onClick={() => ChooseChat(friend)}
+              onClick={() => ChooseChat(friend)} 
               style={{ backgroundColor: friend.email === receiver.email }}
             >
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
               <S.FriendNameWrapper pageTheme={swap}>
-                {friend.name} {friend.surname}
+                {friend.name} {friend.surname} 
               </S.FriendNameWrapper>
             </S.FriendWrapper>
           );
@@ -234,16 +188,18 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
           </S.ChatNameWrapper>
         </S.ChatBarWrapper>
         <S.MessageWindowWrapper pageTheme={swap}>
-          {chat.map(async (message, index) => {
+          {chat.map((message, index) => {
             if (message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
                   <S.MessageSentWrapper pageTheme={swap}>
                     {message.message}
               
-                    {message.image && (
-                      <S.ImageMessage src={getdata(message.image)}/>
-                    )}
+                    {message.fileName && 
+                      <>
+                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)}>{message.fileName}</S.FileMessage>
+                      </>
+                    }
                   </S.MessageSentWrapper>
                 </S.MessageSentLineWrapper>
               );
@@ -252,26 +208,27 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
                 <S.MessageReceivedLineWrapper key={index}>
                   <S.MessageReceivedWrapper pageTheme={swap}>
                     {message.message}
-                
-                    {message.image && (
-                      <S.ImageMessage src={await getdata(message.image)}/>
-                    )}
+                    {message.fileName && 
+                      <>
+                      <S.FileMessage onClick={getdata(message.fileId, message.fileName)}>{message.fileName}</S.FileMessage>
+                      </>
+                    }
+                   
                   </S.MessageReceivedWrapper>
                 </S.MessageReceivedLineWrapper>
               );
             }
           })}
         </S.MessageWindowWrapper>
-        {image.src !== '' && (
+        {files.fileName !== '' && (
           <S.FilesWrapper>
             <S.FileElement>
               <S.DeleteFileIcon className="small x icon"/>
-              {image.fileName}
-              <img src={image.src}/>
+              {files.fileName}
             </S.FileElement>
           </S.FilesWrapper>
         )}
-        <S.MessageTextBox>
+        <S.MessageTextBox pageTheme={swap}>
           {isEmojiPanel && window.innerWidth > 767 && (
             <S.EmojiContainer>
               <EmojiPicker
@@ -306,7 +263,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
             value={chosenEmoji ? chosenEmoji.emoji : message}
             onChange={handleChange}
             onKeyPress={sendKey}
-            onDrop={handleDrag}
+          
             
           />
 

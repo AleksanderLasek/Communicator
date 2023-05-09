@@ -286,3 +286,11 @@ export const ImageMessage = styled.img`
   
   width: 100%;
 `
+
+export const FileMessage = styled.div`
+  width: 100%;
+  background-color: #4e4e4e;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 3px #00000057;
+`
