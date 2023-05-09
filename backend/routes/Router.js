@@ -1,12 +1,25 @@
 import express from "express";
+import multer from 'multer';
 import { Register, Login, refreshToken, EditUser, GetUsers, BlockUser, GetBlocked, UnblockUser } from '../controllers/Users.js';
 import { SendMessage, GetChat } from '../controllers/Message.js';
 import { AddFriend, DeleteFriend, ShowFriends } from "../controllers/Friends.js";
 import { AcceptInvite, DeclineInvite, InviteFriend, ShowInvitations } from "../controllers/InviteFriend.js";
 import { AddNotification, ShowNotifications } from "../controllers/Nots.js";
+import { GetFile, uploadFile } from "../controllers/Files.js";
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    }
+  });
+  
+  const upload = multer({ storage: storage });
 
 export const router = express();
 
+router.post('/files/upload', upload.single('file'), uploadFile);
 router.post('/users', GetUsers);
 router.post('/users/register', Register);
 router.post('/users/login', Login);
@@ -26,3 +39,4 @@ router.post('/invitations/decline', DeclineInvite);
 router.post('/invitations/accept', AcceptInvite);
 router.post('/nots/add', AddNotification);
 router.post('/nots/show', ShowNotifications);
+router.post('/files/get', GetFile);

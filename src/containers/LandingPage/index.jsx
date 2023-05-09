@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./index.styles";
 
-const LandingPage = ({swap}) => {
+
+const LandingPage = ({changeLoaded, swap}) => {
+  useEffect(() => {
+    changeLoaded(true);
+  }, [])
+
   return (
     <S.Wrapper>
       <S.Label pageTheme={swap}>Recent chats</S.Label>

@@ -6,7 +6,8 @@ import EmojiPicker from "emoji-picker-react";
 import { convertBase64 } from "../../components/converterBase";
 import { createCanvas, loadImage } from "canvas";
 import { scaleImage } from "../../components/scaleImage";
-const ChatSection = ({ user, swap, changeLoaded }) => {
+
+const ChatSection =  ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [image, setImage] = useState({
@@ -24,10 +25,26 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
 
   const [cookie] = useCookies();
   const handleChange = (e) => {
-    setMessage(e.target.value);
+    setMessage(e.target.value); 
 
-  };
-  const handleDrag = async(e) => {
+  }; 
+ 
+  const getdata = async(file_id) => { 
+    try { 
+      const res = await axios.post('http://localhost:5000/files/get', {file_id: file_id});
+      const base64String = btoa(String.fromCharCode(...new Uint8Array(res.data.image.data)));
+      const img = `data:image/jpeg;base64,${base64String}`;
+      return img;
+    
+    }catch(err){  
+      console.log(err);  
+    } 
+  }   
+  useEffect(() => {
+    getdata();  
+    }, [])
+
+  const handleDrag = async(e) => { 
     e.preventDefault();
     const file = e.dataTransfer.files[0];
   
@@ -72,22 +89,27 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     };
     img.src = convertedImage;
   }
-  useEffect(() => {
-    const apiKey = '1yWvQtmB2arIKAF27SmR9D1jOrdKPAIxx7u6GVkQPDPk'; // API klucz
-
-    fetch(`https://www.googleapis.com/drive/v2/files/${apiKey}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(":)")
-        console.log(data.files);
-      })   
-      .catch(error => {  
-        console.error(error);
-      });
-  }, [user.email]);
   const handleDragOver = (e) => {
     e.preventDefault();
   }
+
+  const handleDragV2 = async(e) => {
+    e.preventDefault();
+    const getF = e.dataTransfer.files[0];
+    const file = new FormData();
+    file.append("file", e.dataTransfer.files[0]);
+    try {
+      const res = await axios.post('http://localhost:5000/files/upload', file, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setImage({fileName: res.data})
+    }catch(err){
+      console.log(err);
+    }
+  }
+  
   const SendMessage = async () => {
     setMessage("");
     setImage({src: '', fileName: ''})
@@ -96,7 +118,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
         message: message,
         sender: user.email,
         receiver: receiver.email,
-        image: image.src,
+        image: image.fileName,
         miniature: image.miniature
       });
     } catch (err) {
@@ -204,7 +226,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
           );
         })}
       </S.ListWrapper>
-      <S.ChatWindowWrapper pageTheme={swap} onDrop={handleDrag} onDragOver={handleDragOver}>
+      <S.ChatWindowWrapper pageTheme={swap} onDrop={handleDragV2} onDragOver={handleDragOver}>
         <S.ChatBarWrapper pageTheme={swap}>
           <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
           <S.ChatNameWrapper>
@@ -212,14 +234,15 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
           </S.ChatNameWrapper>
         </S.ChatBarWrapper>
         <S.MessageWindowWrapper pageTheme={swap}>
-          {chat.map((message, index) => {
+          {chat.map(async (message, index) => {
             if (message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
                   <S.MessageSentWrapper pageTheme={swap}>
                     {message.message}
-                    {message.miniature && (
-                      <S.ImageMessage src={message.miniature}/>
+              
+                    {message.image && (
+                      <S.ImageMessage src={getdata(message.image)}/>
                     )}
                   </S.MessageSentWrapper>
                 </S.MessageSentLineWrapper>
@@ -229,8 +252,9 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
                 <S.MessageReceivedLineWrapper key={index}>
                   <S.MessageReceivedWrapper pageTheme={swap}>
                     {message.message}
-                    {message.miniature && (
-                      <S.ImageMessage src={message.miniature}/>
+                
+                    {message.image && (
+                      <S.ImageMessage src={await getdata(message.image)}/>
                     )}
                   </S.MessageReceivedWrapper>
                 </S.MessageReceivedLineWrapper>
@@ -243,6 +267,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
             <S.FileElement>
               <S.DeleteFileIcon className="small x icon"/>
               {image.fileName}
+              <img src={image.src}/>
             </S.FileElement>
           </S.FilesWrapper>
         )}
