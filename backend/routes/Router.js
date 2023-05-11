@@ -1,7 +1,7 @@
 import express from "express";
 import multer from 'multer';
 import { Register, Login, refreshToken, EditUser, GetUsers, BlockUser, GetBlocked, UnblockUser } from '../controllers/Users.js';
-import { SendMessage, GetChat } from '../controllers/Message.js';
+import { SendMessage, GetChat, GetDateOfLastMessage } from '../controllers/Message.js';
 import { AddFriend, DeleteFriend, ShowFriends } from "../controllers/Friends.js";
 import { AcceptInvite, DeclineInvite, InviteFriend, ShowInvitations } from "../controllers/InviteFriend.js";
 import { AddNotification, ShowNotifications } from "../controllers/Nots.js";
@@ -30,6 +30,7 @@ router.post('/users/unblock', UnblockUser);
 router.post('/users/getblocked', GetBlocked);
 router.post('/chat/send', SendMessage);
 router.post('/chat', GetChat);
+router.post('/chat/date', GetDateOfLastMessage);
 router.post('/friends/add', AddFriend);
 router.post('/friends/delete', DeleteFriend);
 router.post('/friends', ShowFriends);

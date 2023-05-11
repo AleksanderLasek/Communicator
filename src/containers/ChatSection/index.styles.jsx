@@ -289,9 +289,41 @@ export const ImageMessage = styled.img`
 
 export const FileMessage = styled.div`
   width: 100%;
-  background-color: #4e4e4e;
+  background-color: ${(props) => (props.pageTheme ? "#c5c4c4" : "#303030")};
   padding: 5px 10px;
   border-radius: 5px;
   box-shadow: 0px 0px 5px 3px #00000057;
   cursor: pointer;
+`
+export const shownPhotoBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  background-color: #000000dc;
+
+`
+export const DownloadIcon = styled.i`
+  position: absolute;
+  right: 2vw;
+  top: 2vw;
+  cursor: pointer;
+  color: white;
+`
+export const changePhoto = styled.i`
+  position: absolute;
+  top: 2vw;
+  left: 2vw;
+  cursor: pointer;
+  color: white;
+  z-index: 99999;
+`
+export const Photo = styled.img`
+  background-color: red;
+  z-index: 9999;
 `

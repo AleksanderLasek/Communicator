@@ -3,11 +3,19 @@ import axios from "axios";
 import * as S from "./index.styles";
 import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
+import { convertBase64 } from '../../components/converterBase';
+import { scaleImage } from "../../components/scaleImage";
+import { Buffer } from 'buffer';
 
 const ChatSection =  ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [files, setFiles] = useState('');
+  const [image, setImage] = useState([{
+    fileId: '',
+    base64: ''
+  }])
+  const [gotImages, setGotImages] = useState(false);
   const [droppedFile, setDroppedFile] = useState();
   const [receiver, setReceiver] = useState({
     name: "",
@@ -16,7 +24,14 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     avatar: "",
   });
   const [chat, setChat] = useState([]);
- 
+  const [idOfLastMessage, setIdOfLastMessage] = useState();
+  const [showPhoto, setShowPhoto] = useState(false);
+  const [shownPhoto, setShownPhoto] = useState({
+    fileId: '',
+    base64: '',
+    fileName: ''
+  });
+  const [chuj, setChuj] = useState('')
   const [cookie] = useCookies();
   const handleChange = (e) => {
     setMessage(e.target.value); 
@@ -24,6 +39,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
   }; 
  
   const getdata = async(file_id, fileName) => { 
+    console.log(file_id)
     try { 
       const res = await axios.post('http://localhost:5000/files/get', {file_id: file_id}, {responseType: 'blob'});
       console.log(res)
@@ -37,7 +53,19 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
       console.log(err);  
     } 
   }   
+  const getImage = async(file_id) => { 
+    try { 
+      const res = await axios.post('http://localhost:5000/files/get', {file_id: file_id}, {responseType: 'blob'});
+      
+      const chuj = await convertBase64(res.data);
+      setShownPhoto({...shownPhoto, base64: chuj})
+    }catch(err){  
+      console.log(err);  
+    } 
+  }   
 
+  
+  
   const handleDragOver = (e) => {
     e.preventDefault();
   }
@@ -46,7 +74,6 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     e.preventDefault();
     setDroppedFile(e.dataTransfer.files[0]);
     setFiles(e.dataTransfer.files[0].name)
-    
   } 
   
   const SendMessage = async () => {
@@ -65,14 +92,20 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     }catch(err){  
       console.log(err);
     }
-    console.log(files.fileId);
+    let miniature;
+    const fileExtension = files.split('.').pop();
+    if(fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg'){
+      const convertedMiniature = await convertBase64(droppedFile);
+      miniature = await scaleImage(convertedMiniature, 100, 100);
+    }
     try {
       await axios.post("http://localhost:5000/chat/send", {
         message: message,
         sender: user.email,
         receiver: receiver.email,
         fileId: file_id,
-        fileName: files
+        fileName: files,
+        miniature: miniature,
       });
       GetChat();
     } catch (err) {
@@ -81,6 +114,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     
   };
   const GetChat = async () => {
+    changeLoaded(true);
     try {
       const res = await axios.post("http://localhost:5000/chat", {
         sender: user.email,
@@ -88,7 +122,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
       });
 
       setChat(res.data.Chat);
-      changeLoaded(true);
+      
     } catch (err) {
       console.log(err);
     }
@@ -124,17 +158,30 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
       console.log(err);
     }
   };
+  const GetDateOfLastMessage = async() => {
+    try {
+      const res = await axios.post('http://localhost:5000/chat/date', {sender: user.email, receiver: receiver.email});
+      if(res.data.MessageDate !== idOfLastMessage){
+        setIdOfLastMessage(res.data.MessageDate);
+      }
+    }catch(err){
+      console.log(err);
+    }
+  }
   useEffect(() => {
     const interval = setInterval(() => {
-      GetChat();
-    }, 200);
+      GetDateOfLastMessage();  
+    }, 500); 
     return () => {
       clearInterval(interval);
     };
   });
   useEffect(() => {
+    GetChat();
+  }, [user.email, friends, idOfLastMessage, receiver])
+  useEffect(() => {
     GetFriends();
-  }, [user.name]);
+  }, [user.email]);
   const ChooseChat = (friend) => {
     setReceiver({
       name: friend.name,
@@ -161,9 +208,47 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
   const handleEmojiSelect = (emoji) => {
     setMessage(message + emoji.emoji);
   };
+  const handleShowFoto = async(fileId, fileName) => {
+    setShowPhoto(true);
+    setChuj(fileName)
+    setShownPhoto({...shownPhoto, fileId: fileId, fileName: fileName}); 
+    getImage(fileId);
+   
+    console.log(shownPhoto)
+  }
+  const handleHidePhoto = () => {
+    setShowPhoto(false);
+  }
+  const downloadPhoto = () => {
+    const byteCharacters = Buffer.from(shownPhoto.base64, 'base64');
+    
+    
+// Tworzenie obiektu Blob na podstawie tablicy bufora i typu MIME
+const blob = new Blob([byteCharacters], {type: ''});
 
+// Tworzenie URL z obiektu Blob
+const url = URL.createObjectURL(blob);
+
+// Tworzenie elementu <a> i ustawienie jego atrybutów
+const link = document.createElement('a');
+link.href = url;
+link.download = chuj;
+
+// Kliknięcie elementu <a> aby rozpocząć pobieranie pliku
+link.click();
+  }
   return (
+    <>
+    {showPhoto && (
+         <S.shownPhotoBackground>
+            <S.DownloadIcon className="big save outline icon" onClick={downloadPhoto}/>
+            <S.changePhoto className="big times circle outline icon" onClick={handleHidePhoto}/>
+            <S.Photo src={shownPhoto.base64}/>
+          
+         </S.shownPhotoBackground>
+      )}
     <S.Wrapper>
+      
       <S.ListWrapper pageTheme={swap}>
         {friends.map((friend, index) => {
           return (
@@ -188,17 +273,26 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
             {receiver.name} {receiver.surname}
           </S.ChatNameWrapper>
         </S.ChatBarWrapper>
-        <S.MessageWindowWrapper pageTheme={swap}>
-          {chat.map((message, index) => {
+        <S.MessageWindowWrapper pageTheme={swap} >
+          {chat.map((message, index) => {  
             if (message.sender === user.name) {
               return (
                 <S.MessageSentLineWrapper key={index}>
                   <S.MessageSentWrapper pageTheme={swap}>
                     {message.message}
               
-                    {message.fileName && 
+                    {message.fileName &&  
                       <>
-                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)}><i className="file outline icon"/>{message.fileName}</S.FileMessage>
+                      {message.miniature ? (
+                        <>
+                          <img src={message.miniature} onClick={() => handleShowFoto(message.fileId, message.fileName)}/>
+                        </>
+                      ) : (
+                        <>
+                          <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)} pageTheme={swap}><i className="file outline icon"/>{message.fileName}</S.FileMessage>
+                        </>
+                      )}
+                      
                       </>
                     }
                   </S.MessageSentWrapper>
@@ -211,7 +305,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
                     {message.message}
                     {message.fileName && 
                       <>
-                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)}><i className="file outline icon"/>{message.fileName}</S.FileMessage>
+                      <S.FileMessage onClick={() => getdata(message.fileId, message.fileName)} pageTheme={swap}><i className="file outline icon"/>{message.fileName}</S.FileMessage>
                       </>
                     }
                    
@@ -276,6 +370,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
         </S.MessageTextBox>
       </S.ChatWindowWrapper>
     </S.Wrapper>
+    </>
   );
 };
 

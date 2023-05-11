@@ -43,6 +43,7 @@ export const GetFile = async (req, res) => {
       if (err) return console.error('The API returned an error:', err.message);
 
       const fileData = Buffer.from(response.data, 'binary');
+      
       return res.status(200).send(fileData);
     }
   );
