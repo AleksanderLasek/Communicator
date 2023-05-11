@@ -54,7 +54,7 @@ export const FriendWrapper = styled.div`
   box-shadow: 0px 5px 5px -2px #00000060;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-around;
 
   @media screen and (max-width: 767px) {
     display: flex;
@@ -78,15 +78,12 @@ export const FriendNameWrapper = styled.div`
 `;
 
 export const ImageWrapper = styled.img`
-  height: 7vh;
-  width: 7vh;
+  max-height: 90%;
   border-radius: 50%;
-  margin-left: 1vw;
+  
 
   @media screen and (max-width: 767px) {
     margin: 0;
-    height: 12vw;
-    width: 12vw;
   }
 `;
 
@@ -179,6 +176,9 @@ export const MessageReceivedWrapper = styled.div`
   border-radius: 15px;
   overflow-wrap: break-word;
   user-select: text;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const MessageSentWrapper = styled.div`
@@ -190,6 +190,9 @@ export const MessageSentWrapper = styled.div`
   border-radius: 15px;
   overflow-wrap: break-word;
   user-select: text;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const MessageSentIcon = styled.i`
@@ -283,7 +286,8 @@ export const DeleteFileIcon = styled.i`
   top: 0px;
 `
 export const ImageMessage = styled.img`
-  
+  border-radius: 5px;
+  cursor: pointer;
   width: 100%;
 `
 
@@ -324,6 +328,9 @@ export const changePhoto = styled.i`
   z-index: 99999;
 `
 export const Photo = styled.img`
+  position: relative;
   background-color: red;
-  z-index: 9999;
+  z-index: 99999;
+  max-width: 80vw;
+  max-height: 85vh;
 `

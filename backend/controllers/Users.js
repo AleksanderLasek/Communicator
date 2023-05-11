@@ -27,6 +27,7 @@ export const GetUsers = async(req, res) => {
     return res.status(200).send({UsersList});
 }
 
+
 const generateRefreshToken = (name, surname, email) => {
     return jwt.sign({name, surname, email}, process.env.JWT_SECRET_KEY, {expiresIn: '864000s'});
 }

@@ -10,6 +10,7 @@ import { Buffer } from 'buffer';
 const ChatSection =  ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const [files, setFiles] = useState('');
   const [image, setImage] = useState([{
     fileId: '',
@@ -31,6 +32,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     base64: '',
     fileName: ''
   });
+  const [shownPhotoId, setShownPhotoId] = useState();
   const [chuj, setChuj] = useState('')
   const [cookie] = useCookies();
   const handleChange = (e) => {
@@ -81,7 +83,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     file.append("file", droppedFile);
     setMessage("");
     setFiles('')
-    let file_id;
+    let file_id ='';
     try {
       const res = await axios.post('http://localhost:5000/files/upload', file, {
         headers: {
@@ -92,15 +94,17 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     }catch(err){  
       console.log(err);
     }
-    let miniature;
+    let miniature = '';
     const fileExtension = files.split('.').pop();
     if(fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg'){
       const convertedMiniature = await convertBase64(droppedFile);
-      miniature = await scaleImage(convertedMiniature, 100, 100);
+      miniature = await scaleImage(convertedMiniature, 200);
     }
+    const path = window.location.pathname.substring('/chat/'.length);
     try {
       await axios.post("http://localhost:5000/chat/send", {
         message: message,
+        path: path,
         sender: user.email,
         receiver: receiver.email,
         fileId: file_id,
@@ -114,15 +118,17 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     
   };
   const GetChat = async () => {
-    changeLoaded(true);
+    if(!loaded){
+      setTimeout(() => {
+        changeLoaded(true);
+      }, 300)
+    }
+    const path = window.location.pathname.substring('/chat/'.length);
     try {
       const res = await axios.post("http://localhost:5000/chat", {
-        sender: user.email,
-        receiver: receiver.email,
-      });
-
+        path: path,
+      }); 
       setChat(res.data.Chat);
-      
     } catch (err) {
       console.log(err);
     }
@@ -150,7 +156,24 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
           filter: emailList,
         });
         setFriends(res.data.UsersList);
-        ChooseChat(res.data.UsersList[0]);
+        const path = window.location.pathname.substring('/chat/'.length);
+        let choosenFriend = res.data.UsersList[0];
+        if(path !== ''){
+          const pathTab = path.split('.');
+          let friendEmail = [pathTab[0]];
+          if(pathTab[0] === user.email){
+            friendEmail[0]=pathTab[1]; 
+          }
+            const res1 = await axios.post("http://localhost:5000/users", {
+              refreshToken: cookie.refreshToken,
+              email: user.email,
+              filter: friendEmail,
+          });
+          choosenFriend = res1.data.UsersList[0];
+        }
+        ChooseChat(choosenFriend);
+        
+          
       } catch (err) {
         console.log(err);
       }
@@ -160,9 +183,11 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
   };
   const GetDateOfLastMessage = async() => {
     try {
-      const res = await axios.post('http://localhost:5000/chat/date', {sender: user.email, receiver: receiver.email});
-      if(res.data.MessageDate !== idOfLastMessage){
-        setIdOfLastMessage(res.data.MessageDate);
+      const path = window.location.pathname.substring('/chat/'.length);
+      const res = await axios.post('http://localhost:5000/chat/date', {path: path});
+      
+      if(res.data.MessageDate._id !== idOfLastMessage){
+        setIdOfLastMessage(res.data.MessageDate._id);
       }
     }catch(err){
       console.log(err);
@@ -183,34 +208,35 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     GetFriends();
   }, [user.email]);
   const ChooseChat = (friend) => {
-    setReceiver({
-      name: friend.name,
-      surname: friend.surname,
-      avatar: friend.avatar,
-      email: friend.email,
-    });
+    if(friend.email !== receiver.email){
+      const ChatName = [user.email, friend.email];
+      ChatName.sort();
+      window.history.pushState({}, null, `/chat/${ChatName[0]}.${ChatName[1]}`);
+      setReceiver({
+        name: friend.name,
+        surname: friend.surname,
+        avatar: friend.avatar,
+        email: friend.email,
+      });
+    }
   };
   const sendKey = (e) => {
     if (e.key === "Enter") {
       SendMessage();
     }
   };
-
-  //emoji
-
   const [isEmojiPanel, setIsEmojiPanel] = useState(false);
   const toggleEmojiPanel = () => {
     setIsEmojiPanel((current) => !current);
   };
-
   const [chosenEmoji, setChosenEmoji] = useState(null);
-
   const handleEmojiSelect = (emoji) => {
     setMessage(message + emoji.emoji);
   };
   const handleShowFoto = async(fileId, fileName) => {
     setShowPhoto(true);
     setChuj(fileName)
+    setShownPhotoId(fileId);
     setShownPhoto({...shownPhoto, fileId: fileId, fileName: fileName}); 
     getImage(fileId);
    
@@ -218,25 +244,12 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
   }
   const handleHidePhoto = () => {
     setShowPhoto(false);
+    setShownPhoto({base64: ''})
   }
   const downloadPhoto = () => {
-    const byteCharacters = Buffer.from(shownPhoto.base64, 'base64');
-    
-    
-// Tworzenie obiektu Blob na podstawie tablicy bufora i typu MIME
-const blob = new Blob([byteCharacters], {type: ''});
-
-// Tworzenie URL z obiektu Blob
-const url = URL.createObjectURL(blob);
-
-// Tworzenie elementu <a> i ustawienie jego atrybutów
-const link = document.createElement('a');
-link.href = url;
-link.download = chuj;
-
-// Kliknięcie elementu <a> aby rozpocząć pobieranie pliku
-link.click();
-  }
+    getdata(shownPhotoId, chuj);
+  };
+  
   return (
     <>
     {showPhoto && (
@@ -256,7 +269,7 @@ link.click();
               pageTheme={swap}
               key={index}
               onClick={() => ChooseChat(friend)} 
-              style={{ backgroundColor: friend.email === receiver.email }}
+              style={{ backgroundColor: friend.email === receiver.email && "#144f7d9d" }}
             >
               <S.ImageWrapper src={friend.avatar} alt="avatar" />
               <S.FriendNameWrapper pageTheme={swap}>
@@ -285,7 +298,7 @@ link.click();
                       <>
                       {message.miniature ? (
                         <>
-                          <img src={message.miniature} onClick={() => handleShowFoto(message.fileId, message.fileName)}/>
+                          <S.ImageMessage src={message.miniature} onClick={() => handleShowFoto(message.fileId, message.fileName)}/>
                         </>
                       ) : (
                         <>

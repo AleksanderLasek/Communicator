@@ -30,13 +30,18 @@ const LandingPage = ({changeLoaded, swap, user}) => {
       console.log(err);
     }
   };
+  const moveToChat = (friend) => {
+    const ChatName = [user.email, friend.email];
+    ChatName.sort();
+    window.location.assign(`/chat/${ChatName[0]}.${ChatName[1]}`);
+  }
   return (
     <S.Wrapper>
       <S.Label pageTheme={swap}>Recent chats</S.Label>
       <S.Vita>
         {friends.map((friend, index) => {
             return (
-              <S.User key={index}>
+              <S.User key={index} onClick={() => moveToChat(friend)}>
                 <S.Avatar src={friend.avatar} alt="avatar" />
                 <S.Name pageTheme={swap}>{friend.name} {friend.surname}</S.Name>
               </S.User>
