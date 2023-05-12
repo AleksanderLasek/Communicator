@@ -107,6 +107,33 @@ export const ChatWindowWrapper = styled.div`
   }
 `;
 
+export const ListBar = styled.div`
+  height: 5.5vh;
+  width: 100%;
+  margin-bottom: 1px;
+  background-color: ${(props) => (props.pageTheme ? "#769fcd" : "#14507d")};
+  color: white;
+  box-shadow: 0px 5px 5px -2px #00000060;
+  display: flex;
+  border-radius: 15px 15px 0 0;
+  align-items: center;
+  justify-content: flex-start;
+
+  @media screen and (max-width: 767px) {
+    height: 9vh;
+    border-radius: 0;
+  }
+`;
+export const ListBarText = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0 25px;
+`
+export const ListBarIcon = styled.i`
+  color: white;
+  cursor: pointer;
+`
+
 export const ChatBarWrapper = styled.div`
   height: 6vh;
   width: 100%;
@@ -333,4 +360,74 @@ export const Photo = styled.img`
   z-index: 99999;
   max-width: 80vw;
   max-height: 85vh;
+`
+
+export const ChatMakerWrapper = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  background-color: #000000ae;
+`
+export const ChatMaker = styled.div`
+  width: 400px;
+  height: 440px;
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+
+`
+export const ChatUsers = styled.div`
+  width: 95%;
+  background-color: #80808030;
+  border-radius: 5px;
+  border: 1px solid grey;
+  height: 40px;
+  display: flex;
+  align-items: center;
+`
+export const ChatUser = styled.div`
+  padding: 5px 3px;
+  margin-left: 5px;
+  background-color: #b8b8b8;
+  box-shadow: 0px 0px 5px 3px #00000021;
+  color: #272727;
+  border-radius: 5px;
+`
+export const ChatMakerList = styled.div`
+  height: 345px;
+  width: 95%;
+  border-radius: 5px;
+  background-color: #b9b9b9;
+`
+export const ChatMakerListUser = styled.div`
+  margin: 5px;
+  background-color: white;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 3px #00000030;
+`
+export const CancelUserIcon = styled.i`
+ position: relative;
+  top: -10px;
+  right: -10px;
+  color: black;
+
+`
+export const PlusIcon = styled.i`
+  float: right;
+`
+export const CreateChatButton = styled.button`
+  border: 0;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background-color: #c5c5c5f4;
+  box-shadow: 0px 0px 5px 3px #00000049;
+  font-weight: bold;
 `

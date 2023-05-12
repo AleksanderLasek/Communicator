@@ -36,3 +36,9 @@ export const GetDateOfLastMessage = async(req, res) => {
     const MessageDate = await ChatCollection.findOne({}, { sort: { _id: -1 } });
     return res.status(200).send({MessageDate});
 }
+
+export const CreateNewChat = async(req, res) => {
+    const { collectionName } = req.body;
+    db.createCollection(collectionName);
+    return res.status(200);
+}

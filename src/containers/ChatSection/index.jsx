@@ -10,6 +10,7 @@ import { Buffer } from 'buffer';
 const ChatSection =  ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
+  const [newChatUsers, setNewChatUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [files, setFiles] = useState('');
   const [image, setImage] = useState([{
@@ -33,6 +34,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
     fileName: ''
   });
   const [shownPhotoId, setShownPhotoId] = useState();
+  const [showChatMaker, setShowChatMaker] = useState(false);
   const [chuj, setChuj] = useState('')
   const [cookie] = useCookies();
   const handleChange = (e) => {
@@ -249,7 +251,31 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
   const downloadPhoto = () => {
     getdata(shownPhotoId, chuj);
   };
-  
+  const handleShowChatMaker = () => {
+    setShowChatMaker(current => !current)
+  }
+  const addUserToChatList = (friend) => {
+    if(!newChatUsers.includes(friend)){
+      setNewChatUsers([...newChatUsers, friend])
+    }
+  }
+  const deleteUserFromChatList = (usr) => {
+    setNewChatUsers(newChatUsers.filter(element => element !== usr));
+  }
+  const createNewChat = async() => {
+    const newChatEmails = newChatUsers.map((obj) => obj.email);
+    newChatEmails.sort();
+    let string = user.email;
+    for(let i=0; i<newChatEmails.length; i++){
+      string+=newChatEmails[i];
+    }
+    console.log(string)
+    try {
+      const res = await axios.post('http://localhost:5000/chat/create', {collectionName: string})
+    }catch(err){
+      console.log(err)
+    }
+  }
   return (
     <>
     {showPhoto && (
@@ -260,9 +286,44 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
           
          </S.shownPhotoBackground>
       )}
+    {showChatMaker && (
+      <S.ChatMakerWrapper>
+        <S.changePhoto className="big times circle outline icon" onClick={handleShowChatMaker}/>
+        <S.ChatMaker>
+          <S.ChatUsers>
+            {newChatUsers.map((usr, index) => {
+              return (
+                <S.ChatUser>
+                  {usr.name} {usr.surname}
+                  <S.CancelUserIcon className="x icon" onClick={() => deleteUserFromChatList(usr)}/>
+                </S.ChatUser>
+              )
+            })} 
+          </S.ChatUsers>
+          <S.ChatMakerList>
+            {friends.map((friend, index) => {
+              return (
+                <S.ChatMakerListUser>
+                  {friend.name} {friend.surname}
+                  <S.PlusIcon className="plus icon" onClick={() => addUserToChatList(friend)}/>
+                </S.ChatMakerListUser>
+              )
+            })}
+          </S.ChatMakerList>
+          <S.CreateChatButton onClick={createNewChat}>
+          Create chat
+        </S.CreateChatButton>
+        </S.ChatMaker>
+        
+      </S.ChatMakerWrapper>
+    )}
     <S.Wrapper>
       
       <S.ListWrapper pageTheme={swap}>
+        <S.ListBar pageTheme={swap}>
+          <S.ListBarText>Chats</S.ListBarText>
+          <div><S.ListBarIcon className="large plus icon" onClick={handleShowChatMaker}/></div>
+        </S.ListBar>
         {friends.map((friend, index) => {
           return (
             <S.FriendWrapper
