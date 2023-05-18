@@ -71,7 +71,7 @@ export const FriendNameWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  width: 50%;
   @media screen and (max-width: 767px) {
     display: none;
   }

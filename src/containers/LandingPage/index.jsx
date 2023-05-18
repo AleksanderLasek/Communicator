@@ -26,7 +26,7 @@ const LandingPage = ({changeLoaded, swap, user}) => {
       try {
         const res = await axios.post("http://localhost:5000/users", {
           refreshToken: cookie.refreshToken,
-          filter: emailList,
+ 
         });
         setFriends(res.data.UsersList);
       } catch (err) {

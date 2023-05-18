@@ -170,7 +170,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
       try {
         const res = await axios.post("http://localhost:5000/users", {
           refreshToken: cookie.refreshToken,
-          filter: emailList,
+      
         });
         setFriends(res.data.UsersList);
         const path = window.location.pathname.substring('/chat/'.length);
