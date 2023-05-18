@@ -8,4 +8,4 @@
 7) Landing page
 8) Image sending support
 9) Emoji support
-10) Voice calls support
+
