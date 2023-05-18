@@ -528,9 +528,7 @@ const ChatSection =  ({ user, swap, changeLoaded }) => {
             className="large microphone icon"
             onClick={startRecording}
           />
-          {isRecording && (
-            <div onClick={stopRecording}>kutas</div>
-          )}
+        
           <S.MessageInput
             pageTheme={swap}
             
