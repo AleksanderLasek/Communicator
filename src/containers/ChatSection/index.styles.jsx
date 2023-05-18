@@ -80,10 +80,12 @@ export const FriendNameWrapper = styled.div`
 export const ImageWrapper = styled.img`
   max-height: 90%;
   border-radius: 50%;
-  
-
+  box-shadow: 0px 0px 5px 3px #0000003e;
+  margin-left: ${(props) => (props.secondImage && "-35%")};
   @media screen and (max-width: 767px) {
     margin: 0;
+    margin-left: ${(props) => (props.secondImage && "-60px")};
+    
   }
 `;
 
@@ -156,7 +158,7 @@ export const ChatImageWrapper = styled.img`
   width: 4vh;
   border-radius: 50%;
   margin-left: 1vw;
-
+  box-shadow: 0px 0px 5px 3px #00000047;
   @media screen and (max-width: 767px) {
     margin-right: 10px;
   }
@@ -423,11 +425,14 @@ export const CancelUserIcon = styled.i`
 export const PlusIcon = styled.i`
   float: right;
 `
-export const CreateChatButton = styled.button`
+export const CreateChatButton = styled.div`
   border: 0;
+  cursor: pointer;
   padding: 2px 5px;
   border-radius: 5px;
   background-color: #c5c5c5f4;
   box-shadow: 0px 0px 5px 3px #00000049;
   font-weight: bold;
 `
+
+

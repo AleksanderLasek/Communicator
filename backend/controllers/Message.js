@@ -16,8 +16,20 @@ export const SendMessage = async(req, res) => {
         fileName: fileName,
         miniature: miniature
     })
-    await axios.post('http://localhost:5000/nots/add', {receiver: receiver, sender: sender, type: 3});
-    return res.status(200);
+    const today = new Date();
+    const usersInChat = path.split('.');
+    for(let i = 0; i<usersInChat.length; i++){
+        const userChats = db.collection(`${usersInChat[i]}Chats`);
+        await userChats.updateOne({chat: path}, {
+            $set: {date: today}
+        })
+    }
+    try {
+        await axios.post('http://localhost:5000/nots/add', {receiver: receiver, sender: sender, type: 3});
+    }catch(err){
+        console.log(err)
+    }
+    return res.status(200).send({msg: 'Success'});
 }
 
 export const GetChat = async(req, res) => {
@@ -40,5 +52,23 @@ export const GetDateOfLastMessage = async(req, res) => {
 export const CreateNewChat = async(req, res) => {
     const { collectionName } = req.body;
     db.createCollection(collectionName);
-    return res.status(200);
+    const users = collectionName.split('.');
+    const today = new Date();
+    for(let i=0; i<users.length; i++){
+        const userChats = db.collection(`${users[i]}Chats`);
+        await userChats.insertOne({
+            chat: collectionName,
+            date: today,
+        })
+    }
+    return res.status(200).send({msg: 'Success'});
 }
+
+export const GetChats = async(req,res) => {
+    const { email } = req.body;
+    if(!email) return res.status(400);
+    const userChats = db.collection(`${email}Chats`);
+    const chats = await userChats.find({}).sort({date: -1 }).toArray();
+    return res.status(200).send({chats});
+}
+
