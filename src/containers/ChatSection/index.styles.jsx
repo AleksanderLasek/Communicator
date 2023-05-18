@@ -25,7 +25,7 @@ export const ListWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  //box-shadow: 0px 0px 5px 3px #00000037;
+  box-shadow: 0px 0px 5px 3px #00000037;
   border-radius: 15px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
@@ -80,12 +80,21 @@ export const FriendNameWrapper = styled.div`
 export const ImageWrapper = styled.img`
   max-height: 90%;
   border-radius: 50%;
+  border: 1px solid gray;
   box-shadow: 0px 0px 5px 3px #0000003e;
-  margin-left: ${(props) => (props.secondImage && "-35%")};
+  margin-left: 20px;
+  margin-left: ${(props) => props.secondImage && "-35%"};
+
+  @media screen and (max-width: 1023px) {
+    margin-left: 10px;
+    max-height: 70%;
+    margin-left: ${(props) => props.secondImage && "-50px"};
+  }
+
   @media screen and (max-width: 767px) {
     margin: 0;
-    margin-left: ${(props) => (props.secondImage && "-60px")};
-    
+    margin-left: ${(props) => props.secondImage && "-40px"};
+    max-height: 60%;
   }
 `;
 
@@ -93,7 +102,7 @@ export const ChatWindowWrapper = styled.div`
   background-color: ${(props) => (props.pageTheme ? "#e1e1e1" : "#202020")};
   width: 60vw;
   height: 85vh;
-  //box-shadow: 0px 0px 5px 3px #00000037;
+  box-shadow: 0px 0px 5px 3px #00000037;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -119,22 +128,29 @@ export const ListBar = styled.div`
   display: flex;
   border-radius: 15px 15px 0 0;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding-right: 20px;
 
   @media screen and (max-width: 767px) {
-    height: 9vh;
-    border-radius: 0;
+    justify-content: center;
+    padding: 0;
   }
 `;
+
 export const ListBarText = styled.div`
   font-size: 2rem;
   font-weight: bold;
   margin: 0 25px;
-`
+
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+`;
+
 export const ListBarIcon = styled.i`
   color: white;
   cursor: pointer;
-`
+`;
 
 export const ChatBarWrapper = styled.div`
   height: 6vh;
@@ -298,7 +314,7 @@ export const FilesWrapper = styled.div`
   background-color: #414141;
   display: flex;
   padding: 5px 5px;
-`
+`;
 export const FileElement = styled.div`
   padding: 0px 10px;
   position: relative;
@@ -307,27 +323,28 @@ export const FileElement = styled.div`
   display: flex;
   background-color: #161616;
   box-shadow: 0px 0px 5px 3px #00000071;
-`
+`;
 
 export const DeleteFileIcon = styled.i`
   position: absolute;
   right: -4px;
   top: 0px;
-`
+`;
+
 export const ImageMessage = styled.img`
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
-`
+`;
 
 export const FileMessage = styled.div`
   width: 100%;
-  background-color: ${(props) => (props.pageTheme ? "#c5c4c4" : "#303030")};
+  background-color: ${(props) => (props.pageTheme ? "#818181" : "#303030")};
   padding: 5px 10px;
   border-radius: 5px;
   box-shadow: 0px 0px 5px 3px #00000057;
   cursor: pointer;
-`
+`;
 export const shownPhotoBackground = styled.div`
   position: absolute;
   top: 0;
@@ -339,15 +356,14 @@ export const shownPhotoBackground = styled.div`
   align-items: center;
   z-index: 99999;
   background-color: #000000dc;
-
-`
+`;
 export const DownloadIcon = styled.i`
   position: absolute;
   right: 2vw;
   top: 2vw;
   cursor: pointer;
   color: white;
-`
+`;
 export const changePhoto = styled.i`
   position: absolute;
   top: 2vw;
@@ -355,14 +371,18 @@ export const changePhoto = styled.i`
   cursor: pointer;
   color: white;
   z-index: 99999;
-`
+`;
 export const Photo = styled.img`
   position: relative;
   background-color: red;
   z-index: 99999;
   max-width: 80vw;
   max-height: 85vh;
-`
+
+  @media screen and (max-width: 1023px) {
+    max-width: 95vw;
+  }
+`;
 
 export const ChatMakerWrapper = styled.div`
   position: absolute;
@@ -373,66 +393,83 @@ export const ChatMakerWrapper = styled.div`
   align-items: center;
   z-index: 99999;
   background-color: #000000ae;
-`
+`;
+
 export const ChatMaker = styled.div`
   width: 400px;
   height: 440px;
-  background-color: white;
+  background-color: ${(props) => (props.pageTheme ? "#769FCD" : "#14507d")};
   border-radius: 5px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
 
-`
+  @media screen and (max-width: 1023px) {
+  }
+
+  @media screen and (max-width: 767px) {
+  }
+`;
+
 export const ChatUsers = styled.div`
+  margin-top: 5px;
   width: 95%;
-  background-color: #80808030;
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#1a1a1a")};
   border-radius: 5px;
   border: 1px solid grey;
   height: 40px;
   display: flex;
   align-items: center;
-`
+  overflow: auto;
+  touch-action: pan-x;
+`;
+
 export const ChatUser = styled.div`
-  padding: 5px 3px;
+  padding: 5px 0px;
+  padding-left: 5px;
   margin-left: 5px;
-  background-color: #b8b8b8;
+  background-color: ${(props) => (props.pageTheme ? "#bababa" : "#3f3f3f")};
   box-shadow: 0px 0px 5px 3px #00000021;
-  color: #272727;
+  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};
   border-radius: 5px;
-`
+
+  max-height: 30px;
+  min-width: 100px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
 export const ChatMakerList = styled.div`
   height: 345px;
   width: 95%;
   border-radius: 5px;
-  background-color: #b9b9b9;
-`
+  background-color: ${(props) => (props.pageTheme ? "#F7FBFC" : "#1a1a1a")};
+  overflow: auto;
+`;
 export const ChatMakerListUser = styled.div`
   margin: 5px;
-  background-color: white;
+  background-color: ${(props) => (props.pageTheme ? "#bababa" : "#3f3f3f")};
+  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};
   padding: 5px;
   border-radius: 5px;
-  box-shadow: 0px 0px 5px 3px #00000030;
-`
+  box-shadow: 0px 0px 5px 0px #00000030;
+`;
 export const CancelUserIcon = styled.i`
- position: relative;
-  top: -10px;
-  right: -10px;
   color: black;
-
-`
+`;
 export const PlusIcon = styled.i`
   float: right;
-`
+`;
 export const CreateChatButton = styled.div`
   border: 0;
   cursor: pointer;
-  padding: 2px 5px;
+  padding: 5px 10px;
+  margin-bottom: 3px;
   border-radius: 5px;
-  background-color: #c5c5c5f4;
+  background-color: ${(props) => (props.pageTheme ? "#bababa" : "#3f3f3f")};
+  color: ${(props) => (props.pageTheme ? "#000" : "#fff")};
   box-shadow: 0px 0px 5px 3px #00000049;
   font-weight: bold;
-`
-
-
+`;
