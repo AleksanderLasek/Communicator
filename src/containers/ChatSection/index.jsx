@@ -11,6 +11,7 @@ import jezus from "../../images/jezus.jpg";
 const ChatSection = ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
   const [friends, setFriends] = useState([]);
+  const [friendss, setFriendss] = useState([]);
   const [newChatUsers, setNewChatUsers] = useState([]);
   const [choosenChat, setChoosenChat] = useState("");
   const [chats, setChats] = useState([]);
@@ -156,7 +157,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     if (!loaded) {
       setTimeout(() => {
         changeLoaded(true);
-      }, 300);
+      }, 1000);
     }
     const path = window.location.pathname.substring("/chat/".length);
     try {
@@ -168,7 +169,28 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
       console.log(err);
     }
   };
-
+  const GetFriendss = async () => {
+    let choosenFriend;
+    try {
+      const res = await axios.post("http://localhost:5000/friends", {
+        email: user.email,
+      });
+      const List = res.data.Friends;
+      const emailList = List.map((obj) => obj.friendEmail);
+      try {
+        const res = await axios.post("http://localhost:5000/users", {
+          refreshToken: cookie.refreshToken,
+          filter: emailList,
+        });
+        setFriendss(res.data.UsersList);
+  
+    } catch (err) {
+      console.log(err);
+    }
+    }catch(err){
+      console.log(err)
+    }
+  }
   const GetFriends = async () => {
     let choosenFriend;
     try {
@@ -243,6 +265,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   }, [user.email, friends, idOfLastMessage, receiver]);
   useEffect(() => {
     GetFriends();
+    GetFriendss();
   }, [user.email]);
   useEffect(() => {
     GetChats();
@@ -390,7 +413,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
               })}
             </S.ChatUsers>
             <S.ChatMakerList pageTheme={swap}>
-              {friends.map((friend, index) => {
+              {friendss.map((friend, index) => {
                 return (
                   <S.ChatMakerListUser pageTheme={swap}>
                     {friend.name} {friend.surname}
@@ -587,11 +610,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
               className="large smile outline icon"
               onClick={toggleEmojiPanel}
             />
-            <S.MessageSentIcon
-              pageTheme={swap}
-              className="large microphone icon"
-              onClick={startRecording}
-            />
+          
 
             <S.MessageInput
               pageTheme={swap}

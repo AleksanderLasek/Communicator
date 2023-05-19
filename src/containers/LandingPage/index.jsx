@@ -52,7 +52,7 @@ const LandingPage = ({changeLoaded, swap, user}) => {
     <S.Wrapper>
       <S.Label pageTheme={swap}>Recent chats</S.Label>
       <S.Vita>
-        {chats.map((chatName, index) => {
+        {chats.slice(0, 5).map((chatName, index) => {
           const users = chatName.chat.split('.');
           const usersInChat = users.filter(element => element !== user.email);
        

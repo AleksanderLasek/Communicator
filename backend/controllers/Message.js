@@ -51,7 +51,11 @@ export const GetDateOfLastMessage = async(req, res) => {
 
 export const CreateNewChat = async(req, res) => {
     const { collectionName } = req.body;
+    const isCollectionInDB = await db.listCollections({name: collectionName}).toArray();
+
+    if(isCollectionInDB.length > 0) return res.status(400).send({msg: 'Error'});
     db.createCollection(collectionName);
+    
     const users = collectionName.split('.');
     const today = new Date();
     for(let i=0; i<users.length; i++){
