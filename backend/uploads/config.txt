@@ -1,1 +1,0 @@
-{"cpu":2,"cpu_socket":101,"cpu_model":7998,"gpu":[14,0,0,0],"gpu_model":[8140,0,0,0],"gpu_count":0,"ram":0,"sata":"1317","pata":0,"m2":"8171","fan":"1335","wk":"1342","usb31":1,"overclock":null}

@@ -63,6 +63,7 @@ export const CreateNewChat = async(req, res) => {
         await userChats.insertOne({
             chat: collectionName,
             date: today,
+            name: '',
         })
     }
     return res.status(200).send({msg: 'Success'});
@@ -76,3 +77,15 @@ export const GetChats = async(req,res) => {
     return res.status(200).send({chats});
 }
 
+export const ChangeChatName = async(req, res) => {
+    const { collectionName, chatName} = req.body;
+    const users = collectionName.split('.');
+    const today = new Date();
+    for(let i = 0; i< users.length; i++){
+        const userChats = db.collection(`${users[i]}Chats`);
+        await userChats.updateOne({ chat: collectionName }, {
+            $set: {date: today, name: chatName}
+        })
+    }
+    return res.status(200).send({msg: 'Success'});
+}

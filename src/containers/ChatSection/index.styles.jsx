@@ -412,6 +412,27 @@ export const ChatMaker = styled.div`
   }
 `;
 
+export const ChangeNameWrapper = styled.div`
+  width: 400px;
+  height: 200px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 3px #00000055;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+`
+
+export const ChangeNameInput = styled.input`
+  outline: 0;
+  border: 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 3px #00000029;
+  background-color: #00000030;
+`
+
 export const ChatUsers = styled.div`
   margin-top: 5px;
   width: 95%;

@@ -19,6 +19,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [audioData, setAudioData] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
+  
   const [chunks, setChunks] = useState([]);
   const [files, setFiles] = useState("");
   const [image, setImage] = useState([
@@ -46,6 +47,8 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   });
   const [shownPhotoId, setShownPhotoId] = useState();
   const [showChatMaker, setShowChatMaker] = useState(false);
+  const [showChatNameChanger, setShowChatNameChanger] = useState(false);
+  const [chatName, setChatName] = useState('');
   const [fileName, setFileName] = useState("");
   const [cookie] = useCookies(["refreshToken"]);
   const handleChange = (e) => {
@@ -271,7 +274,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     GetChats();
   }, [friends]);
   const ChooseChat = (friend, strink, chatName, friend2) => {
-    if (chatName !== choosenChat) {
+    if (chatName !== choosenChat || strink !== receiver.name) {
       setChoosenChat(chatName);
 
       window.history.pushState({}, null, `/chat/${chatName}`);
@@ -317,6 +320,9 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const handleShowChatMaker = () => {
     setShowChatMaker((current) => !current);
   };
+  const handleShowChatNameChanger = () => {
+    setShowChatNameChanger(current => !current);
+  }
   const addUserToChatList = (friend) => {
     if (!newChatUsers.includes(friend)) {
       setNewChatUsers([...newChatUsers, friend]);
@@ -377,8 +383,38 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
       mediaRecorder.stop();
     }
   };
+  const handleChatName = (e) => {
+    setChatName(e.target.value);
+  }
+  const handleChatRename = async() => {
+    try {
+      const path = window.location.pathname.substring("/chat/".length);
+      const res = await axios.post('http://localhost:5000/chat/rename', {collectionName: path, chatName: chatName});
+      
+      setShowChatNameChanger(false);
+      GetChats();
+      GetChat()
+    }catch(err){
+      console.log(err);
+    }
+  }
   return (
     <>
+      {showChatNameChanger && (
+        <S.shownPhotoBackground>
+          <S.changePhoto
+            className="big times circle outline icon"
+            onClick={handleShowChatNameChanger}
+          />
+          <S.ChangeNameWrapper>
+            <div>Zmień nazwe</div>
+            <S.ChangeNameInput onChange={handleChatName} />
+            <S.CreateChatButton onClick={handleChatRename} > 
+              Change name
+            </S.CreateChatButton>
+          </S.ChangeNameWrapper>
+        </S.shownPhotoBackground>
+      )}
       {showPhoto && (
         <S.shownPhotoBackground>
           <S.DownloadIcon
@@ -454,11 +490,16 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
             );
             const friend2 = friends.filter((el) => el.email === usersInChat[1]);
             let strink = "";
-
-            for (let i = 0; i < usersInChat.length; i++) {
-              const frnd = friends.filter((el) => el.email === usersInChat[i]);
-              let str = i === usersInChat.length - 1 ? "" : ", ";
-              strink += frnd[0].name + str;
+              
+            if(chatName.name){
+              strink = chatName.name;
+              console.log('ccc')
+            }else{
+              for (let i = 0; i < usersInChat.length; i++) {
+                const frnd = friends.filter((el) => el.email === usersInChat[i]);
+                let str = i === usersInChat.length - 1 ? "" : ", ";
+                strink += frnd[0].name + str;
+              }
             }
             if (
               chatName.chat ===
@@ -503,11 +544,14 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
               />
             )}
             <S.ChatNameWrapper>
-              {receiver.name}
+              {receiver.name} 
               {choosenChat.split(".").length === 2 && (
                 <>&nbsp;{receiver.surname}</>
               )}
             </S.ChatNameWrapper>
+            {choosenChat.split(".").length > 2 && (
+              <div><i className="edit icon" onClick={() => setShowChatNameChanger(true)}/></div>
+            )}
           </S.ChatBarWrapper>
           <S.MessageWindowWrapper pageTheme={swap}>
             {chat.map((message, index) => {
