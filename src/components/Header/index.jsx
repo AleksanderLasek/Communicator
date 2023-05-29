@@ -116,7 +116,7 @@ const Header = ({ pageTheme, user }) => {
           <>
             {cookie.refreshToken && (
               <div>
-                <i className="user circle icon" onClick={toggleUserPanel} />
+                <i className="user circle icon" onClick={toggleUserPanel} style={{cursor: "pointer"}}/>
               </div>
             )}
           </>
