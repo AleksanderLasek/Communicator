@@ -48,7 +48,14 @@ const LandingPage = ({changeLoaded, swap, user}) => {
     }
   }
   const moveToChat = (chatName) => {
-    window.location.assign(`/chat/${chatName}`);
+    if(chatName){
+      window.location.assign(`/chat/${chatName}`);
+    }else{
+      window.location.assign(`/chat`);
+    }
+  }
+  const moveToFriends = () => {
+    window.location.assign(`/friends`);
   }
   return (
     <S.Wrapper>
@@ -56,11 +63,11 @@ const LandingPage = ({changeLoaded, swap, user}) => {
       {chats.length === 0 ? (
         <>
         {friendNumber === 0 ? (
-          <S.Message>
+          <S.Message onClick={moveToFriends}>
             Add new friends and start chatting!
           </S.Message>
         ) : (
-          <S.Message pageTheme={swap}>
+          <S.Message pageTheme={swap} onClick={moveToChat}>
           Start chatting with your friends!
         </S.Message>
         )}

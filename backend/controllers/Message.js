@@ -71,6 +71,7 @@ export const CreateNewChat = async(req, res) => {
             chat: collectionName,
             date: today,
             name: '',
+            avatar: '',
         })
     }
     return res.status(200).send({msg: 'Success'});
@@ -95,4 +96,18 @@ export const ChangeChatName = async(req, res) => {
         })
     }
     return res.status(200).send({msg: 'Success'});
+}
+
+export const ChangeChatAvatar = async(req, res) => {
+    const {collectionName, avatar} = req.body;
+    if(!collectionName || !avatar) return res.status(400).send({msg: 'Error'});
+    const users = collectionName.split('.');
+ 
+    for(let i=0; i<users.length; i++){
+        const userChats = db.collection(`${users[i]}Chats`);
+        await userChats.updateOne({chat: collectionName}, {
+            $set: {avatar: avatar}
+        })
+    }
+    return res.status(200).send({msg: "Success"});
 }

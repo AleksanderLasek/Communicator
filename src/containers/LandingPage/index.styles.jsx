@@ -96,5 +96,6 @@ export const Label = styled.div`
 `;
 export const Message = styled.div`
   font-size: 2rem;
+  cursor: pointer;
   color: ${(props) => !props.pageTheme ? "white" : "black"};
 `

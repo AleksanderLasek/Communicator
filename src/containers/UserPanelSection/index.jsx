@@ -13,7 +13,7 @@ const UserPanelSection = ({ user, pageTheme }) => {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [avatar, setAvatar] = useState("");
-  const [cookie, setCookies, deleteCookies] = useCookies(["refreshToken"]);
+  const [cookie, setCookies, removeCookies] = useCookies(["refreshToken"]);
   const handleFile = async (e) => {
     e.preventDefault();
     const convertedImage = await convertBase64(e.target.files[0]);
@@ -82,8 +82,8 @@ const UserPanelSection = ({ user, pageTheme }) => {
   
   const Logout = async (e) => {
     e.preventDefault();
-    deleteCookies("refreshToken");
-    window.location.reload();
+    removeCookies("refreshToken");
+   
   };
   return (
     <S.Wrapper pageTheme={pageTheme}>

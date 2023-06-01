@@ -16,24 +16,19 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const [chats, setChats] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [showFileList, setShowFileList] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
   const [chooseFileType, setChooseFileType] = useState(false);
-  const [chunks, setChunks] = useState([]);
+  const [chooseChatEdit, setChooseChatEdit] = useState(false);
   const [files, setFiles] = useState("");
-  const [image, setImage] = useState([
-    {
-      fileId: "",
-      base64: "",
-    },
-  ]);
-  const [gotImages, setGotImages] = useState(false);
   const [droppedFile, setDroppedFile] = useState();
+  const [newChatAvatar, setNewChatAvatar] = useState();
   const [receiver, setReceiver] = useState({
     name: "",
     surname: "",
     email: "",
     avatar: "",
     avatar2: "",
+    avatarGroup: "",
+    
   });
   const [chat, setChat] = useState([]);
   const [idOfLastMessage, setIdOfLastMessage] = useState();
@@ -48,7 +43,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const [showChatNameChanger, setShowChatNameChanger] = useState(false);
   const [chatName, setChatName] = useState('');
   const [fileName, setFileName] = useState("");
-  const [cookie] = useCookies(["refreshToken"]);
+  const [cookie, setCookie, removeCookie] = useCookies(["refreshToken"]);
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
@@ -237,15 +232,14 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     
   }, [user.email, friends, idOfLastMessage, receiver]);
   useEffect(() => {
-    console.log(process.env.REACT_APP_URL)
     GetFriends();
     GetFriendss();
-  }, [user.email]);
+  }, [user.email, ]);
   useEffect(() => {
     GetChats();
   }, [friends]);
-  const ChooseChat = (friend, strink, chatName, friend2) => {
-    if (chatName !== choosenChat || strink !== receiver.name) {
+  const ChooseChat = (friend, strink, chatName, friend2, avatar) => {
+    if (chatName !== choosenChat || strink !== receiver.name || avatar !== receiver.avatarGroup) {
       setChoosenChat(chatName);
       window.history.pushState({}, null, `/chat/${chatName}`)
       setReceiver({
@@ -254,6 +248,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
         avatar: friend.avatar,
         avatar2: friend2 ? friend2.avatar : "",
         email: friend.email,
+        avatarGroup: avatar
       });
     }
   };
@@ -294,6 +289,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     if (!newChatUsers.includes(friend)) {
       setNewChatUsers([...newChatUsers, friend]);
     }
+    console.log(newChatUsers);
   };
   const deleteUserFromChatList = (usr) => {
     setNewChatUsers(newChatUsers.filter((element) => element !== usr));
@@ -307,7 +303,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
       string += newChatEmails[i];
     }
     try {
-      const res = await axios.post(`${process.env.REACT_APP_REACT_APP_URL}/chat/create`, {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/create`, {
         collectionName: string,
       });
     } catch (err) {
@@ -334,7 +330,22 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const handleShowFileList = () => {
     setShowFileList(current => !current);
   }
-
+  const handleChatAvatar = async(e) => {
+    const avatar = await convertBase64(e.target.files[0])
+    setNewChatAvatar(avatar);
+  }
+  const handleChatAvatarChange = async() => {
+    try{
+      const path = window.location.pathname.substring("/chat/".length);
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/avatar`, {collectionName: path, avatar: newChatAvatar});
+      setShowChatNameChanger(false);
+      setReceiver({avatarGroup: newChatAvatar});
+      GetChat();
+      GetChats();
+    }catch(err){
+      console.log(err)
+    }
+  }
   return (
     <>
       {showFileList && (
@@ -398,13 +409,34 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
             className="big times circle outline icon"
             onClick={handleShowChatNameChanger}
           />
-          <S.ChangeNameWrapper>
-            <div>Zmień nazwe</div>
+          <S.FilesAndImagesWrapper>
+          <S.FilesAndImagesMenu>
+            <S.FilesAndImagesMenuItem  onClick={() => setChooseChatEdit(false)} choose={chooseChatEdit}>Name</S.FilesAndImagesMenuItem>
+            <S.FilesAndImagesMenuItem  onClick={() => setChooseChatEdit(true)} choose={!chooseChatEdit}>Avatar</S.FilesAndImagesMenuItem>
+          </S.FilesAndImagesMenu>
+         
+          {!chooseChatEdit ? (
+            <S.ChangeNameWrapper>
+            <div>Type new chat name</div>
             <S.ChangeNameInput onChange={handleChatName} />
             <S.CreateChatButton onClick={handleChatRename} > 
               Change name
             </S.CreateChatButton>
           </S.ChangeNameWrapper>
+          ): (
+<S.ChangeNameWrapper>
+            
+            <input id="chatAv" type="file" hidden onChange={handleChatAvatar}/>
+            <label htmlFor="chatAv">Choose a new chat avatar</label>
+            {newChatAvatar && (
+              <img src={newChatAvatar} style={{width: "50px", height: "50px", borderRadius: "50%"}}/>
+            )}
+            <S.CreateChatButton onClick={handleChatAvatarChange} > 
+              Change name
+            </S.CreateChatButton>
+          </S.ChangeNameWrapper>
+          )}
+          </S.FilesAndImagesWrapper>
         </S.shownPhotoBackground>
       )}
       {showPhoto && (
@@ -497,44 +529,63 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
               chatName.chat ===
               window.location.pathname.substring("/chat/".length)
             ) {
-              ChooseChat(friend[0], strink, chatName.chat, friend2[0]);
+              ChooseChat(friend[0], strink, chatName.chat, friend2[0], chatName.avatar);
             }
             return (
               <S.FriendWrapper
                 pageTheme={swap}
                 key={index}
                 onClick={() =>
-                  ChooseChat(friend[0], strink, chatName.chat, friend2[0])
+                  ChooseChat(friend[0], strink, chatName.chat, friend2[0], chatName.avatar)
                 }
                 style={{
                   backgroundColor: chatName.chat === choosenChat && "#144f7d9d",
                 }}
               >
-                <S.ImageWrapper src={friend[0].avatar} alt="avatar" />
-                {usersInChat.length > 1 && (
-                  <S.ImageWrapper src={friend2[0].avatar} secondImage={true} />
+                {!chatName.avatar ? (
+                  <>
+                  <S.ImageWrapper src={friend[0].avatar} alt="avatar" />
+                  {usersInChat.length > 1 && (
+                    <S.ImageWrapper src={friend2[0].avatar} secondImage={true} />
+                  )}
+                  </>
+                ) :(
+                  <>
+                    <S.ImageWrapper src={chatName.avatar}/>
+                  </>
                 )}
                 <S.FriendNameWrapper pageTheme={swap}>
                   {strink}
                   {usersInChat.length === 1 && <>&nbsp;{friend[0].surname}</>}
                 </S.FriendNameWrapper>
+                
               </S.FriendWrapper>
             );
           })}
         </S.ListWrapper>
+        {chats.length !== 0 && (
         <S.ChatWindowWrapper
           pageTheme={swap}
           onDrop={handleDragV2}
           onDragOver={handleDragOver}
         >
           <S.ChatBarWrapper pageTheme={swap}>
-            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
-            {choosenChat.split(".").length > 2 && (
-              <S.ChatImageWrapper
-                src={receiver.avatar2}
-                style={{ marginLeft: "-30px" }}
-              />
-            )}
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+             {receiver.avatarGroup ? (
+              <>
+              <S.ChatImageWrapper src={receiver.avatarGroup}/>
+              </>
+             ): (
+              <>
+              <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
+              {choosenChat.split(".").length > 2 && (
+                <S.ChatImageWrapper
+                  src={receiver.avatar2}
+                  style={{ marginLeft: "-30px" }}
+                />
+              )}
+              </>
+             )} 
             <S.ChatNameWrapper>
               {receiver.name} 
               {choosenChat.split(".").length === 2 && (
@@ -675,6 +726,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
             />
           </S.MessageTextBox>
         </S.ChatWindowWrapper>
+        )}
       </S.Wrapper>
     </>
   );

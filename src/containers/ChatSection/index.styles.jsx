@@ -79,6 +79,8 @@ export const FriendNameWrapper = styled.div`
 
 export const ImageWrapper = styled.img`
   max-height: 90%;
+  height: 7vh;
+  width: 7vh;
   border-radius: 50%;
   border: 1px solid gray;
   box-shadow: 0px 0px 5px 3px #0000003e;
@@ -87,14 +89,16 @@ export const ImageWrapper = styled.img`
 
   @media screen and (max-width: 1023px) {
     margin-left: 10px;
-    max-height: 70%;
+    height: 6vh;
+  width: 6vh;
     margin-left: ${(props) => props.secondImage && "-50px"};
   }
 
   @media screen and (max-width: 767px) {
     margin: 0;
     margin-left: ${(props) => props.secondImage && "-40px"};
-    max-height: 60%;
+    height: 5vh;
+  width: 5vh;
   }
 `;
 
@@ -344,6 +348,7 @@ export const FileMessage = styled.div`
   width: 100%;
   background-color: ${(props) => (props.pageTheme ? "#818181" : "#303030")};
   padding: 5px 10px;
+  color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 5px 3px #00000057;
   cursor: pointer;
@@ -357,7 +362,7 @@ export const shownPhotoBackground = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99999;
+  z-index: 9999;
   background-color: #000000dc;
 `;
 export const DownloadIcon = styled.i`
