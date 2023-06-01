@@ -8,7 +8,7 @@ const NotificationsSection = ({ user, swap, changeLoaded }) => {
   const [cookie] = useCookies();
   const ShowNotifications = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/nots/show", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/nots/show`, {
         email: user.email, check: 1,
       });
       setNots(res.data.Nots);
@@ -20,7 +20,7 @@ const NotificationsSection = ({ user, swap, changeLoaded }) => {
   const getUserParams = async (email) => {
     try {
       const list = [email];
-      const res = await axios.post("http://localhost:5000/users", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
         refreshToken: cookie.refreshToken,
         filter: list,
       });

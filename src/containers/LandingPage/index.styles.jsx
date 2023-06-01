@@ -94,3 +94,7 @@ export const Label = styled.div`
   margin-top: 0;
 }
 `;
+export const Message = styled.div`
+  font-size: 2rem;
+  color: ${(props) => !props.pageTheme ? "white" : "black"};
+`

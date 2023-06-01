@@ -15,7 +15,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   const [cookie] = useCookies();
   const GetUsers = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/users", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
         refreshToken: cookie.refreshToken,
         email: user.email,
       });
@@ -27,13 +27,13 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
 
   const GetFriends = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/friends", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/friends`, {
         email: user.email,
       });
       const List = res.data.Friends;
       const emailList = List.map((obj) => obj.friendEmail);
       try {
-        const res = await axios.post("http://localhost:5000/users", {
+        const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
           refreshToken: user.name,
           filter: emailList,
         });
@@ -48,7 +48,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const InviteFriend = async (usr) => {
     try {
-      const res = await axios.post("http://localhost:5000/invitations/add", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/invitations/add`, {
         email: user.email,
         invitedEmail: usr.email,
       });
@@ -58,7 +58,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const DeleteFriend = async (usr) => {
     try {
-      const res = await axios.post("http://localhost:5000/friends/delete", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/friends/delete`, {
         email: user.email,
         friendEmail: usr.email,
       });
@@ -69,7 +69,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const BlockUser = async (usr) => {
     try {
-      const res = await axios.post("http://localhost:5000/users/block", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/block`, {
         email: user.email,
         blockedEmail: usr.email,
       });
@@ -82,7 +82,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const UnblockUser = async (usr) => {
     try {
-      const res = await axios.post("http://localhost:5000/users/unblock", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/unblock`, {
         email: user.email,
         blockedEmail: usr.email,
       });
@@ -93,14 +93,14 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const GetInvitations = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/invitations", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/invitations`, {
         email: user.email,
       });
       const List = res.data.InvitationList;
       const emailList = List.map((obj) => obj.from);
 
       try {
-        const res = await axios.post("http://localhost:5000/users", {
+        const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
           refreshToken: cookie.refreshToken,
           filter: emailList,
         });
@@ -115,13 +115,13 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const GetBlockedUsers = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/users/getblocked", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/getblocked`, {
         email: user.email,
       });
       const List = res.data.blockedList;
       const emailList = List.map((obj) => obj.email);
       try {
-        const res = await axios.post("http://localhost:5000/users", {
+        const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
           refreshToken: cookie.refreshToken,
           filter: emailList,
         });
@@ -138,7 +138,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
     try {
       console.log(inviterEmail);
       const res = await axios.post(
-        "http://localhost:5000/invitations/decline",
+        `${process.env.REACT_APP_URL}/invitations/decline`,
         { email: user.email, inviterEmail: inviterEmail }
       );
       GetInvitations();
@@ -148,7 +148,7 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
   };
   const AcceptInvite = async (inviterEmail) => {
     try {
-      const res = await axios.post("http://localhost:5000/invitations/accept", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/invitations/accept`, {
         email: user.email,
         inviterEmail: inviterEmail,
       });
@@ -163,7 +163,6 @@ const FriendsSection = ({ user, swap, changeLoaded }) => {
     GetFriends();
     GetInvitations();
     GetBlockedUsers();
-    console.log(friends.length);
   }, [user.name]);
 
   const toggleInvites = () => {

@@ -31,7 +31,7 @@ const LoginRegistrationSection = ({ swap, changeLoaded }) => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/users/login", user);
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/login`, user);
 
       if (res.status === 200) {
         const expire = new Date();
@@ -56,7 +56,7 @@ const LoginRegistrationSection = ({ swap, changeLoaded }) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/users/register",
+        `${process.env.REACT_APP_URL}/users/register`,
         user
       );
       if (res.status === 200) {

@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 
 const LandingPage = ({changeLoaded, swap, user}) => {
   const [friends, setFriends] = useState([]);
+  const [friendNumber, setFriendNumber] = useState();
   const [chats, setChats] = useState([]);
   const [cookie] = useCookies();
   useEffect(() => {
@@ -18,13 +19,14 @@ const LandingPage = ({changeLoaded, swap, user}) => {
   }, [friends])
   const GetFriends = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/friends", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/friends`, {
         email: user.email,
       }); 
       const List = res.data.Friends;
+      setFriendNumber(List.length);
       const emailList = List.map((obj) => obj.friendEmail);
       try {
-        const res = await axios.post("http://localhost:5000/users", {
+        const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
           refreshToken: cookie.refreshToken,
  
         });
@@ -38,7 +40,7 @@ const LandingPage = ({changeLoaded, swap, user}) => {
   };
   const GetChats = async() => {
     try {
-      const res = await axios.post('http://localhost:5000/chat/get', {email: user.email});
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/get`, {email: user.email});
       setChats(res.data.chats);
       changeLoaded(true);
     }catch(err){ 
@@ -50,8 +52,24 @@ const LandingPage = ({changeLoaded, swap, user}) => {
   }
   return (
     <S.Wrapper>
+
+      {chats.length === 0 ? (
+        <>
+        {friendNumber === 0 ? (
+          <S.Message>
+            Add new friends and start chatting!
+          </S.Message>
+        ) : (
+          <S.Message pageTheme={swap}>
+          Start chatting with your friends!
+        </S.Message>
+        )}
+        </>
+      ) : (
+      <>
       <S.Label pageTheme={swap}>Recent chats</S.Label>
       <S.Vita>
+        
         {chats.slice(0, 5).map((chatName, index) => {
           const users = chatName.chat.split('.');
           const usersInChat = users.filter(element => element !== user.email);
@@ -60,11 +78,15 @@ const LandingPage = ({changeLoaded, swap, user}) => {
           const friend2 = friends.filter(el => el.email === usersInChat[1]);
           let strink = '';
       
-          for(let i =0; i<usersInChat.length; i++){
-            const huj = friends.filter(el => el.email === usersInChat[i]);
-            let str = i === (usersInChat.length - 1) ? '' : ', ';
-            strink+=huj[0].name + str;
-          
+          if(chatName.name){
+            strink = chatName.name;
+          }else{
+            for(let i =0; i<usersInChat.length; i++){
+              const frnd = friends.filter(el => el.email === usersInChat[i]);
+              let str = i === (usersInChat.length - 1) ? '' : ', ';
+              strink+=frnd[0].name + str;
+            
+            }
           }
           console.log(friend)
           strink = usersInChat.length > 1 ? strink : `${friend[0].name} ${friend[0].surname}`
@@ -80,6 +102,8 @@ const LandingPage = ({changeLoaded, swap, user}) => {
         })}
      
       </S.Vita>
+      </>
+      )}
     </S.Wrapper>
   );
 };

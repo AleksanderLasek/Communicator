@@ -54,7 +54,7 @@ const UserPanelSection = ({ user, pageTheme }) => {
     e.preventDefault();
     const token = cookie.refreshToken;
     try {
-      const res = await axios.post("http://localhost:5000/users/edit", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/edit`, {
         refreshToken: token,
         name: name,
         surname: surname,
@@ -69,7 +69,7 @@ const UserPanelSection = ({ user, pageTheme }) => {
     e.preventDefault();
     const token = cookie.refreshToken;
     try {
-      const res = await axios.post("http://localhost:5000/users/edit", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users/edit`, {
         refreshToken: token,
         avatar: avatar,
       });

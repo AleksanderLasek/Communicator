@@ -8,13 +8,20 @@ export const SendMessage = async(req, res) => {
         return res.status(401).send({msg: 'Message too long'});
     }
     if(!path) return res.status(404).send({msg: 'Error'});
+    let addName = '';
+    
     const ChatCollection = db.collection(`${path}`);
+    const lastMessage = await ChatCollection.findOne({}, { sort: {_id: -1}});
+    if(lastMessage.sender !== sender){
+        addName = 'true';
+    }
     const ress = await ChatCollection.insertOne({
         message: message,
         sender: sender,
         fileId: fileId,
         fileName: fileName,
-        miniature: miniature
+        miniature: miniature,
+        addName: addName,
     })
     const today = new Date();
     const usersInChat = path.split('.');

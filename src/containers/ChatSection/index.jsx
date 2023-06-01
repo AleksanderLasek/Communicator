@@ -5,8 +5,7 @@ import { useCookies } from "react-cookie";
 import EmojiPicker from "emoji-picker-react";
 import { convertBase64 } from "../../components/converterBase";
 import { scaleImage } from "../../components/scaleImage";
-import { Buffer } from "buffer";
-import jezus from "../../images/jezus.jpg";
+
 
 const ChatSection = ({ user, swap, changeLoaded }) => {
   const [message, setMessage] = useState("");
@@ -16,10 +15,9 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const [choosenChat, setChoosenChat] = useState("");
   const [chats, setChats] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [audioData, setAudioData] = useState(null);
+  const [showFileList, setShowFileList] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
-  
+  const [chooseFileType, setChooseFileType] = useState(false);
   const [chunks, setChunks] = useState([]);
   const [files, setFiles] = useState("");
   const [image, setImage] = useState([
@@ -56,14 +54,12 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   };
 
   const getdata = async (file_id, fileName) => {
-    console.log(file_id);
     try {
       const res = await axios.post(
-        "http://localhost:5000/files/get",
+        `${process.env.REACT_APP_URL}/files/get`,
         { file_id: file_id },
         { responseType: "blob" }
       );
-      console.log(res);
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -77,7 +73,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const getImage = async (file_id) => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/files/get",
+        `${process.env.REACT_APP_URL}/files/get`,
         { file_id: file_id },
         { responseType: "blob" }
       );
@@ -100,7 +96,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   };
   const GetChats = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/chat/get", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/get`, {
         email: user.email,
       });
       setChats(res.data.chats);
@@ -117,7 +113,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     let miniature = "";
 
     try {
-      const res = await axios.post("http://localhost:5000/files/upload", file, {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/files/upload`, file, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -141,7 +137,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     const path = window.location.pathname.substring("/chat/".length);
 
     try {
-      const res = await axios.post("http://localhost:5000/chat/send", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/send`, {
         message: message,
         path: path,
         sender: user.email,
@@ -164,7 +160,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     }
     const path = window.location.pathname.substring("/chat/".length);
     try {
-      const res = await axios.post("http://localhost:5000/chat", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat`, {
         path: path,
       });
       setChat(res.data.Chat);
@@ -173,15 +169,14 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     }
   };
   const GetFriendss = async () => {
-    let choosenFriend;
     try {
-      const res = await axios.post("http://localhost:5000/friends", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/friends`, {
         email: user.email,
       });
       const List = res.data.Friends;
       const emailList = List.map((obj) => obj.friendEmail);
       try {
-        const res = await axios.post("http://localhost:5000/users", {
+        const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
           refreshToken: cookie.refreshToken,
           filter: emailList,
         });
@@ -195,44 +190,18 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     }
   }
   const GetFriends = async () => {
-    let choosenFriend;
     try {
-      const res = await axios.post("http://localhost:5000/friends", {
-        email: user.email,
+      const res = await axios.post(`${process.env.REACT_APP_URL}/users`, {
+         refreshToken: cookie.refreshToken,
       });
-      const List = res.data.Friends;
-      const emailList = List.map((obj) => obj.friendEmail);
-      try {
-        const res = await axios.post("http://localhost:5000/users", {
-          refreshToken: cookie.refreshToken,
-        });
-        setFriends(res.data.UsersList);
-        const path = window.location.pathname.substring("/chat/".length);
-        choosenFriend = res.data.UsersList[0];
-        if (path !== "") {
-          const pathTab = path.split(".");
-          let friendEmail = [pathTab[0]];
-          if (pathTab[0] === user.email) {
-            friendEmail[0] = pathTab[1];
-          }
-          const res1 = await axios.post("http://localhost:5000/users", {
-            refreshToken: cookie.refreshToken,
-            email: user.email,
-            filter: friendEmail,
-          });
-          choosenFriend = res1.data.UsersList[0];
-        }
-      } catch (err) {
-        console.log(err);
-      }
+      setFriends(res.data.UsersList);
     } catch (err) {
       console.log(err);
     }
     try {
-      const res = await axios.post("http://localhost:5000/chat/get", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/get`, {
         email: user.email,
       });
-      console.log(friends);
       if (window.location.pathname.substring("/chat/") === "/chat") {
         window.history.pushState({}, null, `/chat/${res.data.chats[0].chat}`);
       }
@@ -243,7 +212,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const GetDateOfLastMessage = async () => {
     try {
       const path = window.location.pathname.substring("/chat/".length);
-      const res = await axios.post("http://localhost:5000/chat/date", {
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/date`, {
         path: path,
       });
 
@@ -265,8 +234,10 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   });
   useEffect(() => {
     GetChat();
+    
   }, [user.email, friends, idOfLastMessage, receiver]);
   useEffect(() => {
+    console.log(process.env.REACT_APP_URL)
     GetFriends();
     GetFriendss();
   }, [user.email]);
@@ -276,9 +247,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
   const ChooseChat = (friend, strink, chatName, friend2) => {
     if (chatName !== choosenChat || strink !== receiver.name) {
       setChoosenChat(chatName);
-
-      window.history.pushState({}, null, `/chat/${chatName}`);
-      console.log(strink);
+      window.history.pushState({}, null, `/chat/${chatName}`)
       setReceiver({
         name: strink,
         surname: friend.surname,
@@ -307,8 +276,6 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     setShownPhotoId(fileId);
     setShownPhoto({ ...shownPhoto, fileId: fileId, fileName: fileName });
     getImage(fileId);
-
-    console.log(shownPhoto);
   };
   const handleHidePhoto = () => {
     setShowPhoto(false);
@@ -339,9 +306,8 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
       string += ".";
       string += newChatEmails[i];
     }
-    console.log(string);
     try {
-      const res = await axios.post("http://localhost:5000/chat/create", {
+      const res = await axios.post(`${process.env.REACT_APP_REACT_APP_URL}/chat/create`, {
         collectionName: string,
       });
     } catch (err) {
@@ -350,46 +316,13 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     handleShowChatMaker();
     GetChats();
   };
-  const startRecording = () => {
-    setIsRecording(true);
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then((stream) => {
-        const recorder = new MediaRecorder(stream);
-        setMediaRecorder(recorder);
-
-        recorder.addEventListener("dataavailable", (event) => {
-          setChunks((prevChunks) => [...prevChunks, event.data]);
-        });
-
-        recorder.addEventListener("stop", () => {
-          const audioBlob = new Blob(chunks, { type: "audio/webm" });
-          const audioUrl = URL.createObjectURL(audioBlob);
-          setAudioData(audioUrl);
-          console.log(audioUrl);
-          setChunks([]);
-        });
-
-        recorder.start();
-      })
-      .catch((error) => {
-        console.error("Błąd przechwytywania dźwięku:", error);
-      });
-  };
-
-  const stopRecording = () => {
-    setIsRecording(false);
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-    }
-  };
   const handleChatName = (e) => {
     setChatName(e.target.value);
   }
   const handleChatRename = async() => {
     try {
       const path = window.location.pathname.substring("/chat/".length);
-      const res = await axios.post('http://localhost:5000/chat/rename', {collectionName: path, chatName: chatName});
+      const res = await axios.post(`${process.env.REACT_APP_URL}/chat/rename`, {collectionName: path, chatName: chatName});
       
       setShowChatNameChanger(false);
       GetChats();
@@ -398,8 +331,67 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
       console.log(err);
     }
   }
+  const handleShowFileList = () => {
+    setShowFileList(current => !current);
+  }
+
   return (
     <>
+      {showFileList && (
+        <>
+        <S.shownPhotoBackground>
+        <S.changePhoto
+            className="big times circle outline icon"
+            onClick={handleShowFileList}
+          />
+        <S.FilesAndImagesWrapper>
+          <S.FilesAndImagesMenu>
+            <S.FilesAndImagesMenuItem  onClick={() => setChooseFileType(false)} choose={chooseFileType}>Files</S.FilesAndImagesMenuItem>
+            <S.FilesAndImagesMenuItem  onClick={() => setChooseFileType(true)} choose={!chooseFileType}>Images</S.FilesAndImagesMenuItem>
+          </S.FilesAndImagesMenu>
+          <S.FilesAndImagesList>
+          {chat.map((message, index) => {
+            return (
+              <S.FilesAndImagesListItem key={index}>
+              {message.fileName && (
+                <>
+                  {chooseFileType && message.miniature && (
+                    <>
+                      <S.ImageMessage
+                        src={message.miniature}
+                        onClick={() =>
+                          handleShowFoto(
+                            message.fileId,
+                            message.fileName
+                          )
+                        }
+                      />
+                    </>
+                  )}
+                  {!chooseFileType && !message.miniature && (
+                    <>
+                      <S.FileMessage
+                        onClick={() =>
+                          getdata(message.fileId, message.fileName)
+                        }
+                        pageTheme={swap}
+                      >
+                        <i className="file outline icon" />
+                        {message.fileName}
+                      </S.FileMessage>
+                    </>
+                  )}
+                </>
+              )}
+              </S.FilesAndImagesListItem>
+            )
+           
+          })}
+         </S.FilesAndImagesList>
+         </S.FilesAndImagesWrapper>
+        </S.shownPhotoBackground>
+        </>
+      )}
       {showChatNameChanger && (
         <S.shownPhotoBackground>
           <S.changePhoto
@@ -451,7 +443,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
             <S.ChatMakerList pageTheme={swap}>
               {friendss.map((friend, index) => {
                 return (
-                  <S.ChatMakerListUser pageTheme={swap}>
+                  <S.ChatMakerListUser pageTheme={swap} key={index}>
                     {friend.name} {friend.surname}
                     <S.PlusIcon
                       className="plus icon"
@@ -493,7 +485,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
               
             if(chatName.name){
               strink = chatName.name;
-              console.log('ccc')
+             
             }else{
               for (let i = 0; i < usersInChat.length; i++) {
                 const frnd = friends.filter((el) => el.email === usersInChat[i]);
@@ -536,7 +528,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
           onDragOver={handleDragOver}
         >
           <S.ChatBarWrapper pageTheme={swap}>
-            <S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><S.ChatImageWrapper src={receiver.avatar} alt="avatar" />
             {choosenChat.split(".").length > 2 && (
               <S.ChatImageWrapper
                 src={receiver.avatar2}
@@ -551,10 +543,11 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
             </S.ChatNameWrapper>
             {choosenChat.split(".").length > 2 && (
               <div><i className="edit icon" onClick={() => setShowChatNameChanger(true)}/></div>
-            )}
+            )}</div>
+            <div style={{padding: "0px 15px"}}><i className="file icon" onClick={handleShowFileList}/></div>
           </S.ChatBarWrapper>
           <S.MessageWindowWrapper pageTheme={swap}>
-            {chat.map((message, index) => {
+            {chat && chat.map((message, index) => {
               if (message.sender === user.name) {
                 return (
                   <S.MessageSentLineWrapper key={index}>
@@ -594,25 +587,37 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
                   </S.MessageSentLineWrapper>
                 );
               } else {
+                const friend = friends.filter((el) => el.email === message.sender)
                 return (
-                  <S.MessageReceivedLineWrapper key={index}>
-                    <S.MessageReceivedWrapper pageTheme={swap}>
-                      {message.message}
-                      {message.fileName && (
-                        <>
-                          <S.FileMessage
-                            onClick={() =>
-                              getdata(message.fileId, message.fileName)
-                            }
-                            pageTheme={swap}
-                          >
-                            <i className="file outline icon" />
-                            {message.fileName}
-                          </S.FileMessage>
-                        </>
-                      )}
-                    </S.MessageReceivedWrapper>
-                  </S.MessageReceivedLineWrapper>
+                  <>
+                  
+                   
+                 
+                    <S.MessageReceivedLineWrapper key={index}>
+                    {message.addName === 'true' && friend[0] && (
+                      <div style={{display: "flex", color: "white"}}>
+                        <S.GroupUserAvatar src={friend[0].avatar} />
+                        <S.GroupUserName>{friend[0].name} {friend[0].surname}</S.GroupUserName>
+                      </div>
+                    )}
+                      <S.MessageReceivedWrapper pageTheme={swap}>
+                        {message.message}
+                        {message.fileName && (
+                          <>
+                            <S.FileMessage
+                              onClick={() =>
+                                getdata(message.fileId, message.fileName)
+                              }
+                              pageTheme={swap}
+                            >
+                              <i className="file outline icon" />
+                              {message.fileName}
+                            </S.FileMessage>
+                          </>
+                        )}
+                      </S.MessageReceivedWrapper>
+                    </S.MessageReceivedLineWrapper>
+                  </>
                 );
               }
             })}

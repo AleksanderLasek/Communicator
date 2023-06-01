@@ -161,7 +161,7 @@ export const ChatBarWrapper = styled.div`
   display: flex;
   border-radius: 15px 15px 0 0;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
 
   @media screen and (max-width: 767px) {
     height: 9vh;
@@ -210,11 +210,14 @@ export const MessageReceivedLineWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
 `;
 
 export const MessageReceivedWrapper = styled.div`
   background-color: ${(props) => (props.pageTheme ? "#14507d" : "#769FCD")};
   margin: 5px;
+  margin-left: 10px;
   color: white;
   max-width: 50%;
   padding: 5px 15px;
@@ -494,3 +497,40 @@ export const CreateChatButton = styled.div`
   box-shadow: 0px 0px 5px 3px #00000049;
   font-weight: bold;
 `;
+
+export const GroupUserAvatar = styled.img`
+  width: 20px;
+  height: 20px;
+  margin: 3px;
+  border-radius: 50%;
+`
+export const GroupUserName = styled.div`
+  padding: 3px;
+`
+export const FilesAndImagesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100vh;
+  align-content: center;
+`
+export const FilesAndImagesMenu = styled.div`
+  color: white;
+  display: flex;
+  justify-content: center;
+`
+export const FilesAndImagesMenuItem = styled.div`
+  padding: 5px 20px;
+  background-color: ${(props) => (props.choose ? "#838383" : "#464646")};
+  margin: 0 5px;
+`
+export const FilesAndImagesList = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  overflow-y: scroll;
+  justify-content: flex-start;
+`
+export const FilesAndImagesListItem = styled.div`
+  margin: 3px;
+`
