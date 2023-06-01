@@ -9,12 +9,19 @@ export const SendMessage = async(req, res) => {
     }
     if(!path) return res.status(404).send({msg: 'Error'});
     let addName = '';
-    
+    const usersInChat = path.split('.');
     const ChatCollection = db.collection(`${path}`);
     const lastMessage = await ChatCollection.findOne({}, { sort: {_id: -1}});
-    if(lastMessage.sender !== sender){
+    if(usersInChat.length > 2 && lastMessage){
+        
+        if(lastMessage.sender !== sender && lastMessage){
+        addName = 'true';
+        }
+    }
+    if(usersInChat.length > 2 && lastMessage === null){
         addName = 'true';
     }
+    
     const ress = await ChatCollection.insertOne({
         message: message,
         sender: sender,
@@ -24,7 +31,7 @@ export const SendMessage = async(req, res) => {
         addName: addName,
     })
     const today = new Date();
-    const usersInChat = path.split('.');
+    
     for(let i = 0; i<usersInChat.length; i++){
         const userChats = db.collection(`${usersInChat[i]}Chats`);
         await userChats.updateOne({chat: path}, {

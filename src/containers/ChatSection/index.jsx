@@ -295,11 +295,14 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     setNewChatUsers(newChatUsers.filter((element) => element !== usr));
   };
   const createNewChat = async () => {
-    const newChatEmails = newChatUsers.map((obj) => obj.email);
+    let newChatEmails = newChatUsers.map((obj) => obj.email);
+    newChatEmails.push(user.email);
     newChatEmails.sort();
-    let string = user.email;
+    let string = '';
     for (let i = 0; i < newChatEmails.length; i++) {
-      string += ".";
+      if(i !== 0){
+        string += ".";
+      }
       string += newChatEmails[i];
     }
     try {
@@ -311,6 +314,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
     }
     handleShowChatMaker();
     GetChats();
+    window.location.assign(`/chat/${string}`)
   };
   const handleChatName = (e) => {
     setChatName(e.target.value);
@@ -432,7 +436,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
               <img src={newChatAvatar} style={{width: "50px", height: "50px", borderRadius: "50%"}}/>
             )}
             <S.CreateChatButton onClick={handleChatAvatarChange} > 
-              Change name
+              Change avatar
             </S.CreateChatButton>
           </S.ChangeNameWrapper>
           )}
@@ -599,7 +603,7 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
           </S.ChatBarWrapper>
           <S.MessageWindowWrapper pageTheme={swap}>
             {chat && chat.map((message, index) => {
-              if (message.sender === user.name) {
+              if (message.sender === user.email) {
                 return (
                   <S.MessageSentLineWrapper key={index}>
                     <S.MessageSentWrapper pageTheme={swap}>
@@ -654,18 +658,34 @@ const ChatSection = ({ user, swap, changeLoaded }) => {
                       <S.MessageReceivedWrapper pageTheme={swap}>
                         {message.message}
                         {message.fileName && (
-                          <>
-                            <S.FileMessage
-                              onClick={() =>
-                                getdata(message.fileId, message.fileName)
-                              }
-                              pageTheme={swap}
-                            >
-                              <i className="file outline icon" />
-                              {message.fileName}
-                            </S.FileMessage>
-                          </>
-                        )}
+                        <>
+                          {message.miniature ? (
+                            <>
+                              <S.ImageMessage
+                                src={message.miniature}
+                                onClick={() =>
+                                  handleShowFoto(
+                                    message.fileId,
+                                    message.fileName
+                                  )
+                                }
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <S.FileMessage
+                                onClick={() =>
+                                  getdata(message.fileId, message.fileName)
+                                }
+                                pageTheme={swap}
+                              >
+                                <i className="file outline icon" />
+                                {message.fileName}
+                              </S.FileMessage>
+                            </>
+                          )}
+                        </>
+                      )}
                       </S.MessageReceivedWrapper>
                     </S.MessageReceivedLineWrapper>
                   </>

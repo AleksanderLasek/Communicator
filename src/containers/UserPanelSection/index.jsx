@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./index.styles";
 import defaultAvatar from "../../images/default-avatar.png";
 import axios from "axios";
@@ -80,10 +80,9 @@ const UserPanelSection = ({ user, pageTheme }) => {
     }
   };
   
-  const Logout = async (e) => {
-    e.preventDefault();
+  const Logout = () => {
+    window.location.assign("/")
     removeCookies("refreshToken");
-   
   };
   return (
     <S.Wrapper pageTheme={pageTheme}>
@@ -112,7 +111,7 @@ const UserPanelSection = ({ user, pageTheme }) => {
         />
         <S.Button onClick={handleNameChange}>Submit</S.Button>
       </S.InputWrapper>
-      <S.LogoutButton onClick={Logout}>Logout</S.LogoutButton>
+      <S.LogoutButton onClick={() => Logout()}>Logout</S.LogoutButton>
     </S.Wrapper>
   );
 };
